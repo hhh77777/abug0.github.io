@@ -1,7 +1,5 @@
 # Summary
 
 * [Introduction](README.md)
+* [读书](读书/SUMMARY.md)
 
-* #### [第一章](湖)
-
-  #### [第二章](倍克田庄)
