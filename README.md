@@ -1,6 +1,6 @@
-# Introduction
+# 索引
 
-My Blog.
+我得到的只是一点尘埃，我抓住的只是一段彩虹而已。
 
 * [目录](SUMMARY.md)
 
