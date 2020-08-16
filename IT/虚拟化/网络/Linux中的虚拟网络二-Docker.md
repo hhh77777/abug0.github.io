@@ -1,5 +1,11 @@
 ## Linux中的虚拟网络-docker
 
+### 目录
+
+[toc]
+
+#### 单主机网络模型
+
 docker中的网络模型默认使用bridge模式，会在host上创建一个名为docker0的网桥（bridge），关于Docker网络模型的参考见：
 
 [Docker网络模型](https://zhuanlan.zhihu.com/p/98788162)
@@ -35,3 +41,13 @@ bridge模式下实际会为每个容器创建一套单独的网络命名空间�
 ![mac转发表](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084330.png)
 
 ![mac转发表](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084334.png)
+
+
+
+#### 跨主机网络模型
+
+[参考一: overlay跨主机实验](https://www.infoq.cn/article/9vfPPfZPrXLM4ssLlxSR)
+
+[参考二: overlay跨主机实验](https://juejin.im/post/6844904057211994120)
+
+![Docker overlay网络模型](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816224647.png)

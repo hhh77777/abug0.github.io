@@ -1,5 +1,9 @@
 ## Linux中的虚拟网络一：tap/tun与veth
 
+### 目录
+
+[TOC]
+
 ### 参考
 
 [参考一: 云计算底层技术-虚拟网络设备：bridge（bridge decision过程、bridge与netfilter关系、vlan设备原理）](https://opengers.github.io/openstack/openstack-base-virtual-network-devices-bridge-and-vlan/)
@@ -10,15 +14,23 @@
 
 [参考四: TUN/TAP设备收发包流程分析](https://blog.liu-kevin.com/2020/01/06/tun-tapshe-bei-qian-xi/)
 
-[参考五: veth设备与bridge通信过程分析](https://segmentfault.com/a/1190000009491002)
+[参考五: veth设备与bridge通信过程分析](https://segmentfault.com/a/1190000009491002) 
 
 [参考六: 数据包在各层间的流向分析](https://zhuanlan.zhihu.com/p/139247344)
+
+[参考七: netfilter框架（iptables、netfilter处理流程及连接跟踪表）](https://opengers.github.io/openstack/openstack-base-netfilter-framework-overview/)
+
+
 
 ![bridge](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084804.png)
 
 ![yDTFvEohmQfiWz5](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816163436.jpg)
 
 ### 关于参考的补充
+
+##### 针对参考的补充：tc、bridge check、iptables与协议栈
+
+![netfilter](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816175903.png)
 
 ##### 针对参考五的补充一：关于tcpdump抓包位置与网络协议栈
 
