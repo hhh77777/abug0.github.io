@@ -46,6 +46,31 @@
 
 ##### 针对参考五的补充二：关于tap/tun设备数据包上行到协议栈的补充
 
+实际上，用报文不进入协议栈这样的说法是不准确的，确切的说，应该是报文在到达设备对应的层次（tap是二层，tun是三层）后，报文会流向bridge,继而离开主机的协议栈，去往tap/tun或者其他命名空间。
+
+##### 针对参考六的补充：ebtables过滤未生效的思考
+
+根据下图，在配有docker环境的centos8系统中，docker网络模式为bridge，做端口映射（通过nat）。
+
+配置ebtables规则，前后两次实验分别是filter/forward、filter/input，动作为=drop，抓包分析来看，均未生效，容器内部皆能收到包（bridge_bf关闭与否结果一致），结论为数据包未经过ebtables filter input/forward。
+
+在filter/output配置drop，包被丢弃，容器内未收到。
+
+使用iptables配置规则：
+
+* filter/forward--drop，包被丢弃，表现为容器内部收不到包；
+
+* filter/input--drop，包未被丢弃，容器内可收到；
+
+* filter-output--drop，未被丢弃，容器内可收到；
+
+  根据以上实验结果，可知数据包路径：
+
+  * INPUT PATH：bridge check后走T，进入Network Layer，直到routing decision。（走T路线的原因：外部访问时的目的IP实际为host物理网卡IP，该网卡未挂载到网桥，不属于桥设备）
+  * FORWARD PATH：routing decision后，进入Link Layer；
+  * OUTPUT PATH：Link Layer。
+
+![netfilter](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816175903.png)
+
 ![bridge](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084804.png)
 
-实际上，用报文不进入协议栈这样的说法是不准确的，确切的说，应该是报文在到达设备对应的层次（tap是二层，tun是三层）后，报文会流向bridge,继而离开主机的协议栈，去往tap/tun或者其他命名空间。
