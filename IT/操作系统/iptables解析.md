@@ -8,6 +8,8 @@
 
 [参考一: iptables基本知识](https://kuring.me/post/iptables/)
 
+[参考二: iptables添加SNAT/DNAT规则时自动生成映射表的分析](https://zhuanlan.zhihu.com/p/60172686)
+
 ### 概念：chain、table、rule
 
 ![iptables1](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200817195020.png)

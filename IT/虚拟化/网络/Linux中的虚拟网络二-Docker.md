@@ -8,9 +8,11 @@
 
 docker中的网络模型默认使用bridge模式，会在host上创建一个名为docker0的网桥（bridge），关于Docker网络模型的参考见：
 
-[Docker网络模型](https://zhuanlan.zhihu.com/p/98788162)
+[参考一: Docker网络模型](https://zhuanlan.zhihu.com/p/98788162)
 
-[Docker网络模型](https://www.jianshu.com/p/a14ebdc37386)
+[参考二: Docker网络模型](https://www.jianshu.com/p/a14ebdc37386)
+
+[参考三: 关于Docker Bridge模式下iptables仅存在SNAT规则是的情况分析](https://zhuanlan.zhihu.com/p/60172686)
 
 下文使用bridge模式。
 
