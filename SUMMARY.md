@@ -16,6 +16,7 @@
   * [中间件]()
     * [Redis]()
       * [sdshdr](IT/中间件/Redis/sdshdr.md)
+      * [数据类型与对象编码](IT/中间件/Redis/数据类型与对象编码.md)
       * [Redis源码分析](IT/中间件/Redis/Redis源码分析.md)
   * [代码优化]()
     * [内存对齐](IT/代码优化/内存对齐.md)
