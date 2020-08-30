@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Docker原理解析 · GitBook</title>
+        <title>协程解析 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -12,20 +12,20 @@
         
         
     
-    <link rel="stylesheet" href="../../../gitbook/style.css">
+    <link rel="stylesheet" href="../../gitbook/style.css">
 
     
             
                 
-                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
                 
             
                 
-                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-search/search.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
                 
             
                 
-                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-fontsettings/website.css">
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
                 
             
         
@@ -53,12 +53,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../../gitbook/images/apple-touch-icon-precomposed-152.png">
-    <link rel="shortcut icon" href="../../../gitbook/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
     
-    <link rel="prev" href="../网络/Linux中的虚拟网络三-OpenStack.html" />
+    <link rel="prev" href="内存对齐.html" />
     
 
     </head>
@@ -87,9 +87,9 @@
         
         
     
-        <li class="chapter " data-level="1.1" data-path="../../../">
+        <li class="chapter " data-level="1.1" data-path="../../">
             
-                <a href="../../../">
+                <a href="../../">
             
                     
                     Introduction
@@ -100,9 +100,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../../../读书/SUMMARY.html">
+        <li class="chapter " data-level="1.2" data-path="../../读书/SUMMARY.html">
             
-                <a href="../../../读书/SUMMARY.html">
+                <a href="../../读书/SUMMARY.html">
             
                     
                     读书
@@ -113,9 +113,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="../../SUMMARY.html">
+        <li class="chapter " data-level="1.3" data-path="../SUMMARY.html">
             
-                <a href="../../SUMMARY.html">
+                <a href="../SUMMARY.html">
             
                     
                     IT
@@ -127,9 +127,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1" data-path="../../操作系统/SUMMARY.html">
+        <li class="chapter " data-level="1.3.1" data-path="../操作系统/SUMMARY.html">
             
-                <a href="../../操作系统/SUMMARY.html">
+                <a href="../操作系统/SUMMARY.html">
             
                     
                     操作系统
@@ -141,9 +141,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.1.1" data-path="../../操作系统/tcpdump解析.html">
+        <li class="chapter " data-level="1.3.1.1" data-path="../操作系统/tcpdump解析.html">
             
-                <a href="../../操作系统/tcpdump解析.html">
+                <a href="../操作系统/tcpdump解析.html">
             
                     
                     tcpdump解析
@@ -154,9 +154,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.1.2" data-path="../../操作系统/iptables解析.html">
+        <li class="chapter " data-level="1.3.1.2" data-path="../操作系统/iptables解析.html">
             
-                <a href="../../操作系统/iptables解析.html">
+                <a href="../操作系统/iptables解析.html">
             
                     
                     iptables解析
@@ -167,9 +167,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.1.3" data-path="../../操作系统/Linux文件系统.html">
+        <li class="chapter " data-level="1.3.1.3" data-path="../操作系统/Linux文件系统.html">
             
-                <a href="../../操作系统/Linux文件系统.html">
+                <a href="../操作系统/Linux文件系统.html">
             
                     
                     Linux文件系统
@@ -185,9 +185,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.2" data-path="../SUMMARY.html">
+        <li class="chapter " data-level="1.3.2" data-path="../虚拟化/SUMMARY.html">
             
-                <a href="../SUMMARY.html">
+                <a href="../虚拟化/SUMMARY.html">
             
                     
                     虚拟化
@@ -199,9 +199,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.2.1" data-path="../网络/SUMMARY.html">
+        <li class="chapter " data-level="1.3.2.1" data-path="../虚拟化/网络/SUMMARY.html">
             
-                <a href="../网络/SUMMARY.html">
+                <a href="../虚拟化/网络/SUMMARY.html">
             
                     
                     网络
@@ -213,9 +213,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.2.1.1" data-path="../网络/Linux中的虚拟网络一.html">
+        <li class="chapter " data-level="1.3.2.1.1" data-path="../虚拟化/网络/Linux中的虚拟网络一.html">
             
-                <a href="../网络/Linux中的虚拟网络一.html">
+                <a href="../虚拟化/网络/Linux中的虚拟网络一.html">
             
                     
                     Linux中的虚拟网络一、netfilter框架
@@ -226,9 +226,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.2.1.2" data-path="../网络/Linux中的虚拟网络二-Docker.html">
+        <li class="chapter " data-level="1.3.2.1.2" data-path="../虚拟化/网络/Linux中的虚拟网络二-Docker.html">
             
-                <a href="../网络/Linux中的虚拟网络二-Docker.html">
+                <a href="../虚拟化/网络/Linux中的虚拟网络二-Docker.html">
             
                     
                     Linux中的虚拟网络二-Docker
@@ -239,9 +239,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.2.1.3" data-path="../网络/Linux中的虚拟网络三-OpenStack.html">
+        <li class="chapter " data-level="1.3.2.1.3" data-path="../虚拟化/网络/Linux中的虚拟网络三-OpenStack.html">
             
-                <a href="../网络/Linux中的虚拟网络三-OpenStack.html">
+                <a href="../虚拟化/网络/Linux中的虚拟网络三-OpenStack.html">
             
                     
                     Linux中的虚拟网络三-OpenStack
@@ -257,9 +257,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3.2.2" data-path="Docker原理解析.html">
+        <li class="chapter " data-level="1.3.2.2" data-path="../虚拟化/Docker/Docker原理解析.html">
             
-                <a href="Docker原理解析.html">
+                <a href="../虚拟化/Docker/Docker原理解析.html">
             
                     
                     Docker原理解析
@@ -303,9 +303,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.3.1.1" data-path="../../中间件/Redis/sdshdr.html">
+        <li class="chapter " data-level="1.3.3.1.1" data-path="../中间件/Redis/sdshdr.html">
             
-                <a href="../../中间件/Redis/sdshdr.html">
+                <a href="../中间件/Redis/sdshdr.html">
             
                     
                     sdshdr
@@ -316,9 +316,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.3.1.2" data-path="../../中间件/Redis/Redis源码分析.html">
+        <li class="chapter " data-level="1.3.3.1.2" data-path="../中间件/Redis/Redis源码分析.html">
             
-                <a href="../../中间件/Redis/Redis源码分析.html">
+                <a href="../中间件/Redis/Redis源码分析.html">
             
                     
                     Redis源码分析
@@ -353,9 +353,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.4.1" data-path="../../代码优化/内存对齐.html">
+        <li class="chapter " data-level="1.3.4.1" data-path="内存对齐.html">
             
-                <a href="../../代码优化/内存对齐.html">
+                <a href="内存对齐.html">
             
                     
                     内存对齐
@@ -366,9 +366,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3.4.2" data-path="../../代码优化/协程解析.html">
+        <li class="chapter active" data-level="1.3.4.2" data-path="协程解析.html">
             
-                <a href="../../代码优化/协程解析.html">
+                <a href="协程解析.html">
             
                     
                     协程解析
@@ -398,9 +398,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.3.5.1" data-path="../../Tools/VSCode远程调试.html">
+        <li class="chapter " data-level="1.3.5.1" data-path="../Tools/VSCode远程调试.html">
             
-                <a href="../../Tools/VSCode远程调试.html">
+                <a href="../Tools/VSCode远程调试.html">
             
                     
                     VSCode远程调试
@@ -451,7 +451,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../../.." >Docker原理解析</a>
+        <a href="../.." >协程解析</a>
     </h1>
 </div>
 
@@ -466,11 +466,10 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="docker&#x539F;&#x7406;&#x89E3;&#x6790;">Docker&#x539F;&#x7406;&#x89E3;&#x6790;</h1>
-<p>[TOC]</p>
-<p><a href="https://juejin.im/post/6844904039180681229" target="_blank">&#x53C2;&#x8003;&#x4E00;: Docker&#x539F;&#x7406;&#x4E0E;&#x6838;&#x5FC3;&#x6982;&#x5FF5;</a></p>
-<p><a href="https://www.cnblogs.com/woshimrf/p/docker-container-lawyer.html" target="_blank">&#x53C2;&#x8003;&#x4E8C;: Docker&#x955C;&#x50CF;&#x5206;&#x5C42;&#x4E0E;CoW</a></p>
-<p><a href="https://draveness.me/docker/" target="_blank">&#x53C2;&#x8003;&#x4E09;: Docker&#x539F;&#x7406;&#x8BE6;&#x7EC6;&#x89E3;&#x6790;</a></p>
+                                <h1 id="&#x534F;&#x7A0B;&#x89E3;&#x6790;">&#x534F;&#x7A0B;&#x89E3;&#x6790;</h1>
+<p><a href="https://blog.csdn.net/q454684431/article/details/11815323" target="_blank">&#x53C2;&#x8003;&#x4E00;: eventlet&#x539F;&#x7406;&#x89E3;&#x6790;</a></p>
+<p><a href="http://luckylau.tech/2017/03/06/Python%E7%9A%84eventlet%E4%BD%BF%E7%94%A8%E4%B8%8E%E7%90%86%E8%A7%A3/" target="_blank">&#x53C2;&#x8003;&#x4E8C;: eventlet&#x539F;&#x7406;&#x89E3;&#x6790;</a></p>
+<p><a href="http://www.lolizeppelin.com/2017/03/10/python-eventlet/" target="_blank">&#x53C2;&#x8003;&#x4E09;: eventlet&#x6E90;&#x7801;&#x89E3;&#x6790;</a></p>
 
                                 
                                 </section>
@@ -498,7 +497,7 @@
 
             
                 
-                <a href="../网络/Linux中的虚拟网络三-OpenStack.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Linux中的虚拟网络三-OpenStack">
+                <a href="内存对齐.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 内存对齐">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -510,37 +509,37 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Docker原理解析","level":"1.3.2.2","depth":3,"next":{"title":"中间件","level":"1.3.3","depth":2,"ref":"","articles":[{"title":"Redis","level":"1.3.3.1","depth":3,"ref":"","articles":[{"title":"sdshdr","level":"1.3.3.1.1","depth":4,"path":"IT/中间件/Redis/sdshdr.md","ref":"IT/中间件/Redis/sdshdr.md","articles":[]},{"title":"Redis源码分析","level":"1.3.3.1.2","depth":4,"path":"IT/中间件/Redis/Redis源码分析.md","ref":"IT/中间件/Redis/Redis源码分析.md","articles":[]}]}]},"previous":{"title":"Linux中的虚拟网络三-OpenStack","level":"1.3.2.1.3","depth":4,"path":"IT/虚拟化/网络/Linux中的虚拟网络三-OpenStack.md","ref":"IT/虚拟化/网络/Linux中的虚拟网络三-OpenStack.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"IT/虚拟化/Docker/Docker原理解析.md","mtime":"2020-08-25T15:34:38.362Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-08-30T15:34:28.797Z"},"basePath":"../../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"协程解析","level":"1.3.4.2","depth":3,"next":{"title":"Tools","level":"1.3.5","depth":2,"ref":"","articles":[{"title":"VSCode远程调试","level":"1.3.5.1","depth":3,"path":"IT/Tools/VSCode远程调试.md","ref":"IT/Tools/VSCode远程调试.md","articles":[]}]},"previous":{"title":"内存对齐","level":"1.3.4.1","depth":3,"path":"IT/代码优化/内存对齐.md","ref":"IT/代码优化/内存对齐.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"IT/代码优化/协程解析.md","mtime":"2020-08-30T12:26:49.291Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-08-30T15:34:28.797Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
 
         
-    <script src="../../../gitbook/gitbook.js"></script>
-    <script src="../../../gitbook/theme.js"></script>
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
     
         
-        <script src="../../../gitbook/gitbook-plugin-search/search-engine.js"></script>
-        
-    
-        
-        <script src="../../../gitbook/gitbook-plugin-search/search.js"></script>
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
         
     
         
-        <script src="../../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
         
     
         
-        <script src="../../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
         
     
         
-        <script src="../../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
         
     
         
-        <script src="../../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
         
     
 

@@ -10,6 +10,10 @@
 
 [参考二: iptables添加SNAT/DNAT规则时自动生成映射表的分析](https://zhuanlan.zhihu.com/p/60172686)
 
+[参考三: iptables状态机制描述](https://blog.51cto.com/liubin/110394)
+
+[参考四: iptables解析及状态总结](https://www.digitalocean.com/community/tutorials/a-deep-dive-into-iptables-and-netfilter-architecture)
+
 ### 概念：chain、table、rule
 
 ![iptables1](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200817195020.png)
@@ -48,9 +52,6 @@ source ip、destination ip、source port、destination port
 
 accept、drop、reject、queue、dnat、snat、masquerade
 
+### 有状态的防火墙
 
-
-
-
-
-
+iptables可以实现有状态的防火墙。见参考三和参考四。
