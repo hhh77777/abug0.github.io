@@ -4,6 +4,8 @@
 
   * [tcpdump解析](操作系统/tcpdump解析.md)
   * [iptables解析](操作系统/iptables解析.md)
+  * [Linux-TC解析](操作系统/Linux-TC解析.md)
+  * [Linux文件系统解析](操作系统/Linux文件系统.md)
 * [虚拟化](虚拟化/SUMMARY.md)
     * [网络](虚拟化/网络/SUMMARY.md)
         * [Linux中的虚拟网络一、netfilter框架](虚拟化/网络/Linux中的虚拟网络一.md)
@@ -19,5 +21,8 @@
 * [代码优化]()
     * [内存对齐](代码优化/内存对齐.md)
     * [协程解析](代码优化/协程解析.md)
+    * [汇编指令](代码优化/汇编指令.md)
+    * [进程与线程](代码优化/进程与线程.md)
+    * [数据表示 原码、反码和补码](代码优化/数据表示 原码、反码和补码.md)
 * [Tools]()
     * [VSCode远程调试](Tools/VSCode远程调试.md)
