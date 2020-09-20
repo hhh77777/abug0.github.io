@@ -2,6 +2,14 @@
 
 [参考一: TC](https://tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.qdisc.filters.html)
 
+[参考二: TC文档](https://tldp.org/HOWTO/Traffic-Control-HOWTO/components.html)
+
+ [参考三: TC中文手册](..\参考文档\LARTC-zh_CN.GB2312.pdf) 
+
+[参考四: Linux流量控制: QoS与ToS](https://toutiao.io/posts/lpkg13/preview)
+
+[参考五: TC实例](https://www.wsfnk.com/archives/882.html)
+
 ## tc-noqueu
 
 [tc-noqueue](http://linux-tc-notes.sourceforge.net/tc/doc/sch_noqueue.txt)
