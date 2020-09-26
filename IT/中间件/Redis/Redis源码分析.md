@@ -72,4 +72,4 @@ ConnectionType CT_Socket = {
 };
 ```
 
-![Redis处理主流程及调用关系](../../imgs/method_call_hierarchy.png)
+![Redis处理主流程及调用关系](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200920222038.png)
