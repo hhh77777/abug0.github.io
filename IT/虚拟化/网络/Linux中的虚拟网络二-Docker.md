@@ -48,8 +48,10 @@ bridge模式下实际会为每个容器创建一套单独的网络命名空间�
 
 #### 跨主机网络模型
 
-[参考一: overlay跨主机实验](https://www.infoq.cn/article/9vfPPfZPrXLM4ssLlxSR)
+[参考一: overlay跨主机实验](https://www.infoq.cn/article/9vfPPfZPrXLM4ssLlxSR) dfbvjip
 
 [参考二: overlay跨主机实验](https://juejin.im/post/6844904057211994120)
+
+[参考三: Deep Dive into docker overlay](https://www.jianshu.com/p/3b9389084701?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation)
 
 ![Docker overlay网络模型](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816224647.png)

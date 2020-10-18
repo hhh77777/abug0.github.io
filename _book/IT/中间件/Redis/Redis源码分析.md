@@ -4,6 +4,12 @@
 
 [参考二: Redis主流程分析](http://zhangtielei.com/posts/blog-redis-how-to-start.html)
 
+## Redis main函数
+
+
+
+![image-20201008143758323](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20201008143805.png)
+
 ## Redis主流程分析
 
 每个成功建立的连接生成一个connection数据，connection数据结构定义: 
