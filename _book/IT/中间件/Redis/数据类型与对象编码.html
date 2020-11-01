@@ -556,28 +556,34 @@
 } robj;
 </code></pre>
 <ul>
-<li>&#x5B57;&#x7B26;&#x4E32;<ul>
+<li><p>&#x5B57;&#x7B26;&#x4E32;</p>
+<ul>
 <li>int</li>
 <li>embstr</li>
 <li>raw(sds)</li>
 </ul>
 </li>
-<li>&#x5217;&#x8868;<ul>
+<li><p>&#x5217;&#x8868;</p>
+<p><strong>&#x6700;&#x65B0;&#x7248;&#x7684;&#x5B9E;&#x73B0;&#x5DF2;&#x7ECF;&#x4FEE;&#x6539;&#xFF0C;&#x5E95;&#x5C42;&#x7F16;&#x7801;&#x7EDF;&#x4E00;&#x4E3A;quicklist&#xFF0C;quicklist&#x7684;&#x6BCF;&#x4E00;&#x9879;&#x4E3A;ziplist</strong></p>
+<ul>
 <li>ziplist</li>
 <li>linkedlist</li>
 </ul>
 </li>
-<li>&#x54C8;&#x5E0C;&#x8868;<ul>
+<li><p>&#x54C8;&#x5E0C;&#x8868;</p>
+<ul>
 <li>ziplist</li>
 <li>hashtable</li>
 </ul>
 </li>
-<li>&#x6709;&#x5E8F;&#x96C6;&#x5408;<ul>
+<li><p>&#x6709;&#x5E8F;&#x96C6;&#x5408;</p>
+<ul>
 <li>ziplist</li>
 <li>skiplist(&#x6B64;&#x65F6;&#x4F1A;&#x6709;&#x4E00;&#x4E2A;hashtable)</li>
 </ul>
 </li>
-<li>&#x96C6;&#x5408;<ul>
+<li><p>&#x96C6;&#x5408;</p>
+<ul>
 <li>intset</li>
 <li>hashtable</li>
 </ul>
@@ -626,7 +632,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"数据类型与对象编码","level":"1.3.3.1.2","depth":4,"next":{"title":"Redis源码分析","level":"1.3.3.1.3","depth":4,"path":"IT/中间件/Redis/Redis源码分析.md","ref":"IT/中间件/Redis/Redis源码分析.md","articles":[]},"previous":{"title":"sdshdr","level":"1.3.3.1.1","depth":4,"path":"IT/中间件/Redis/sdshdr.md","ref":"IT/中间件/Redis/sdshdr.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"IT/中间件/Redis/数据类型与对象编码.md","mtime":"2020-08-30T15:32:30.788Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-10-18T14:40:07.290Z"},"basePath":"../../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"数据类型与对象编码","level":"1.3.3.1.2","depth":4,"next":{"title":"Redis源码分析","level":"1.3.3.1.3","depth":4,"path":"IT/中间件/Redis/Redis源码分析.md","ref":"IT/中间件/Redis/Redis源码分析.md","articles":[]},"previous":{"title":"sdshdr","level":"1.3.3.1.1","depth":4,"path":"IT/中间件/Redis/sdshdr.md","ref":"IT/中间件/Redis/sdshdr.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"IT/中间件/Redis/数据类型与对象编码.md","mtime":"2020-11-01T14:22:26.412Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-11-01T14:22:46.300Z"},"basePath":"../../..","book":{"language":""}});
         });
     </script>
 </div>
