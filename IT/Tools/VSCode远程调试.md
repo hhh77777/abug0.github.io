@@ -2,7 +2,7 @@
 
 [参考一: Remote Development配置](https://www.cnblogs.com/tinywan/p/11107397.html)
 
-Redis远程调试-配置文件
+## Redis远程调试-配置文件
 
 * tasks.json
 
@@ -72,3 +72,54 @@ Redis远程调试-配置文件
   ```
 
   
+
+## stfp远程同步配置样例
+
+```json
+[
+    {
+        "name": "test01",
+        "protocol": "sftp",
+        "host": "10.10.10.1",
+        "port": 22,
+        "username": "root",
+        "password": "aaaaa",
+        "context": "E:\\test01",
+        "remotePath": "/root/test01",
+        "uploadOnSave": false,
+        "connectTimeout":100000,
+        "profiles": {
+            "test-01": {
+                "host": "10.10.10.1",
+                "password": "123456"
+            },
+
+            "test-02": {
+                "host": "10.10.10.2"
+            }
+        }
+    },
+
+    {
+        "name": "test02",
+        "protocol": "sftp",
+        "port": 22,
+        "username": "root",
+        "password": "bbbbb",
+        "context": "E:\\test02",
+        "remotePath": "/root/test02",
+        "uploadOnSave": false,
+        "connectTimeout":100000,
+        "profiles": {
+            "test-03": {
+                "host": "10.10.20.1"
+            },
+            
+            "test-04": {
+                "host": "10.10.20.2"
+            }
+        }
+    } 
+]
+```
+
