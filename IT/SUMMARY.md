@@ -26,3 +26,4 @@
     * [数据表示 原码、反码和补码](代码优化/数据表示 原码、反码和补码.md)
 * [Tools]()
     * [VSCode远程调试](Tools/VSCode远程调试.md)
+    * [VSCode安装插件失败问题解决.md](Tools/VSCode安装插件失败问题解决.md)
