@@ -95,7 +95,7 @@ def update_state(self, task_id=None, state=None, meta=None, **kwargs):
 
 添加日志如上图，观察self、self.request和self.request.id的值，发现self.request和self.request.id都是None：
 
-![image-20210104201415387](C:\Users\zhouguangwei01\AppData\Roaming\Typora\typora-user-images\image-20210104201415387.png)
+![image-20210104201415387](https://i.loli.net/2021/01/06/TphePK8UnbvutRV.png)
 
 同样的方法追踪current_task的值，发现current_task为None。
 
@@ -197,3 +197,5 @@ Proxy实现了动态更新的效果，确保每次访问current_task的时候，
 [参考五: Flask的上下文机制：Local/LocalProxy](https://www.lagou.com/lgeduarticle/74823.html)
 
 [参考六: Flask的上下文机制: 为什么使用LocalStack和LocalProxy](https://cizixs.com/2017/01/13/flask-insight-context/)
+
+[参考七: Celery local.proxy的一段注释](https://segmentfault.com/q/1010000006826944)
