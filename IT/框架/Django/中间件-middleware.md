@@ -292,3 +292,5 @@ A.process_request --> B.process_request --> C.process_request --> BaseHandler._g
 [参考一: Django中间件详解](https://blog.csdn.net/Fe_cow/article/details/91344472)
 
 [参考二: Django中间件](https://www.runoob.com/django/django-middleware.html)
+
+[参考三: 自定义Django中间件](https://www.cnblogs.com/276815076/p/9593419.html)
