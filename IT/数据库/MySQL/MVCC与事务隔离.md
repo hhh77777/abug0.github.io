@@ -66,7 +66,7 @@
 
 （这里注意到m_low_limit_id的值实际是将给下一个事务分配的id）
 
-![image-20210313091651980](C:\Users\zhouguangwei01\AppData\Roaming\Typora\typora-user-images\image-20210313091651980.png)
+![image-20210313091651980](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210313222759.png)
 
 *关于m_up_limit_id和m_low_limit_id的取值问题*
 
@@ -78,7 +78,7 @@
 
 事务启动（***note: 事务的启动时机***）时，生成一个数组，记录当前正在活跃（即已经开始、但还未提交）的事务id。数组中最小的事务id作为低水位，最大值作为高水位。id小于低水位的，说明在事务启动前已经提交了；事务id大于 高水位的，一定是未提交的事务。
 
-![image-20210313091336048](C:\Users\zhouguangwei01\AppData\Roaming\Typora\typora-user-images\image-20210313091336048.png)
+![image-20210313091336048](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210313222745.png)
 
 于是对于数据版本中的事务trx_id，有如下三种情况：
 
