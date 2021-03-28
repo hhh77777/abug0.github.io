@@ -1,0 +1,2539 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>best_fields,most_fields与cross_fields · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../../操作系统/" />
+    
+    
+    <link rel="prev" href="_validate, rewrite 输出分析.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../../">
+            
+                <a href="../../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    IT
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" >
+            
+                <span>
+            
+                    
+                    Questions
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1.1" data-path="../../Questions/c-windows.html">
+            
+                <a href="../../Questions/c-windows.html">
+            
+                    
+                    C Windows
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.1.2" data-path="../../Questions/docker consul跨主机网络不通.html">
+            
+                <a href="../../Questions/docker consul跨主机网络不通.html">
+            
+                    
+                    docker consul跨主机网络不通
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.1.3" data-path="../../Questions/Redis编译安装-失败问题解决.html">
+            
+                <a href="../../Questions/Redis编译安装-失败问题解决.html">
+            
+                    
+                    Redis编译安装-失败问题解决
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.1.4" data-path="../../Questions/winexe阻塞问题.html">
+            
+                <a href="../../Questions/winexe阻塞问题.html">
+            
+                    
+                    winexe阻塞问题
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" >
+            
+                <span>
+            
+                    
+                    Tools
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.2.1" >
+            
+                <span>
+            
+                    
+                    Git
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.2.1.1" data-path="../../Tools/git/推送单次commit.html">
+            
+                <a href="../../Tools/git/推送单次commit.html">
+            
+                    
+                    推送单次commit
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2.2" data-path="../../Tools/VSCode.html">
+            
+                <a href="../../Tools/VSCode.html">
+            
+                    
+                    VS Code
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2.3" data-path="../../Tools/VSCode安装插件失败问题解决.html">
+            
+                <a href="../../Tools/VSCode安装插件失败问题解决.html">
+            
+                    
+                    VSCode安装插件失败问题解决
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2.4" data-path="../../Tools/VSCode远程调试.html">
+            
+                <a href="../../Tools/VSCode远程调试.html">
+            
+                    
+                    VSCode远程调试
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" >
+            
+                <span>
+            
+                    
+                    Web服务器
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.3.1" data-path="../../Web服务器/Nginx/Nginx.html">
+            
+                <a href="../../Web服务器/Nginx/Nginx.html">
+            
+                    
+                    Nginx
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" >
+            
+                <span>
+            
+                    
+                    中间件
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.4.1" >
+            
+                <span>
+            
+                    
+                    Celery
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.4.1.1" data-path="../../中间件/Celery/Celery task.update_state.html">
+            
+                <a href="../../中间件/Celery/Celery task.update_state.html">
+            
+                    
+                    Celery task.update_state
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.2" >
+            
+                <span>
+            
+                    
+                    Kafka
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.4.2.1" data-path="../../中间件/Kafka/Advertise.listerners.html">
+            
+                <a href="../../中间件/Kafka/Advertise.listerners.html">
+            
+                    
+                    Advertise.listerners
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.2.2" data-path="../../中间件/Kafka/Kafka-性能优化.html">
+            
+                <a href="../../中间件/Kafka/Kafka-性能优化.html">
+            
+                    
+                    Kafka-性能优化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.2.3" data-path="../../中间件/Kafka/关于kafka顺序读写的思考.html">
+            
+                <a href="../../中间件/Kafka/关于kafka顺序读写的思考.html">
+            
+                    
+                    关于kafka顺序读写的思考
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.3" >
+            
+                <span>
+            
+                    
+                    Rabbitmq
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.4.3.1" data-path="../../中间件/Rabbitmq/Rabbitmq-Web界面.html">
+            
+                <a href="../../中间件/Rabbitmq/Rabbitmq-Web界面.html">
+            
+                    
+                    Rabbitmq-Web界面
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4" data-path="../../中间件/Redis/">
+            
+                <a href="../../中间件/Redis/">
+            
+                    
+                    Redis
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.4.4.1" data-path="../../中间件/Redis/Redis Event相关数据结构.html">
+            
+                <a href="../../中间件/Redis/Redis Event相关数据结构.html">
+            
+                    
+                    Redis Event相关数据结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.2" data-path="../../中间件/Redis/Redis network相关数据结构.html">
+            
+                <a href="../../中间件/Redis/Redis network相关数据结构.html">
+            
+                    
+                    Redis network相关数据结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.3" data-path="../../中间件/Redis/Redis数据结构-dict.html">
+            
+                <a href="../../中间件/Redis/Redis数据结构-dict.html">
+            
+                    
+                    Redis数据结构-dict
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.4" data-path="../../中间件/Redis/Redis源码分析.html">
+            
+                <a href="../../中间件/Redis/Redis源码分析.html">
+            
+                    
+                    Redis源码分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.5" data-path="../../中间件/Redis/sdshdr.html">
+            
+                <a href="../../中间件/Redis/sdshdr.html">
+            
+                    
+                    Sdshdr
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.6" data-path="../../中间件/Redis/string占用空间分析.html">
+            
+                <a href="../../中间件/Redis/string占用空间分析.html">
+            
+                    
+                    string占用空间分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.7" data-path="../../中间件/Redis/utils.html">
+            
+                <a href="../../中间件/Redis/utils.html">
+            
+                    
+                    Utils
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4.4.8" data-path="../../中间件/Redis/数据类型与对象编码.html">
+            
+                <a href="../../中间件/Redis/数据类型与对象编码.html">
+            
+                    
+                    数据类型与对象编码
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.5" >
+            
+                <span>
+            
+                    
+                    分布式
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.5.1" >
+            
+                <span>
+            
+                    
+                    Elastic Search
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.5.1.1" data-path="_validate, rewrite 输出分析.html">
+            
+                <a href="_validate, rewrite 输出分析.html">
+            
+                    
+                    _validate, rewrite 输出分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.5.1.2" data-path="best_fields,most_fields与cross_fields.html">
+            
+                <a href="best_fields,most_fields与cross_fields.html">
+            
+                    
+                    best_fields,most_fields与cross_fields
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6" data-path="../../操作系统/">
+            
+                <a href="../../操作系统/">
+            
+                    
+                    操作系统
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.6.1" data-path="../../操作系统/ip a命令输出解析.html">
+            
+                <a href="../../操作系统/ip a命令输出解析.html">
+            
+                    
+                    ip a命令输出解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.2" data-path="../../操作系统/iptables解析.html">
+            
+                <a href="../../操作系统/iptables解析.html">
+            
+                    
+                    iptables解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.3" data-path="../../操作系统/Linux-TC解析.html">
+            
+                <a href="../../操作系统/Linux-TC解析.html">
+            
+                    
+                    Linux-TC解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.4" data-path="../../操作系统/Linux-网络.html">
+            
+                <a href="../../操作系统/Linux-网络.html">
+            
+                    
+                    Linux-网络
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.5" data-path="../../操作系统/Linux-零拷贝.html">
+            
+                <a href="../../操作系统/Linux-零拷贝.html">
+            
+                    
+                    Linux-零拷贝
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.6" data-path="../../操作系统/Linux性能排查.html">
+            
+                <a href="../../操作系统/Linux性能排查.html">
+            
+                    
+                    Linux性能排查
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.7" data-path="../../操作系统/Linux文件系统.html">
+            
+                <a href="../../操作系统/Linux文件系统.html">
+            
+                    
+                    Linux文件系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.8" data-path="../../操作系统/NUMA.html">
+            
+                <a href="../../操作系统/NUMA.html">
+            
+                    
+                    NUMA
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.9" data-path="../../操作系统/OS-CPU Cache.html">
+            
+                <a href="../../操作系统/OS-CPU Cache.html">
+            
+                    
+                    OS CPU Cache
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.10" data-path="../../操作系统/tcpdump解析.html">
+            
+                <a href="../../操作系统/tcpdump解析.html">
+            
+                    
+                    tcpdump解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.11" data-path="../../操作系统/官网文档.html">
+            
+                <a href="../../操作系统/官网文档.html">
+            
+                    
+                    官网文档
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.12" data-path="../../操作系统/流量处理-DPDK.html">
+            
+                <a href="../../操作系统/流量处理-DPDK.html">
+            
+                    
+                    流量处理-DPDK
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.13" data-path="../../操作系统/磁盘挂载与文件系统.html">
+            
+                <a href="../../操作系统/磁盘挂载与文件系统.html">
+            
+                    
+                    磁盘挂载与文件系统
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.14" data-path="../../操作系统/系统监控工具.html">
+            
+                <a href="../../操作系统/系统监控工具.html">
+            
+                    
+                    系统监控工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.6.15" data-path="../../操作系统/页缓存与块缓存.html">
+            
+                <a href="../../操作系统/页缓存与块缓存.html">
+            
+                    
+                    页缓存与块缓存
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7" >
+            
+                <span>
+            
+                    
+                    数据库
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.7.1" >
+            
+                <span>
+            
+                    
+                    My SQL
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.7.1.1" data-path="../../数据库/MySQL/MVCC与事务隔离.html">
+            
+                <a href="../../数据库/MySQL/MVCC与事务隔离.html">
+            
+                    
+                    MVCC与事务隔离
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7.1.2" data-path="../../数据库/MySQL/MySQL中的索引.html">
+            
+                <a href="../../数据库/MySQL/MySQL中的索引.html">
+            
+                    
+                    MySQL中的索引
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7.1.3" data-path="../../数据库/MySQL/MySQL日志-Redo Log与Binlog.html">
+            
+                <a href="../../数据库/MySQL/MySQL日志-Redo Log与Binlog.html">
+            
+                    
+                    MySQL日志-Redo Log与Binlog
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7.1.4" data-path="../../数据库/MySQL/事务.html">
+            
+                <a href="../../数据库/MySQL/事务.html">
+            
+                    
+                    事务
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.7.1.5" data-path="../../数据库/MySQL/锁.html">
+            
+                <a href="../../数据库/MySQL/锁.html">
+            
+                    
+                    锁
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.8" >
+            
+                <span>
+            
+                    
+                    框架
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.8.1" >
+            
+                <span>
+            
+                    
+                    Django
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.8.1.1" data-path="../../框架/Django/中间件-middleware.html">
+            
+                <a href="../../框架/Django/中间件-middleware.html">
+            
+                    
+                    中间件-middleware
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.8.1.2" data-path="../../框架/Django/性能分析工具-silk.html">
+            
+                <a href="../../框架/Django/性能分析工具-silk.html">
+            
+                    
+                    性能分析工具-silk
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9" >
+            
+                <span>
+            
+                    
+                    编程
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.9.1" >
+            
+                <span>
+            
+                    
+                    Python
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.9.1.1" data-path="../../编程/Python/__dict__.html">
+            
+                <a href="../../编程/Python/__dict__.html">
+            
+                    
+                    Dict
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.1.2" data-path="../../编程/Python/magic method.html">
+            
+                <a href="../../编程/Python/magic method.html">
+            
+                    
+                    Magic Method
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.1.3" data-path="../../编程/Python/metaclass.html">
+            
+                <a href="../../编程/Python/metaclass.html">
+            
+                    
+                    Metaclass
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.2" >
+            
+                <span>
+            
+                    
+                    并发编程
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.9.2.1" data-path="../../编程/并发编程/协程解析.html">
+            
+                <a href="../../编程/并发编程/协程解析.html">
+            
+                    
+                    协程解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.2.2" data-path="../../编程/并发编程/可重入函数、可重入锁与threading.Condition.html">
+            
+                <a href="../../编程/并发编程/可重入函数、可重入锁与threading.Condition.html">
+            
+                    
+                    可重入函数、可重入锁与threading.Condition
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.2.3" data-path="../../编程/并发编程/进程与线程.html">
+            
+                <a href="../../编程/并发编程/进程与线程.html">
+            
+                    
+                    进程与线程
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.3" data-path="../../编程/Python性能分析工具及优化.html">
+            
+                <a href="../../编程/Python性能分析工具及优化.html">
+            
+                    
+                    Python性能分析工具及优化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.4" data-path="../../编程/内存对齐.html">
+            
+                <a href="../../编程/内存对齐.html">
+            
+                    
+                    内存对齐
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.5" data-path="../../编程/数据表示 原码、反码和补码.html">
+            
+                <a href="../../编程/数据表示 原码、反码和补码.html">
+            
+                    
+                    数据表示 原码、反码和补码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.9.6" data-path="../../编程/汇编指令.html">
+            
+                <a href="../../编程/汇编指令.html">
+            
+                    
+                    汇编指令
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.10" >
+            
+                <span>
+            
+                    
+                    网络
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.10.1" data-path="../../网络/TCP三次握手与四次挥手.html">
+            
+                <a href="../../网络/TCP三次握手与四次挥手.html">
+            
+                    
+                    TCP三次握手与四次挥手
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11" data-path="../../虚拟化/">
+            
+                <a href="../../虚拟化/">
+            
+                    
+                    虚拟化
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.11.1" >
+            
+                <span>
+            
+                    
+                    Docker
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.11.1.1" data-path="../../虚拟化/Docker/Docker-consul跨主机Overlay网络搭建.html">
+            
+                <a href="../../虚拟化/Docker/Docker-consul跨主机Overlay网络搭建.html">
+            
+                    
+                    Docker-consul跨主机Overlay网络搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11.1.2" data-path="../../虚拟化/Docker/Docker-实践.html">
+            
+                <a href="../../虚拟化/Docker/Docker-实践.html">
+            
+                    
+                    Docker-实践
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11.1.3" data-path="../../虚拟化/Docker/Docker原理解析.html">
+            
+                <a href="../../虚拟化/Docker/Docker原理解析.html">
+            
+                    
+                    Docker原理解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11.2" >
+            
+                <span>
+            
+                    
+                    网络
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.11.2.1" data-path="../../虚拟化/网络/Linux中的虚拟网络一.html">
+            
+                <a href="../../虚拟化/网络/Linux中的虚拟网络一.html">
+            
+                    
+                    Linux中的虚拟网络一
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11.2.2" data-path="../../虚拟化/网络/Linux中的虚拟网络三-OpenStack.html">
+            
+                <a href="../../虚拟化/网络/Linux中的虚拟网络三-OpenStack.html">
+            
+                    
+                    Linux中的虚拟网络三-OpenStack
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11.2.3" data-path="../../虚拟化/网络/Linux中的虚拟网络二-Docker.html">
+            
+                <a href="../../虚拟化/网络/Linux中的虚拟网络二-Docker.html">
+            
+                    
+                    Linux中的虚拟网络二-Docker
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.11.2.4" data-path="../../虚拟化/网络/OVS文档.html">
+            
+                <a href="../../虚拟化/网络/OVS文档.html">
+            
+                    
+                    OVS文档
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.12" >
+            
+                <span>
+            
+                    
+                    运维
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.12.1" data-path="../../运维/Ansible优化.html">
+            
+                <a href="../../运维/Ansible优化.html">
+            
+                    
+                    Ansible优化
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../../../读书/">
+            
+                <a href="../../../读书/">
+            
+                    
+                    读书
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../../../读书/心理学/">
+            
+                <a href="../../../读书/心理学/">
+            
+                    
+                    心理学
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1.1" data-path="../../../读书/心理学/发展心理学/">
+            
+                <a href="../../../读书/心理学/发展心理学/">
+            
+                    
+                    发展心理学
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.1.2" data-path="../../../读书/心理学/Common.html">
+            
+                <a href="../../../读书/心理学/Common.html">
+            
+                    
+                    Common
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="../../../读书/理想国/">
+            
+                <a href="../../../读书/理想国/">
+            
+                    
+                    理想国
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1" >
+            
+                <span>
+            
+                    
+                    Docs
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.2.1.1" data-path="../../../读书/理想国/docs/第七卷-洞穴隐喻.html">
+            
+                <a href="../../../读书/理想国/docs/第七卷-洞穴隐喻.html">
+            
+                    
+                    第七卷-洞穴隐喻
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="../../../读书/瓦尔登湖/">
+            
+                <a href="../../../读书/瓦尔登湖/">
+            
+                    
+                    瓦尔登湖
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.3.1" >
+            
+                <span>
+            
+                    
+                    Docs
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.3.1.1" data-path="../../../读书/瓦尔登湖/docs/倍克田庄.html">
+            
+                <a href="../../../读书/瓦尔登湖/docs/倍克田庄.html">
+            
+                    
+                    倍克田庄
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.1.2" data-path="../../../读书/瓦尔登湖/docs/室内的取暖.html">
+            
+                <a href="../../../读书/瓦尔登湖/docs/室内的取暖.html">
+            
+                    
+                    室内的取暖
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.1.3" data-path="../../../读书/瓦尔登湖/docs/更高的规律.html">
+            
+                <a href="../../../读书/瓦尔登湖/docs/更高的规律.html">
+            
+                    
+                    更高的规律
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3.1.4" data-path="../../../读书/瓦尔登湖/docs/湖.html">
+            
+                <a href="../../../读书/瓦尔登湖/docs/湖.html">
+            
+                    
+                    湖
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="../../../读书/霍乱时期的爱情/">
+            
+                <a href="../../../读书/霍乱时期的爱情/">
+            
+                    
+                    霍乱时期的爱情
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.4.1" >
+            
+                <span>
+            
+                    
+                    Docs
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.4.1.1" data-path="../../../读书/霍乱时期的爱情/docs/随笔.html">
+            
+                <a href="../../../读书/霍乱时期的爱情/docs/随笔.html">
+            
+                    
+                    随笔
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../.." >best_fields,most_fields与cross_fields</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="bestfields-mostfields&#x4E0E;crossfields">Best_fields, most_fields&#x4E0E;cross_fields</h1>
+<p>&#x672C;&#x6587;&#x4F7F;&#x7528;&#x7684;ES&#x7248;&#x672C;&#x4E3A;6.4.0&#x3002;</p>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210109205211.png" alt="ES&#x4FE1;&#x606F;"></p>
+<p>&#x6DFB;&#x52A0;&#x6D4B;&#x8BD5;&#x6570;&#x636E;&#xFF1A;</p>
+<pre><code class="lang-shell">PUT /my_index/my_type/1
+{
+    &quot;title&quot;: &quot;Quick brown rabbits&quot;,
+    &quot;body&quot;:  &quot;Brown rabbits are commonly seen.&quot;
+}
+
+PUT /my_index/my_type/2
+{
+    &quot;title&quot;: &quot;Keeping pets healthy&quot;,
+    &quot;body&quot;:  &quot;My quick brown fox eats rabbits on a regular basis.&quot;
+}
+</code></pre>
+<h2 id="&#x4E00;&#x3001;bool">&#x4E00;&#x3001;bool</h2>
+<p>bool&#x67E5;&#x8BE2;&#xFF0C;&#x52A0;&#x5165;explain=true&#x67E5;&#x770B;scoring&#x7EC6;&#x8282;&#xFF1A;</p>
+<pre><code class="lang-shell">curl localhost:9200/test/t1/_search?explain=true
+
+{
+    &quot;query&quot;: {
+        &quot;bool&quot;: {
+            &quot;should&quot;: [
+                {
+                    &quot;match&quot;: {
+                        &quot;title&quot;: &quot;brown fox&quot;
+                    }
+                },
+                {
+                    &quot;match&quot;: {
+                        &quot;body&quot;: &quot;brown fox&quot;
+                    }
+                }
+            ]
+        }
+    }
+}
+</code></pre>
+<p>&#x7ED3;&#x679C;&#xFF1A;</p>
+<pre><code class="lang-json">{
+    <span class="hljs-string">&quot;took&quot;</span>: <span class="hljs-number">35</span>,
+    <span class="hljs-string">&quot;timed_out&quot;</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-string">&quot;_shards&quot;</span>: {
+        <span class="hljs-string">&quot;total&quot;</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-string">&quot;successful&quot;</span>: <span class="hljs-number">5</span>,
+        <span class="hljs-string">&quot;skipped&quot;</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-string">&quot;failed&quot;</span>: <span class="hljs-number">0</span>
+    },
+    <span class="hljs-string">&quot;hits&quot;</span>: {
+        <span class="hljs-string">&quot;total&quot;</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-string">&quot;max_score&quot;</span>: <span class="hljs-number">0.90425634</span>,
+        <span class="hljs-string">&quot;hits&quot;</span>: [
+            {
+                <span class="hljs-string">&quot;_shard&quot;</span>: <span class="hljs-string">&quot;[test][3]&quot;</span>,
+                <span class="hljs-string">&quot;_node&quot;</span>: <span class="hljs-string">&quot;Pj5kK5RaSq2K6FCefYOndQ&quot;</span>,
+                <span class="hljs-string">&quot;_index&quot;</span>: <span class="hljs-string">&quot;test&quot;</span>,
+                <span class="hljs-string">&quot;_type&quot;</span>: <span class="hljs-string">&quot;t1&quot;</span>,
+                <span class="hljs-string">&quot;_id&quot;</span>: <span class="hljs-string">&quot;Gznx5nYBq3EYBRDnWgZe&quot;</span>,
+                <span class="hljs-string">&quot;_score&quot;</span>: <span class="hljs-number">0.90425634</span>,
+                <span class="hljs-string">&quot;_source&quot;</span>: {
+                    <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;Quick brown rabbits&quot;</span>,
+                    <span class="hljs-string">&quot;body&quot;</span>: <span class="hljs-string">&quot;Brown rabbits are commonly seen.&quot;</span>
+                },
+                <span class="hljs-string">&quot;_explanation&quot;</span>: {
+                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.90425634</span>,
+                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;sum of:&quot;</span>,
+                    <span class="hljs-string">&quot;details&quot;</span>: [
+                        {
+                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6931472</span>,
+                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;sum of:&quot;</span>,
+                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                {
+                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6931472</span>,
+                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;weight(title:brown in 0) [PerFieldSimilarity], result of:&quot;</span>,
+                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                        {
+                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6931472</span>,
+                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>,
+                                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6931472</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docFreq&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">2.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docCount&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;termFreq=1.0&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.2</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter k1&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.75</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter b&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">3.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;avgFieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">3.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;fieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.21110918</span>,
+                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;sum of:&quot;</span>,
+                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                {
+                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.21110918</span>,
+                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;weight(body:brown in 0) [PerFieldSimilarity], result of:&quot;</span>,
+                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                        {
+                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.21110918</span>,
+                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>,
+                                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.18232156</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">2.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docFreq&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">2.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docCount&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.1578947</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;termFreq=1.0&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.2</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter k1&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.75</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter b&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">7.5</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;avgFieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">5.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;fieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                <span class="hljs-string">&quot;_shard&quot;</span>: <span class="hljs-string">&quot;[test][3]&quot;</span>,
+                <span class="hljs-string">&quot;_node&quot;</span>: <span class="hljs-string">&quot;Pj5kK5RaSq2K6FCefYOndQ&quot;</span>,
+                <span class="hljs-string">&quot;_index&quot;</span>: <span class="hljs-string">&quot;test&quot;</span>,
+                <span class="hljs-string">&quot;_type&quot;</span>: <span class="hljs-string">&quot;t1&quot;</span>,
+                <span class="hljs-string">&quot;_id&quot;</span>: <span class="hljs-string">&quot;HDnx5nYBq3EYBRDnjwZW&quot;</span>,
+                <span class="hljs-string">&quot;_score&quot;</span>: <span class="hljs-number">0.77041245</span>,
+                <span class="hljs-string">&quot;_source&quot;</span>: {
+                    <span class="hljs-string">&quot;title&quot;</span>: <span class="hljs-string">&quot;Keeping pets healthy&quot;</span>,
+                    <span class="hljs-string">&quot;body&quot;</span>: <span class="hljs-string">&quot;My quick brown fox eats rabbits on a regular basis.&quot;</span>
+                },
+                <span class="hljs-string">&quot;_explanation&quot;</span>: {
+                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.77041245</span>,
+                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;sum of:&quot;</span>,
+                    <span class="hljs-string">&quot;details&quot;</span>: [
+                        {
+                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.77041245</span>,
+                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;sum of:&quot;</span>,
+                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                {
+                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.16044298</span>,
+                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;weight(body:brown in 0) [PerFieldSimilarity], result of:&quot;</span>,
+                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                        {
+                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.16044298</span>,
+                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>,
+                                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.18232156</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">2.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docFreq&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">2.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docCount&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.88</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;termFreq=1.0&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.2</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter k1&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.75</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter b&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">7.5</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;avgFieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">10.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;fieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6099695</span>,
+                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;weight(body:fox in 0) [PerFieldSimilarity], result of:&quot;</span>,
+                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                        {
+                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6099695</span>,
+                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>,
+                                            <span class="hljs-string">&quot;details&quot;</span>: [
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.6931472</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docFreq&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">2.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;docCount&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.88</span>,
+                                                    <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:&quot;</span>,
+                                                    <span class="hljs-string">&quot;details&quot;</span>: [
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;termFreq=1.0&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">1.2</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter k1&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">0.75</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;parameter b&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">7.5</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;avgFieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        },
+                                                        {
+                                                            <span class="hljs-string">&quot;value&quot;</span>: <span class="hljs-number">10.0</span>,
+                                                            <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;fieldLength&quot;</span>,
+                                                            <span class="hljs-string">&quot;details&quot;</span>: []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
+</code></pre>
+<p>&#x5206;&#x6790;_explaination&#x90E8;&#x5206;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;&#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#xFF1A;</p>
+<ul>
+<li><p>1&#xFF09;&#x8BA1;&#x7B97;match&#x5B50;&#x53E5;&#x5185;&#x90E8;&#x6BCF;&#x4E2A;term&#x7684;score&#xFF0C;&#x7ED3;&#x679C;&#x76F8;&#x52A0;&#x4F5C;&#x4E3A;match&#x5B50;&#x53E5;&#xFF08;&#x5373;&#x6BCF;&#x4E2A;field&#xFF09;&#x7684;score&#xFF1B;&#x6BD4;&#x5982;doc2&#x5BF9;&#x4E8E;match&#x5B50;&#x53E5;</p>
+<pre><code class="lang-shell">&quot;match&quot;: {
+    &quot;body&quot;: &quot;brown fox&quot;
+}
+</code></pre>
+<p>&#x7684;score&#x4E3A;</p>
+<pre><code class="lang-shell">&quot;value&quot;: 0.77041245,
+&quot;description&quot;: &quot;sum of:&quot;,
+&quot;details&quot;: [
+    {
+        &quot;value&quot;: 0.16044298,
+        &quot;description&quot;: &quot;weight(body:brown in 0) [PerFieldSimilarity], result of:&quot;,
+        &quot;details&quot;: [
+            ...
+        ]
+    },
+
+    {
+        &quot;value&quot;: 0.6099695,
+        &quot;description&quot;: &quot;weight(body:fox in 0) [PerFieldSimilarity], result of:&quot;,
+        &quot;details&quot;: [
+            ...
+        ]
+    }
+ ]
+</code></pre>
+</li>
+<li><p>2&#xFF09;&#x6BCF;&#x4E2A;match&#x5B50;&#x53E5;&#xFF08;&#x5373;&#x6BCF;&#x4E2A;field&#xFF09;&#x7684;score&#x76F8;&#x52A0;&#xFF0C;&#x4F5C;&#x4E3A;doc&#x5BF9;&#x5E94;&#x4E8E;should&#x7684;score&#xFF0C;&#x6BD4;&#x5982;doc1&#x6700;&#x7EC8;&#x7684;score&#x8BA1;&#x7B97;&#x4E3A;&#xFF1A;</p>
+<pre><code class="lang-shell">&quot;value&quot;: 0.90425634,
+&quot;description&quot;: &quot;sum of:&quot;,
+&quot;details&quot;: [
+    {
+        &quot;value&quot;: 0.6931472,
+        &quot;description&quot;: &quot;sum of:&quot;,
+        &quot;details&quot;: [
+            {
+            &quot;value&quot;: 0.6931472,
+            &quot;description&quot;: &quot;weight(title:brown in 0) [PerFieldSimilarity], result of:&quot;,
+            &quot;details&quot;: [
+                ...
+            ]
+    }&#xFF0C;
+    {
+        &quot;value&quot;: 0.21110918,
+        &quot;description&quot;: &quot;sum of:&quot;,
+        &quot;details&quot;: [
+        {
+            &quot;value&quot;: 0.21110918,
+            &quot;description&quot;: &quot;weight(body:brown in 0) [PerFieldSimilarity], result of:&quot;,
+            &quot;details&quot;: [
+                ...
+            ]
+        }
+    }
+]
+</code></pre>
+</li>
+<li><p>3&#xFF09;&#x56E0;&#x4E3A;&#x8BE5;&#x67E5;&#x8BE2;&#x53EA;&#x6709;&#x4E00;&#x4E2A;should&#x5B50;&#x53E5;&#xFF0C;&#x6240;&#x4EE5;should&#x5B50;&#x53E5;&#x7684;socre&#x4F5C;&#x4E3A;&#x6700;&#x7EC8;score&#x8FD4;&#x56DE;&#x3002;</p>
+</li>
+</ul>
+<p><strong><em>PS&#xFF1A;&#x6839;&#x636E;&#x300A;ElasticSearch&#x6743;&#x5A01;&#x6307;&#x5357;&#x300B;(&#x57FA;&#x4E8E;ES2.x)&#xFF0C;&#x6B65;&#x9AA4;&#x4E09;&#x7684;&#x65F6;&#x5019;&#x5B9E;&#x9645;&#x8981;&#x4E58;&#x4EE5; &#xFF08;&#x5339;&#x914D;&#x8BED;&#x53E5;&#x7684;&#x603B;&#x6570;&#xFF09;/ &#xFF08;&#x6240;&#x6709;&#x8BED;&#x53E5;&#x603B;&#x6570;&#xFF09;&#x4F5C;&#x4E3A;&#x6700;&#x7EC8;&#x7684;score&#x3002;</em></strong></p>
+<p><strong><em>&#x540C;&#x6837;&#x7684;&#x6D4B;&#x8BD5;&#x8BED;&#x53E5;&#xFF0C;&#x4E66;&#x4E2D;&#x7ED9;&#x51FA;&#x7684;&#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#x622A;&#x56FE;&#xFF1A;</em></strong></p>
+<p><img src="C:\Users\zhouguangwei01\AppData\Roaming\Typora\typora-user-images\image-20210109205327826.png" alt="ES&#x6743;&#x5A01;&#x6307;&#x5357;&#x7ED9;&#x51FA;&#x7684;scoring&#x8FC7;&#x7A0B;"></p>
+<p><strong><em>&#x6B64;&#x6B21;&#x57FA;&#x4E8E;ES6.4&#x6D4B;&#x8BD5;&#xFF0C;&#x53D1;&#x73B0;&#x6CA1;&#x6709;3&#x3001;4&#x4E24;&#x4E2A;&#x6B65;&#x9AA4;&#x3002;</em></strong></p>
+<h2 id="&#x4E8C;&#x3001;dismax">&#x4E8C;&#x3001;dis_max</h2>
+<ul>
+<li>&#x95EE;&#x9898;&#xFF1A;&#x5206;&#x6790;&#x4E0A;&#x6587;bool&#x67E5;&#x8BE2;&#x7684;&#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#xFF0C;&#x547D;&#x4E2D;&#x7684;match&#x5B50;&#x53E5;&#x8D8A;&#x591A;&#xFF0C;&#x6587;&#x6863;&#x7684;score&#x4E5F;&#x5C31;&#x503E;&#x5411;&#x4E8E;&#x8D8A;&#x9AD8;&#x3002;&#x6240;&#x4EE5;&#xFF0C;bool&#x6700;&#x540E;&#x67E5;&#x5230;&#x7684;&#x5B9E;&#x9645;&#x662F;&#x5728;&#x5339;&#x914D;&#x7684;field&#x66F4;&#x591A;&#x7684;docs&#x3002;&#x5047;&#x5982;&#x60F3;&#x67E5;&#x5230;&#xFF0C;&#x548C;&#x67D0;&#x4E2A;field&#xFF08;title&#x6216;&#x8005;body&#xFF09;&#x5339;&#x914D;&#x5EA6;&#x6700;&#x9AD8;&#x7684;docs&#xFF0C;bool&#x67E5;&#x8BE2;&#x5E76;&#x4E0D;&#x80FD;&#x6EE1;&#x8DB3;&#x9700;&#x6C42;&#x3002;</li>
+</ul>
+<p>&#x5BF9;&#x6B64;&#xFF0C;&#x53EF;&#x4F7F;&#x7528;dis_max&#x67E5;&#x8BE2;&#xFF0C;&#x4E0D;&#x518D;&#x5C06;&#x6BCF;&#x4E2A;field&#x7684;score&#x76F8;&#x52A0;&#x3001;&#x800C;&#x662F;&#x4F7F;&#x7528;Max_Score(field_1, field_2...field_n)&#x4F5C;&#x4E3A;&#x6700;&#x7EC8;&#x7684;score&#x3002;</p>
+<p>&#x6784;&#x9020;&#x67E5;&#x8BE2;&#xFF1A;</p>
+<pre><code class="lang-shell">curl localhost:9200/test/t1/_search?explain=true
+
+{
+    &quot;query&quot;: {
+        &quot;bool&quot;: {
+            &quot;should&quot;: [
+                {
+                    &quot;match&quot;: {
+                        &quot;title&quot;: &quot;brown fox&quot;
+                    }
+                },
+                {
+                    &quot;match&quot;: {
+                        &quot;body&quot;: &quot;brown fox&quot;
+                    }
+                }
+            ]
+        }
+    }
+}
+</code></pre>
+<p>&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#xFF1A;</p>
+<pre><code class="lang-yaml"><span class="hljs-meta">---</span>
+<span class="hljs-attr">took:</span> <span class="hljs-number">17</span>
+<span class="hljs-attr">timed_out:</span> <span class="hljs-literal">false</span>
+<span class="hljs-attr">_shards:</span>
+<span class="hljs-attr">  total:</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">  successful:</span> <span class="hljs-number">5</span>
+<span class="hljs-attr">  skipped:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">  failed:</span> <span class="hljs-number">0</span>
+<span class="hljs-attr">hits:</span>
+<span class="hljs-attr">  total:</span> <span class="hljs-number">2</span>
+<span class="hljs-attr">  max_score:</span> <span class="hljs-number">0.90425634</span>
+<span class="hljs-attr">  hits:</span>
+<span class="hljs-attr">  - _shard:</span> <span class="hljs-string">&quot;[test][3]&quot;</span>
+<span class="hljs-attr">    _node:</span> <span class="hljs-string">&quot;Pj5kK5RaSq2K6FCefYOndQ&quot;</span>
+<span class="hljs-attr">    _index:</span> <span class="hljs-string">&quot;test&quot;</span>
+<span class="hljs-attr">    _type:</span> <span class="hljs-string">&quot;t1&quot;</span>
+<span class="hljs-attr">    _id:</span> <span class="hljs-string">&quot;Gznx5nYBq3EYBRDnWgZe&quot;</span>
+<span class="hljs-attr">    _score:</span> <span class="hljs-number">0.90425634</span>
+<span class="hljs-attr">    _source:</span>
+<span class="hljs-attr">      title:</span> <span class="hljs-string">&quot;Quick brown rabbits&quot;</span>
+<span class="hljs-attr">      body:</span> <span class="hljs-string">&quot;Brown rabbits are commonly seen.&quot;</span>
+<span class="hljs-attr">    _explanation:</span>
+<span class="hljs-attr">      value:</span> <span class="hljs-number">0.90425634</span>
+<span class="hljs-attr">      description:</span> <span class="hljs-string">&quot;sum of:&quot;</span>
+<span class="hljs-attr">      details:</span>
+<span class="hljs-attr">      - value:</span> <span class="hljs-number">0.6931472</span>
+<span class="hljs-attr">        description:</span> <span class="hljs-string">&quot;sum of:&quot;</span>
+<span class="hljs-attr">        details:</span>
+<span class="hljs-attr">        - value:</span> <span class="hljs-number">0.6931472</span>
+<span class="hljs-attr">          description:</span> <span class="hljs-string">&quot;weight(title:brown in 0) [PerFieldSimilarity], result of:&quot;</span>
+<span class="hljs-attr">          details:</span>
+<span class="hljs-attr">          - value:</span> <span class="hljs-number">0.6931472</span>
+<span class="hljs-attr">            description:</span> <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>
+<span class="hljs-attr">            details:</span>
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">0.6931472</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) /\
+                \ (docFreq + 0.5)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docFreq&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docCount&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1\
+                \ - b + b * fieldLength / avgFieldLength)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;termFreq=1.0&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.2</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter k1&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">0.75</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter b&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">3.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;avgFieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">3.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;fieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">      - value:</span> <span class="hljs-number">0.21110918</span>
+<span class="hljs-attr">        description:</span> <span class="hljs-string">&quot;sum of:&quot;</span>
+<span class="hljs-attr">        details:</span>
+<span class="hljs-attr">        - value:</span> <span class="hljs-number">0.21110918</span>
+<span class="hljs-attr">          description:</span> <span class="hljs-string">&quot;weight(body:brown in 0) [PerFieldSimilarity], result of:&quot;</span>
+<span class="hljs-attr">          details:</span>
+<span class="hljs-attr">          - value:</span> <span class="hljs-number">0.21110918</span>
+<span class="hljs-attr">            description:</span> <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>
+<span class="hljs-attr">            details:</span>
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">0.18232156</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) /\
+                \ (docFreq + 0.5)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docFreq&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docCount&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">1.1578947</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1\
+                \ - b + b * fieldLength / avgFieldLength)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;termFreq=1.0&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.2</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter k1&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">0.75</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter b&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">7.5</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;avgFieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">5.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;fieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">  - _shard:</span> <span class="hljs-string">&quot;[test][3]&quot;</span>
+<span class="hljs-attr">    _node:</span> <span class="hljs-string">&quot;Pj5kK5RaSq2K6FCefYOndQ&quot;</span>
+<span class="hljs-attr">    _index:</span> <span class="hljs-string">&quot;test&quot;</span>
+<span class="hljs-attr">    _type:</span> <span class="hljs-string">&quot;t1&quot;</span>
+<span class="hljs-attr">    _id:</span> <span class="hljs-string">&quot;HDnx5nYBq3EYBRDnjwZW&quot;</span>
+<span class="hljs-attr">    _score:</span> <span class="hljs-number">0.77041245</span>
+<span class="hljs-attr">    _source:</span>
+<span class="hljs-attr">      title:</span> <span class="hljs-string">&quot;Keeping pets healthy&quot;</span>
+<span class="hljs-attr">      body:</span> <span class="hljs-string">&quot;My quick brown fox eats rabbits on a regular basis.&quot;</span>
+<span class="hljs-attr">    _explanation:</span>
+<span class="hljs-attr">      value:</span> <span class="hljs-number">0.77041245</span>
+<span class="hljs-attr">      description:</span> <span class="hljs-string">&quot;sum of:&quot;</span>
+<span class="hljs-attr">      details:</span>
+<span class="hljs-attr">      - value:</span> <span class="hljs-number">0.77041245</span>
+<span class="hljs-attr">        description:</span> <span class="hljs-string">&quot;sum of:&quot;</span>
+<span class="hljs-attr">        details:</span>
+<span class="hljs-attr">        - value:</span> <span class="hljs-number">0.16044298</span>
+<span class="hljs-attr">          description:</span> <span class="hljs-string">&quot;weight(body:brown in 0) [PerFieldSimilarity], result of:&quot;</span>
+<span class="hljs-attr">          details:</span>
+<span class="hljs-attr">          - value:</span> <span class="hljs-number">0.16044298</span>
+<span class="hljs-attr">            description:</span> <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>
+<span class="hljs-attr">            details:</span>
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">0.18232156</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) /\
+                \ (docFreq + 0.5)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docFreq&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docCount&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">0.88</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1\
+                \ - b + b * fieldLength / avgFieldLength)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;termFreq=1.0&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.2</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter k1&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">0.75</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter b&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">7.5</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;avgFieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">10.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;fieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">        - value:</span> <span class="hljs-number">0.6099695</span>
+<span class="hljs-attr">          description:</span> <span class="hljs-string">&quot;weight(body:fox in 0) [PerFieldSimilarity], result of:&quot;</span>
+<span class="hljs-attr">          details:</span>
+<span class="hljs-attr">          - value:</span> <span class="hljs-number">0.6099695</span>
+<span class="hljs-attr">            description:</span> <span class="hljs-string">&quot;score(doc=0,freq=1.0 = termFreq=1.0\n), product of:&quot;</span>
+<span class="hljs-attr">            details:</span>
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">0.6931472</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;idf, computed as log(1 + (docCount - docFreq + 0.5) /\
+                \ (docFreq + 0.5)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docFreq&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">2.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;docCount&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">            - value:</span> <span class="hljs-number">0.88</span>
+<span class="hljs-attr">              description:</span> <span class="hljs-string">&quot;tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1\
+                \ - b + b * fieldLength / avgFieldLength)) from:&quot;</span>
+<span class="hljs-attr">              details:</span>
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;termFreq=1.0&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">1.2</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter k1&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">0.75</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;parameter b&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">7.5</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;avgFieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+<span class="hljs-attr">              - value:</span> <span class="hljs-number">10.0</span>
+<span class="hljs-attr">                description:</span> <span class="hljs-string">&quot;fieldLength&quot;</span>
+<span class="hljs-attr">                details:</span> []
+</code></pre>
+<p>&#x5206;&#x6790;_explantion&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x51FA;&#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#xFF1A;</p>
+<ul>
+<li><p>1&#xFF09;&#x8BA1;&#x7B97;&#x6BCF;&#x4E2A;term&#x7684;score&#xFF0C;&#x76F8;&#x52A0;&#x4F5C;&#x4E3A;field&#x7684;score&#xFF1B;</p>
+</li>
+<li><p>2&#xFF09;&#x9009;&#x53D6;&#x524D;&#x4E00;&#x6B65;&#x8BA1;&#x7B97;&#x7ED3;&#x679C;&#x4E2D;&#x6700;&#x5927;&#x7684;score&#x4F5C;&#x4E3A;doc&#x7684;score&#x8FD4;&#x56DE;&#x3002;</p>
+</li>
+</ul>
+<h3 id="tiebreaker">tie_breaker</h3>
+<p>&#x52A0;&#x5165;tie_breaker&#x540E;&#xFF0C;&#x7EFC;&#x5408;&#x8003;&#x8651;&#x5176;&#x4ED6;field&#x7684;score&#x3002;&#x8BA1;&#x7B97;&#x8FC7;&#x7A0B;&#x53D8;&#x4E3A;&#xFF1A;</p>
+<ul>
+<li>1&#xFF09;&#x8BA1;&#x7B97;&#x6BCF;&#x4E2A;term&#x7684;score&#xFF0C;&#x76F8;&#x52A0;&#x4F5C;&#x4E3A;field&#x7684;score&#xFF1B;</li>
+<li>2&#xFF09;&#x9009;&#x53D6;&#x524D;&#x4E00;&#x6B65;&#x8BA1;&#x7B97;&#x7ED3;&#x679C;&#x4E2D;&#x6700;&#x5927;&#x7684;score&#xFF0C;&#x5176;&#x4ED6;field&#x7684;score&#x7684;&#x603B;&#x548C;&#x4E58;&#x4EE5;tie_breaker&#xFF0C;&#x4E0E;max_score&#x76F8;&#x52A0;&#x7684;&#x548C;&#x4F5C;&#x4E3A;doc&#x7684;score&#x8FD4;&#x56DE;&#x3002;&#x5373;doc_score = max_score + tie_breaker * (score_field_1 + score_field_2 + ... + score_field_n)&#x3002;</li>
+</ul>
+<pre><code class="lang-shell">{
+    &quot;query&quot;: {
+        &quot;dis_max&quot;: {
+            &quot;queries&quot;: [
+                {
+                    &quot;match&quot;: {
+                        &quot;title&quot;: &quot;brown fox&quot;
+                    }
+                },
+                {
+                    &quot;match&quot;: {
+                        &quot;body&quot;: &quot;brown fox&quot;
+                    }
+                }
+            ],
+
+            &quot;tie_breaker&quot;: 0.3
+        }
+    }
+}
+</code></pre>
+<h2 id="&#x4E09;&#x3001;multimatch">&#x4E09;&#x3001;multi_match</h2>
+<h3 id="1&#x3001;bestfields">1&#x3001;best_fields</h3>
+<pre><code class="lang-shell">curl localhost:9200/test/t1/_search?explain=true
+
+{
+    &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+            &quot;query&quot;: &quot;brown fox&quot;,
+            &quot;fields&quot;: [&quot;title&quot;, &quot;body&quot;]
+        }
+    }
+}
+</code></pre>
+<pre><code class="lang-shell">curl localhost:9200/test/t1/_search?explain=true
+
+{
+    &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+            &quot;query&quot;: &quot;brown fox&quot;,
+            &quot;fields&quot;: [&quot;title&quot;, &quot;body&quot;],
+            &quot;type&quot;: &quot;best_fields&quot;
+        }
+    }
+}
+</code></pre>
+<h3 id="2&#x3001;mostfields">2&#x3001;most_fields</h3>
+<pre><code class="lang-shell">curl localhost:9200/test/t1/_search?explain=true
+
+{
+    &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+            &quot;query&quot;: &quot;brown fox&quot;,
+            &quot;fields&quot;: [&quot;title&quot;, &quot;body&quot;],
+            &quot;type&quot;: &quot;most_fields&quot;
+        }
+    }
+}
+</code></pre>
+<h3 id="3&#x3001;crossfields">3&#x3001;cross_fields</h3>
+<pre><code class="lang-shell">curl localhost:9200/test/t1/_search?explain=true
+
+{
+    &quot;query&quot;: {
+        &quot;multi_match&quot;: {
+            &quot;query&quot;: &quot;brown fox&quot;,
+            &quot;fields&quot;: [&quot;title&quot;, &quot;body&quot;],
+            &quot;type&quot;: &quot;cross_fields&quot;
+        }
+    }
+}
+</code></pre>
+<h2 id="&#x53C2;&#x8003;">&#x53C2;&#x8003;</h2>
+<p><a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/_cross_fields_queries.html" target="_blank">&#x53C2;&#x8003;&#x4E00;: ES&#x8DE8;&#x5B57;&#x6BB5;&#x67E5;&#x8BE2;</a></p>
+<p><a href="https://www.elastic.co/guide/cn/elasticsearch/guide/current/_cross_fields_entity_search.html" target="_blank">&#x53C2;&#x8003;&#x4E8C;: most_fields&#x7684;&#x95EE;&#x9898;</a></p>
+<p><a href="_validate,%20rewrite%20&#x8F93;&#x51FA;&#x5206;&#x6790;.md">&#x53C2;&#x8003;&#x4E09;: _validate, rewrite &#x8F93;&#x51FA;&#x5206;&#x6790;.md</a></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="_validate, rewrite 输出分析.html" class="navigation navigation-prev " aria-label="Previous page: _validate, rewrite 输出分析">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../../操作系统/" class="navigation navigation-next " aria-label="Next page: 操作系统">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"best_fields,most_fields与cross_fields","level":"1.2.5.1.2","depth":4,"next":{"title":"操作系统","level":"1.2.6","depth":2,"path":"IT/操作系统/README.md","ref":"IT/操作系统/README.md","articles":[{"title":"ip a命令输出解析","level":"1.2.6.1","depth":3,"path":"IT/操作系统/ip a命令输出解析.md","ref":"IT/操作系统/ip a命令输出解析.md","articles":[]},{"title":"iptables解析","level":"1.2.6.2","depth":3,"path":"IT/操作系统/iptables解析.md","ref":"IT/操作系统/iptables解析.md","articles":[]},{"title":"Linux-TC解析","level":"1.2.6.3","depth":3,"path":"IT/操作系统/Linux-TC解析.md","ref":"IT/操作系统/Linux-TC解析.md","articles":[]},{"title":"Linux-网络","level":"1.2.6.4","depth":3,"path":"IT/操作系统/Linux-网络.md","ref":"IT/操作系统/Linux-网络.md","articles":[]},{"title":"Linux-零拷贝","level":"1.2.6.5","depth":3,"path":"IT/操作系统/Linux-零拷贝.md","ref":"IT/操作系统/Linux-零拷贝.md","articles":[]},{"title":"Linux性能排查","level":"1.2.6.6","depth":3,"path":"IT/操作系统/Linux性能排查.md","ref":"IT/操作系统/Linux性能排查.md","articles":[]},{"title":"Linux文件系统","level":"1.2.6.7","depth":3,"path":"IT/操作系统/Linux文件系统.md","ref":"IT/操作系统/Linux文件系统.md","articles":[]},{"title":"NUMA","level":"1.2.6.8","depth":3,"path":"IT/操作系统/NUMA.md","ref":"IT/操作系统/NUMA.md","articles":[]},{"title":"OS CPU Cache","level":"1.2.6.9","depth":3,"path":"IT/操作系统/OS-CPU Cache.md","ref":"IT/操作系统/OS-CPU Cache.md","articles":[]},{"title":"tcpdump解析","level":"1.2.6.10","depth":3,"path":"IT/操作系统/tcpdump解析.md","ref":"IT/操作系统/tcpdump解析.md","articles":[]},{"title":"官网文档","level":"1.2.6.11","depth":3,"path":"IT/操作系统/官网文档.md","ref":"IT/操作系统/官网文档.md","articles":[]},{"title":"流量处理-DPDK","level":"1.2.6.12","depth":3,"path":"IT/操作系统/流量处理-DPDK.md","ref":"IT/操作系统/流量处理-DPDK.md","articles":[]},{"title":"磁盘挂载与文件系统","level":"1.2.6.13","depth":3,"path":"IT/操作系统/磁盘挂载与文件系统.md","ref":"IT/操作系统/磁盘挂载与文件系统.md","articles":[]},{"title":"系统监控工具","level":"1.2.6.14","depth":3,"path":"IT/操作系统/系统监控工具.md","ref":"IT/操作系统/系统监控工具.md","articles":[]},{"title":"页缓存与块缓存","level":"1.2.6.15","depth":3,"path":"IT/操作系统/页缓存与块缓存.md","ref":"IT/操作系统/页缓存与块缓存.md","articles":[]}]},"previous":{"title":"_validate, rewrite 输出分析","level":"1.2.5.1.1","depth":4,"path":"IT/分布式/ElasticSearch/_validate, rewrite 输出分析.md","ref":"IT/分布式/ElasticSearch/_validate, rewrite 输出分析.md","articles":[]},"dir":"ltr"},"config":{"plugins":["expandable-chapters","chapter-fold"],"ignores":["node_modules"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"expandable-chapters":{},"chapter-fold":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"IT/分布式/ElasticSearch/best_fields,most_fields与cross_fields.md","mtime":"2021-01-10T07:08:33.271Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T13:54:49.004Z"},"basePath":"../../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../../gitbook/gitbook.js"></script>
+    <script src="../../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-expandable-chapters/expandable-chapters.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -10,6 +10,8 @@
 
 [参考五: TC实例](https://www.wsfnk.com/archives/882.html)
 
+[参考六: HOWTO-Linux Advanced Routing & Traffic Control HOWTO](https://tldp.org/HOWTO/Adv-Routing-HOWTO/index.html)
+
 ## tc-noqueu
 
 [tc-noqueue](http://linux-tc-notes.sourceforge.net/tc/doc/sch_noqueue.txt)

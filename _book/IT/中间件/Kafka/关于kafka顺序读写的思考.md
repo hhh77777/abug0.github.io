@@ -4,6 +4,8 @@
 
 [参考二: 聊聊page cache与Kafka之间的事儿](https://cloud.tencent.com/developer/article/1488144)
 
+[参考三: Linux 内核的文件 Cache 管理机制介绍](https://www.ibm.com/developerworks/cn/linux/l-cache/)
+
 Kafka高性能的原因之一是对文件的顺序读写，利用了操作系统的预读和后写机制。
 
 两个问题：
