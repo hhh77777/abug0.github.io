@@ -3,5 +3,5 @@
 		"expandable-chapters",
 		"chapter-fold"
     ],
-	"ignores": ["node_modules", "_book"]
+	"ignores": ["node_modules"]
 }
