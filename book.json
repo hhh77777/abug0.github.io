@@ -1,7 +1,7 @@
 {
     "plugins": [
-        "summary",
 		"expandable-chapters",
 		"chapter-fold"
-    ]
+    ],
+	"ignores": ["node_modules", "_book"]
 }
