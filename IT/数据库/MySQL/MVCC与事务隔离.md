@@ -158,6 +158,8 @@ delete bit是删除标志位。（***只从网上查到，未能确认该字段�
 
 ## 五、争论
 
+### （一）MVCC幻读问题
+
 *问题：MVCC存在幻读问题*
 
 **解释**
@@ -187,6 +189,18 @@ delete bit是删除标志位。（***只从网上查到，未能确认该字段�
 
 
 
+### （二）MySQL 在RR隔离级别下的幻读问题
+
+引用网络图片（图源参考九）：
+
+![MySQL RR幻读问题](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210324191537.png)
+
+
+
+### （三）总结
+
+综合上面两点，当前读下，MySQL RR其实没有完全解决幻读。
+
 ## 参考
 
 [参考一: MySQL · 引擎特性 · InnoDB 事务子系统介绍](http://mysql.taobao.org/monthly/2015/12/01/)
@@ -205,3 +219,6 @@ delete bit是删除标志位。（***只从网上查到，未能确认该字段�
 
 [参考八: MySQL 到底是怎么解决幻读的？(提到一个github讨论)](https://chenguoji.com/2019/05/21/mysql-dao-di-shi-zen-me-jie-jue-huan-du-de/)
 
+[参考九: 数据库内核月报: MySQL · 源码分析 · InnoDB Repeatable Read隔离级别之大不同](http://mysql.taobao.org/monthly/2017/06/07/)
+
+[参考十: MySQL RR下的幻读是不是Bug](https://bugs.mysql.com/bug.php?id=63870)
