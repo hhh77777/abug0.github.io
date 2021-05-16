@@ -12,6 +12,7 @@
   - Kafka
     * [Advertise.listerners](IT/Kafka/Advertise.listerners.md)
     * [Kafka-性能优化](IT/Kafka/Kafka-性能优化.md)
+    * [Kafka-重平衡](IT/Kafka/Kafka-重平衡.md)
     * [关于kafka顺序读写的思考](IT/Kafka/关于kafka顺序读写的思考.md)
     * [幂等性与事务](IT/Kafka/幂等性与事务.md)
   - My SQL
