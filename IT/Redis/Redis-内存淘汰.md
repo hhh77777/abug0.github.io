@@ -25,7 +25,7 @@ replica-ignore-maxmemory yes
 
 ## 检查时机
 
-![内存淘汰调用链](C:\Users\zhouguangwei01\AppData\Roaming\Typora\typora-user-images\image-20210515214206664.png)
+![内存淘汰调用链](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210516122723.png)
 
 如图所示，在每次执行命令的时候会检查当前已使用内存是否超过了maxmomery，如果超过了，则根据配置策略进行处理。
 
@@ -35,3 +35,4 @@ replica-ignore-maxmemory yes
 
 **note: 主从复制缓冲区导致内存占用过多，进一步触发更多的数据淘汰，可能形成恶性循环。**
 
+​	
