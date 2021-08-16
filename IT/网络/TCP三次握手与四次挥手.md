@@ -16,8 +16,8 @@
 
 ### 三次握手中的超时
 
-* 客户端发送SYN后，处于SYS_SENT状态，等待SYN+ACK超时；
-* 服务端收到SYN，发送SYN_ACK后，处于SYS_RCVD状态，等待ACK超时；
+* 客户端发送SYN后，处于SYN_SENT状态，等待SYN+ACK超时；
+* 服务端收到SYN，发送SYN_ACK后，处于SYN_RCVD状态，等待ACK超时；
 
 等待超时后重传，超过最大重传次数后，终止连接创建。
 
@@ -38,7 +38,7 @@ cat /proc/sys/net/ipv4/tcp_syn_retries
 
 ### 可能出现的情况
 
-* 1）客户端ESTABLISHED, 服务端SYS_RCVD
+* 1）客户端ESTABLISHED, 服务端SYN_RCVD
 
   此时客户端发送数据包时会携带ACK，服务端收到后自动完成连接建立过程，转变为ESTABLISHED。
 
