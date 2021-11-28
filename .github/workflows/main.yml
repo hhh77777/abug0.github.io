@@ -49,6 +49,8 @@ jobs:
         # 将编译后的博客文件推送到指定仓库
       run: |
         git remote -v
+        ls
+        ls themes
         cd ./public && git init && git add .
         git config user.name abug0
         git config user.email 1341785032@qq.com
@@ -60,4 +62,4 @@ jobs:
         echo 555
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://abug0:${{ secrets.CODING }}@$CODING_REPO" master:hexo
+        git push --force --quiet "https://NoAPiWlhHC:${{ secrets.CODING }}@$CODING_REPO" master:hexo
