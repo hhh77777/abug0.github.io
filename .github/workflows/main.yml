@@ -48,21 +48,15 @@ jobs:
         CODING_REPO: e.coding.net/abug0/abug0/abug0.git
         # 将编译后的博客文件推送到指定仓库
       run: |
-        echo 111
         git remote -v
         cd ./public && git init && git add .
-        echo 222
         git config user.name abug0
         git config user.email 1341785032@qq.com
-        ls
-        git status
         git add .
-        echo 333
-        git status
         git branch -a
         echo 3355
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
         echo 555
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://CODING:${{ secrets.CODING_TOKEN }}@$CODING_REPO" master:hexo
+        git push --force --quiet "https://CODING:${{ secrets.CODING }}@$CODING_REPO" master:hexo
