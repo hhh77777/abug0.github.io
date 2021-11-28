@@ -21,9 +21,9 @@ jobs:
       uses: actions/checkout@v2.4.0
 
     - name: 2. setup nodejs...
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2.4.1
       with:
-        node-version: '12.x'
+        node-version: '12.17.0'
 
     - name: 3. Cache node modules
       uses: actions/cache@v1
@@ -60,4 +60,4 @@ jobs:
         echo 555
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://${{ secrets.CODING }}@$CODING_REPO" master:hexo
+        git push --force --quiet "https://abug0:${{ secrets.CODING }}@$CODING_REPO" master:hexo
