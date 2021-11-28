@@ -48,7 +48,9 @@ jobs:
         CODING_REPO: e.coding.net/abug0/abug0/abug0.git
         # 将编译后的博客文件推送到指定仓库
       run: |
+        echo 111
         cd ./public && git init && git add .
+        echo 222
         git config user.name abug0
         git config user.email 1341785032@qq.com
         git add .
