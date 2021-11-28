@@ -62,4 +62,4 @@ jobs:
         echo 555
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://1341785032@qq.com:${{ secrets.CODING }}@$CODING_REPO" master:hexo
+        git push --force --quiet "https://abug0:${{ secrets.CODING }}@$CODING_REPO" master:hexo
