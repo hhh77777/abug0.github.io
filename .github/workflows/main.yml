@@ -49,6 +49,7 @@ jobs:
         # 将编译后的博客文件推送到指定仓库
       run: |
         echo 111
+        git remote -v
         cd ./public && git init && git add .
         echo 222
         git config user.name abug0
