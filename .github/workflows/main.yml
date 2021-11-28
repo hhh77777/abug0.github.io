@@ -63,6 +63,6 @@ jobs:
         echo 3355
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
         echo 555
-        git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" test:hexo
+        git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://Coding令牌名:${{ secrets.CODING_TOKEN }}@$CODING_REPO" test:hexo
+        git push --force --quiet "https://CODING:${{ secrets.CODING_TOKEN }}@$CODING_REPO" test:hexo
