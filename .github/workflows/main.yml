@@ -21,9 +21,9 @@ jobs:
       uses: actions/checkout@v2.4.0
 
     - name: 2. setup nodejs...
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2.4.1
       with:
-        node-version: '12.x'
+        node-version: '12.17.0'
 
     - name: 3. Cache node modules
       uses: actions/cache@v1
@@ -38,7 +38,7 @@ jobs:
     - name: 5. hexo generate public files...
       run: |
         hexo clean
-        hexo generate
+        hexo generate --debug
 
     - name: 6. hexo deploy ...
       env:
@@ -48,16 +48,18 @@ jobs:
         CODING_REPO: e.coding.net/abug0/abug0/abug0.git
         # 将编译后的博客文件推送到指定仓库
       run: |
-        echo 111
+        git remote -v
+        ls
+        ls themes
         cd ./public && git init && git add .
-        echo 222
         git config user.name abug0
         git config user.email 1341785032@qq.com
         git add .
-        echo 333
+        ls -l
         git branch -a
+        echo 3355
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
         echo 555
-        git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" test:hexo
+        git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://Coding令牌名:${{ secrets.CODING_TOKEN }}@$CODING_REPO" test:hexo
+        git push --force --quiet "https://NoAPiWlhHC:${{ secrets.CODING }}@$CODING_REPO" master:hexo
