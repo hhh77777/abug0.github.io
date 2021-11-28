@@ -55,11 +55,8 @@ jobs:
         git config user.name abug0
         git config user.email 1341785032@qq.com
         git add .
-        ls -l
         git branch -a
-        echo 3355
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
-        echo 555
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://18438610367:${{ secrets.CODING }}@$CODING_REPO" master:hexo
+        git push --force --quiet "https://NoAPiWlhHC:${{ secrets.CODING }}@$CODING_REPO" master:hexo
