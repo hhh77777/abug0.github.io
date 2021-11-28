@@ -54,8 +54,11 @@ jobs:
         echo 222
         git config user.name abug0
         git config user.email 1341785032@qq.com
+        ls
+        git status
         git add .
         echo 333
+        git status
         git branch -a
         echo 3355
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
