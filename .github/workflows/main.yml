@@ -52,8 +52,15 @@ jobs:
         cd ./public && git init && git add .
         git config user.name abug0
         git config user.email 1341785032@qq.com
+        echo 333
+        ls
+        echo 555
+        git status
+        echo 666
         git add .
+        echo 111
         git branch -a
+        echo 222
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
