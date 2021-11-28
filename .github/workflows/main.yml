@@ -1,0 +1,63 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Hexo Auto-Deploy by GitHub Actions
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: test
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Hexo Auto-Deploy by GitHub Actions
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. git checkout...
+      uses: actions/checkout@v2.4.0
+
+    - name: 2. setup nodejs...
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: 3. Cache node modules
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+    - name: 4. Install hexo dependencies
+      run: |
+        npm install hexo-cli -g
+        npm install
+    - name: 5. hexo generate public files...
+      run: |
+        hexo clean
+        hexo generate
+
+    - name: 6. hexo deploy ...
+      env:
+        # Github 仓库
+        GITHUB_REPO: github.com/abug0/abug0.github.io.git
+        # Coding 仓库
+        CODING_REPO: e.coding.net/abug0/abug0/abug0.git
+        # 将编译后的博客文件推送到指定仓库
+      run: |
+        echo 111
+        cd ./public && git init && git add .
+        echo 222
+        git config user.name abug0
+        git config user.email 1341785032@qq.com
+        git add .
+        echo 333
+        git branch -a
+        git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
+        echo 555
+        git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" test:hexo
+        echo 666
+        git push --force --quiet "https://Coding令牌名:${{ secrets.CODING_TOKEN }}@$CODING_REPO" test:hexo
