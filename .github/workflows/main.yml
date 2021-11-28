@@ -38,7 +38,7 @@ jobs:
     - name: 5. hexo generate public files...
       run: |
         hexo clean
-        hexo generate --debug
+        hexo generate
 
     - name: 6. hexo deploy ...
       env:
@@ -49,8 +49,6 @@ jobs:
         # 将编译后的博客文件推送到指定仓库
       run: |
         git remote -v
-        ls
-        ls themes
         cd ./public && git init && git add .
         git config user.name abug0
         git config user.email 1341785032@qq.com
