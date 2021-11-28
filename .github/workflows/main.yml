@@ -38,7 +38,7 @@ jobs:
     - name: 5. hexo generate public files...
       run: |
         hexo clean
-        hexo generate
+        hexo generate --debug
 
     - name: 6. hexo deploy ...
       env:
