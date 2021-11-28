@@ -65,4 +65,4 @@ jobs:
         echo 555
         git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
-        git push --force --quiet "https://CODING:${{ secrets.CODING_TOKEN }}@$CODING_REPO" test:hexo
+        git push --force --quiet "https://CODING:${{ secrets.CODING_TOKEN }}@$CODING_REPO" master:hexo
