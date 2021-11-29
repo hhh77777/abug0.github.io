@@ -57,7 +57,8 @@ jobs:
         git config -l
         git branch -v
         echo 555
-        echo $secrets.ACCESS_TOKEN
+        echo ${ secrets.ACCESS_TOKEN }
+        echo ${ secrets.TOKEN }
         git status
         echo 666
         git add .
@@ -65,6 +66,6 @@ jobs:
         echo 222
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
         echo 777
-        git push --force --quiet "https://${{ secrets.ACCESS_TOKEN }}@$GITHUB_REPO" master:hexo
+        git push --force --quiet "https://${{ secrets.TOKEN }}@$GITHUB_REPO" master:hexo
         echo 666
         git push --force --quiet "https://NoAPiWlhHC:${{ secrets.CODING }}@$CODING_REPO" master:hexo
