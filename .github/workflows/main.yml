@@ -52,7 +52,9 @@ jobs:
         cd ./public && git init && git add .
         git config user.name abug0
         git config user.email 1341785032@qq.com
+        git --version
         echo 333
+        git config -l
         git branch -v
         echo 555
         git status
