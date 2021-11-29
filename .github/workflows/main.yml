@@ -57,6 +57,7 @@ jobs:
         git config -l
         git branch -v
         echo 555
+        echo ${{ secrets.ACCESS_TOKEN }}
         git status
         echo 666
         git add .
