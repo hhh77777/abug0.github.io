@@ -1,16 +1,3 @@
----
-title: "HTTP和HTTPS"
-isCJKLanguage: true
-date: 2021-07-29 19:20:38
-updated: 2021-07-29 19:20:38
-categories: 
-- IT
-- 网络
-tags: 
-- TCP/IP
-- HTTP
----
-
 # HTTP和HTTPS
 
 ## HTTP
@@ -140,6 +127,14 @@ HTTPS混合使用非对称加密与对称加密：http内容通过对称加密�
 
   ![image-20210729162840465](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162840.png)
 
+
+
+## 附件
+
+[https-DH.cap.pcapng](https://github.com/Abug0/abug0.github.io/raw/master/IT/imgs/https-DH.cap.pcapng)
+
+[https-RSA.cap.pcapng](https://github.com/Abug0/abug0.github.io/raw/master/IT/imgs/https-RSA.cap.pcapng)
+
 ## 参考
 
 [[1] HTTPS中CA证书的签发及使用过程](https://www.cnblogs.com/xdyixia/p/11610102.html)
@@ -173,3 +168,4 @@ HTTPS混合使用非对称加密与对称加密：http内容通过对称加密�
 [[16] 理解Deffie-Hellman密钥交换算法](http://wsfdl.com/algorithm/2016/02/04/%E7%90%86%E8%A7%A3Diffie-Hellman%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2%E7%AE%97%E6%B3%95.html)
 
 [17 图解TLS--字节级分析](https://tls.ulfheim.net/)
+

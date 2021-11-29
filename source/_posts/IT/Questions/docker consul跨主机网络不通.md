@@ -1,24 +1,10 @@
----
-title: "docker consul跨主机网络不通"
-isCJKLanguage: true
-date: 2020-10-17 20:29:19
-updated: 2020-10-17 20:29:19
-categories: 
-- IT
-- Questions
-tags: 
-- Questions
----
-
 # docker 跨主机overlay不通问题排查
 
 搭建过程见[dokcer跨主机overlay网络搭建](..\Docker\Docker-consul跨主机Overlay网络搭建.md)，搭建完后发现网络不通，执行
 
-{%spoiler 示例代码%}
 ```shell
 journalctl -u docker.service
 ```
-{%endspoiler%}
 
 输出如图，明显有error，打开/var/log/messages，进一步看到是hostname冲突，
 

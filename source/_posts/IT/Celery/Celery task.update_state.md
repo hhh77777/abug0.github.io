@@ -1,15 +1,3 @@
----
-title: "Celery task.update_state"
-isCJKLanguage: true
-date: 2021-01-10 15:08:33
-updated: 2021-01-10 15:08:33
-categories: 
-- IT
-- Celery
-tags: 
-- Celery
----
-
 # Celery task.update_state
 
 环境: python2.7 + Celery 4.3.0
@@ -20,7 +8,6 @@ tags:
 
 2、启动新线程调用同一函数，出现报错信息:
 
-{%spoiler 示例代码%}
 ```python
 Exception in thread Thread-1:
 Traceback (most recent call last):
@@ -40,7 +27,6 @@ Traceback (most recent call last):
     'RPC backend missing task request for {0!r}'.format(task_id))
 RuntimeError: RPC backend missing task request for None
 ```
-{%endspoiler%}
 
 ## 一、问题定位
 
@@ -61,15 +47,13 @@ def destination_for(self, task_id, request):
             raise RuntimeError(
                 'RPC backend missing task request for {0!r}'.format(task_id))
         return request.reply_to, request.correlation_id or task_id
-{%spoiler 示例代码%}
 ```
 
 此处捕获到了AttributeError，说明current_task中没有属性request，且根据报错信息，task_id为None。
 
 根据异常日志继续向上追溯destination_for的调用者，在同一文件中，
 
-```
-{%endspoiler%}python
+```python
 def store_result(self, task_id, result, state,
                      traceback=None, request=None, **kwargs):
         """Send task return value and state."""
@@ -88,13 +72,11 @@ def store_result(self, task_id, result, state,
                 delivery_mode=self.delivery_mode,
             )
         return result
-{%spoiler 示例代码%}
 ```
 
 继续向上追溯，到达celery/app/task.py，update_state的源码：
 
-```
-{%endspoiler%}python
+```python
 def update_state(self, task_id=None, state=None, meta=None, **kwargs):
         """Update task state.
 
@@ -107,7 +89,6 @@ def update_state(self, task_id=None, state=None, meta=None, **kwargs):
         if task_id is None:
             task_id = self.request.id
         self.backend.store_result(task_id, meta, state, request=self.request, **kwargs)
-{%spoiler 示例代码%}
 ```
 
 ![image-20210104201257230](https://i.loli.net/2021/01/06/npmHTvEw3GOWNit.png)
@@ -122,37 +103,30 @@ def update_state(self, task_id=None, state=None, meta=None, **kwargs):
 
 找到current_task的定义位置，在celery/_state.py  line 144：
 
-```
-{%endspoiler%}python
+```python
 #: Proxy to current task.
 current_task = Proxy(get_current_task)  
-{%spoiler 示例代码%}
 ```
 
 先看get_current_task的定义，celery/_state.py line 123：
 
-```
-{%endspoiler%}python
+```python
 def get_current_task():
     """Currently executing task."""
     return _task_stack.top
-{%spoiler 示例代码%}
 ```
 
 继续看_task_stack的定义，celery/_state.py line 75：
 
-```
-{%endspoiler%}python
+```python
 _task_stack = LocalStack()
-{%spoiler 示例代码%}
 ```
 
 LocalStack：栈，线程隔离
 
 全局搜索_task_stack，发现在celery/app/tasks.py line 388，class Task中：
 
-```
-{%endspoiler%}python
+```python
 def __call__(self, *args, **kwargs):
         _task_stack.push(self)
         self.push_request(args=args, kwargs=kwargs)
@@ -161,7 +135,6 @@ def __call__(self, *args, **kwargs):
         finally:
             self.pop_request()
             _task_stack.pop()
-{%spoiler 示例代码%}
 ```
 
 综上来看，task在被调用的时候，Task对象（self）压入栈，current_task为栈顶元素，且_task_stack栈为线程隔离的，所以在新线程中调用的时候，会发现current_task为None。
@@ -175,8 +148,7 @@ def __call__(self, *args, **kwargs):
 
 ### 2、使用LocalProxy的原因：
 
-```
-{%endspoiler%}python
+```python
 from celery.utils.threads import LocalStack
 from celery.local import Proxy
 from celery._state import get_current_task, _task_stack
@@ -200,13 +172,11 @@ print(a_proxy) # 45
 
 _task_stack.push('asd')
 print(a_proxy) # 'asd',被更新了
-{%spoiler 示例代码%}
 ```
 
 由此可见，相对于
 
-```
-{%endspoiler%}python
+```python
 current_task = get_current_task()
 ```
 

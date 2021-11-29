@@ -1,15 +1,3 @@
----
-title: "metaclass"
-isCJKLanguage: true
-date: 2021-03-07 09:17:15
-updated: 2021-03-07 09:17:15
-categories: 
-- 编程
-- Python
-tags: 
-- Python
----
-
 # python元类--MetaClass
 
 ## 总结
@@ -22,7 +10,6 @@ tags:
 
 ## 测试代码
 
-{%spoiler 示例代码%}
 ```python
 class TestMetaClass(type):
     meta = 'Hello'
@@ -69,11 +56,9 @@ if __name__ == '__main__':
     print(dir(SubTest))
 
 ```
-{%endspoiler%}
 
 运行结果：
 
-{%spoiler 示例代码%}
 ```bash
 TestMetaClass
 Test
@@ -102,7 +87,6 @@ __main__
 ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'a', 'metaaa', 'name']
 ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'metaaa', 'name', 'sub']
 ```
-{%endspoiler%}
 
 ## [一点细节]
 

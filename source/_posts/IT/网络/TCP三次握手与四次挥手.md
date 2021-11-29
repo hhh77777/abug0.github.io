@@ -1,20 +1,8 @@
----
-title: "TCP三次握手与四次挥手"
-isCJKLanguage: true
-date: 2021-07-25 21:40:38
-updated: 2021-07-25 21:40:38
-categories: 
-- IT
-- 网络
-tags: 
-- TCP/IP
----
-
 # TCP三次握手与四次挥手
 
 ## 三次握手
 
-![TCP三次握手](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210802150642.jpg)
+![TCP三次握手](../imgs/TCP三次握手.jpg)
 
 ### 为什么需要三次握手
 
@@ -43,12 +31,10 @@ tags:
 >
 >   The maximum number of times a SYN/ACK segment for a passive TCP connection will be retransmitted. This number should not be higher than 255.
 
-{%spoiler 示例代码%}
 ```bash
 cat /proc/sys/net/ipv4/tcp_synack_retries
 cat /proc/sys/net/ipv4/tcp_syn_retries
 ```
-{%endspoiler%}
 
 ### 可能出现的情况
 
@@ -62,7 +48,7 @@ cat /proc/sys/net/ipv4/tcp_syn_retries
 
 ## 四次挥手
 
-![TCP四次挥手](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210802150716.jpg)
+![TCP四次挥手](../imgs/TCP四次挥手.jpg)
 
 ### 为什么需要四次挥手
 
@@ -100,11 +86,9 @@ cat /proc/sys/net/ipv4/tcp_syn_retries
 
   超时后放弃这条连接。linux下由tcp_fin_timeout参数控制。
 
-  {%spoiler 示例代码%}
-```bash
+  ```bash
   cat /proc/sys/net/ipv4/tcp_fin_timeout
-```
-{%endspoiler%}
+  ```
 
 * TIME_WAIT状态超时
 
@@ -134,16 +118,13 @@ cat /proc/sys/net/ipv4/tcp_syn_retries
 
 nc（netcat）安装：
 
-{%spoiler 示例代码%}
 ```bash
 yum install nc -y
 ```
-{%endspoiler%}
 
 以及实验一中iptables命令，需替换为：
 
-{%spoiler 示例代码%}
 ```bash
 iptables -A INPUT -p tcp -s 1.1.1.1 --tcp-flags ACK,FIN ACK -j DROP
 ```
-{%endspoiler%}
+

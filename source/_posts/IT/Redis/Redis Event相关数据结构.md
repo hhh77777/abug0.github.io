@@ -1,20 +1,7 @@
----
-title: "Redis Event相关数据结构"
-isCJKLanguage: true
-date: 2020-10-08 14:59:12
-updated: 2020-10-08 14:59:12
-categories: 
-- IT
-- Redis
-tags: 
-- Redis
----
-
 # Redis Event数据结构
 
 **声明文件：ae.h**
 
-{%spoiler 示例代码%}
 ```c
 /* State of an event based program */
 typedef struct aeEventLoop {
@@ -32,11 +19,9 @@ typedef struct aeEventLoop {
     int flags;
 } aeEventLoop;
 ```
-{%endspoiler%}
 
 
 
-{%spoiler 示例代码%}
 ```c
 typedef struct aeFileEvent {
     int mask; /* one of AE_(READABLE|WRITABLE|BARRIER) */
@@ -45,9 +30,7 @@ typedef struct aeFileEvent {
     void *clientData;
 } aeFileEvent;
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```c
 /* Time event structure */
 typedef struct aeTimeEvent {
@@ -63,9 +46,7 @@ typedef struct aeTimeEvent {
   		   * freed in recursive time event calls. */
 } aeTimeEvent;
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```c
 /* A fired event */
 typedef struct aeFiredEvent {
@@ -73,13 +54,11 @@ typedef struct aeFiredEvent {
     int mask;
 } aeFiredEvent;
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```c
 typedef struct aeApiState {
     int epfd;
     struct epoll_event *events;
 } aeApiState;
 ```
-{%endspoiler%}
+

@@ -1,15 +1,3 @@
----
-title: "VSCode远程调试"
-isCJKLanguage: true
-date: 2020-11-22 10:19:22
-updated: 2020-11-22 10:19:22
-categories: 
-- IT
-- Tools
-tags: 
-- Tools
----
-
 # VSCode远程调试
 
 [参考一: Remote Development配置](https://www.cnblogs.com/tinywan/p/11107397.html)
@@ -22,7 +10,6 @@ tags:
 
 ## Remote ssh配置文件
 
-{%spoiler 示例代码%}
 ```
 Host test-93.129
   HostName test-93.129
@@ -35,7 +22,6 @@ Host 192.168.93.129
   User root
   IdentityFile C:\\Users\\user\\.ssh\\id_rsa
 ```
-{%endspoiler%}
 
 
 
@@ -43,8 +29,7 @@ Host 192.168.93.129
 
 * tasks.json
 
-  {%spoiler 示例代码%}
-```json
+  ```json
   {
   	"version": "2.0.0",
   	"tasks": [
@@ -64,14 +49,12 @@ Host 192.168.93.129
   	]
   }
   ```
-{%endspoiler%}
 
   
 
 * launch.json
 
-  {%spoiler 示例代码%}
-```json
+  ```json
   {
       // Use IntelliSense to learn about possible attributes.
       // Hover to view descriptions of existing attributes.
@@ -110,13 +93,11 @@ Host 192.168.93.129
       ]
   }
   ```
-{%endspoiler%}
 
   
 
 ## stfp远程同步配置样例
 
-{%spoiler 示例代码%}
 ```json
 [
     {
@@ -164,13 +145,11 @@ Host 192.168.93.129
     } 
 ]
 ```
-{%endspoiler%}
 
 ## VSCode远程调试配置实例一
 
 ### launch.json:
 
-{%spoiler 示例代码%}
 ```
 {
     // Use IntelliSense to learn about possible attributes.
@@ -261,11 +240,9 @@ Host 192.168.93.129
     ]
 }
 ```
-{%endspoiler%}
 
 ### tasks.json
 
-{%spoiler 示例代码%}
 ```
 {
 	"version": "2.0.0",
@@ -316,13 +293,11 @@ Host 192.168.93.129
 	]
 }
 ```
-{%endspoiler%}
 
 ## VSCode远程调试配置实例二
 
 ### launch.json:
 
-{%spoiler 示例代码%}
 ```json
 {
     // Use IntelliSense to learn about possible attributes.
@@ -401,11 +376,9 @@ Host 192.168.93.129
     ]
 }
 ```
-{%endspoiler%}
 
 ### tasks.json:
 
-{%spoiler 示例代码%}
 ```json
 {
     // See https://go.microsoft.com/fwlink/?LinkId=733558
@@ -449,4 +422,4 @@ Host 192.168.93.129
     ]
 }
 ```
-{%endspoiler%}
+

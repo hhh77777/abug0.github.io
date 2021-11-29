@@ -1,20 +1,7 @@
----
-title: "Redis network相关数据结构"
-isCJKLanguage: true
-date: 2020-10-08 15:30:41
-updated: 2020-10-08 15:30:41
-categories: 
-- IT
-- Redis
-tags: 
-- Redis
----
-
 # Redis network数据结构
 
 ** 声明文件：connection.h **
 
-{%spoiler 示例代码%}
 ```c
 struct connection {
     ConnectionType *type;
@@ -29,9 +16,7 @@ struct connection {
     int fd;
 };
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```c
 ConnectionType CT_Socket = {
     .ae_handler = connSocketEventHandler,
@@ -49,9 +34,7 @@ ConnectionType CT_Socket = {
     .sync_readline = connSocketSyncReadLine
 };
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```c
 typedef struct ConnectionType {
     void (*ae_handler)(struct aeEventLoop *el, int fd, void *clientData, int mask);
@@ -69,4 +52,4 @@ typedef struct ConnectionType {
     ssize_t (*sync_readline)(struct connection *conn, char *ptr, ssize_t size, long long timeout);
 } ConnectionType;
 ```
-{%endspoiler%}
+

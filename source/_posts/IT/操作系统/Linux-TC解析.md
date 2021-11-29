@@ -1,15 +1,3 @@
----
-title: "Linux-TC解析"
-isCJKLanguage: true
-date: 2020-12-26 19:29:08
-updated: 2020-12-26 19:29:08
-categories: 
-- IT
-- 操作系统
-tags: 
-- 操作系统
----
-
 # Linux流量控制工具-TC
 
 [参考一: TC](https://tldp.org/HOWTO/Adv-Routing-HOWTO/lartc.qdisc.filters.html)
@@ -28,7 +16,6 @@ tags:
 
 [tc-noqueue](http://linux-tc-notes.sourceforge.net/tc/doc/sch_noqueue.txt)
 
-{%spoiler 示例代码%}
 ```
 The noqueue queuing discipline
 ------------------------------
@@ -70,4 +57,3 @@ Comments.
   discipline.  It is not possible to assign the noqueue queuing
   discipline to physical devices or classes.
 ```
-{%endspoiler%}

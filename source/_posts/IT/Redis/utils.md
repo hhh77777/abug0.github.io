@@ -1,15 +1,3 @@
----
-title: "utils"
-isCJKLanguage: true
-date: 2020-11-01 19:41:55
-updated: 2020-11-01 19:41:55
-categories: 
-- IT
-- Redis
-tags: 
-- Redis
----
-
 # Utils.md
 
 [TOC]
@@ -18,7 +6,6 @@ tags:
 
 <utils.c/412Ln>
 
-{%spoiler 示例代码%}
 ```c
 /* Convert to negative if needed, and do the final overflow check when
      * converting from unsigned long long to long long. */
@@ -32,7 +19,6 @@ tags:
         if (value != NULL) *value = v;
     }
 ```
-{%endspoiler%}
 
 解析：为什么写成 (v > ((unsigned long long)(-(LLONG_MIN+1))+1))？
 
@@ -40,11 +26,9 @@ tags:
 
 * x = -(LLONG_MIN+1)，实际上，LLONG_MIN的大小：
 
-  {%spoiler 示例代码%}
-```c
+  ```c
   # define LLONG_MIN (-LLONG_MAX - 1LL)
   ```
-{%endspoiler%}
 
   直接-LLONG_MIN会发生溢出( |LLONG_MIN| > LLONG_MAX)，所以先算LLONG_MIN+1，得到的值恰为LLONG_MAX = |LLONG_MIN| - 1
 

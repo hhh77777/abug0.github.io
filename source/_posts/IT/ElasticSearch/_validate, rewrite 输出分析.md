@@ -1,15 +1,3 @@
----
-title: "_validate, rewrite 输出分析"
-isCJKLanguage: true
-date: 2021-01-10 15:08:33
-updated: 2021-01-10 15:08:33
-categories: 
-- IT
-- ElasticSearch
-tags: 
-- ElasticSearch
----
-
 # _validate/rewrite 输出分析
 
 ElasticSearch执行query时会先将query重写成低级的term等查询，内部实际执行的就是重写后的低级query。
@@ -20,7 +8,6 @@ ElasticSearch执行query时会先将query重写成低级的term等查询，内�
 
 添加测试数据：
 
-{%spoiler 示例代码%}
 ```shell
 PUT /my_index/my_type/1
 {
@@ -34,7 +21,6 @@ PUT /my_index/my_type/2
     "body":  "My quick brown fox eats rabbits on a regular basis."
 }
 ```
-{%endspoiler%}
 
 
 
@@ -44,7 +30,6 @@ PUT /my_index/my_type/2
 
 #### 1） rewrite输出
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_validate/query?rewrite=true
 
@@ -67,9 +52,7 @@ curl localhost:9200/test/t1/_validate/query?rewrite=true
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```json
 {
     "_shards": {
@@ -87,7 +70,6 @@ curl localhost:9200/test/t1/_validate/query?rewrite=true
     ]
 }
 ```
-{%endspoiler%}
 
 explations的输出，可以解释为：
 
@@ -98,11 +80,9 @@ explations的输出，可以解释为：
 
 ***tips: 查询条件中的“+”表示条件必须满足，“-”表示条件必须不满足，无符号表示可选条件 （参考一）***
 
-{%spoiler 示例代码%}
 ```
 + 前缀表示必须与查询条件匹配。类似地， - 前缀表示一定不与查询条件匹配。没有 + 或者 - 的所有其他条件都是可选的——匹配的越多，文档就越相关。
 ```
-{%endspoiler%}
 
 
 
@@ -110,7 +90,6 @@ explations的输出，可以解释为：
 
 explain看scoring细节：
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true&format=yaml
 
@@ -133,11 +112,9 @@ curl localhost:9200/test/t1/_search?explain=true&format=yaml
     }
 }
 ```
-{%endspoiler%}
 
 
 
-{%spoiler 示例代码%}
 ```yaml
 took: 18
 timed_out: false
@@ -272,7 +249,6 @@ hits:
               description: "fieldLength"
               details: []
 ```
-{%endspoiler%}
 
 
 
@@ -284,7 +260,6 @@ hits:
 
 #### 1） rewrite输出
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_validate/query?rewrite=true
 
@@ -307,9 +282,7 @@ curl localhost:9200/test/t1/_validate/query?rewrite=true
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```json
 {
     "_shards": {
@@ -327,7 +300,6 @@ curl localhost:9200/test/t1/_validate/query?rewrite=true
     ]
 }
 ```
-{%endspoiler%}
 
 explations的输出，可以解释为：
 
@@ -344,7 +316,6 @@ explations的输出，可以解释为：
 
 **从输出可以看到，doc score = weight(title:brown in 0) + weight(title:rabbits in 0) + weight(body:brown in 0)**
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true&format=yaml
 
@@ -367,9 +338,7 @@ curl localhost:9200/test/t1/_search?explain=true&format=yaml
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```yaml
 ---
 took: 12
@@ -554,7 +523,6 @@ hits:
               details: []
 
 ```
-{%endspoiler%}
 
 
 
@@ -564,7 +532,6 @@ hits:
 
 #### 1）rewrite输出
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_validate/query?rewrite
 {
@@ -577,9 +544,7 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```json
 {
     "_shards": {
@@ -597,7 +562,6 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     ]
 }
 ```
-{%endspoiler%}
 
 explations的输出，可以解释为：
 
@@ -620,7 +584,6 @@ explations的输出，可以解释为：
 
 详细输出如下：
 
-{%spoiler 示例代码%}
 ```yaml
 ---
 took: 10
@@ -811,7 +774,6 @@ hits:
                 details: []
 
 ```
-{%endspoiler%}
 
 
 
@@ -819,7 +781,6 @@ hits:
 
 #### 1）rewrite输出
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_validate/query?rewrite
 {
@@ -833,9 +794,7 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```json
 {
     "_shards": {
@@ -853,7 +812,6 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     ]
 }
 ```
-{%endspoiler%}
 
 explations的输出，可以解释为：
 
@@ -876,7 +834,6 @@ explations的输出，可以解释为：
 
 详细输出如下：
 
-{%spoiler 示例代码%}
 ```yaml
 ---
 took: 8
@@ -1067,7 +1024,6 @@ hits:
                 details: []
 
 ```
-{%endspoiler%}
 
 
 
@@ -1075,7 +1031,6 @@ hits:
 
 #### 1）rewrite输出
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_validate/query?rewrite
 {
@@ -1088,9 +1043,7 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```json
 {
     "_shards": {
@@ -1108,7 +1061,6 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     ]
 }
 ```
-{%endspoiler%}
 
 explations的输出，可以解释为：
 
@@ -1131,7 +1083,6 @@ explations的输出，可以解释为：
 
 详细输出如下：
 
-{%spoiler 示例代码%}
 ```yaml
 ---
 took: 9
@@ -1322,7 +1273,6 @@ hits:
                 details: []
 
 ```
-{%endspoiler%}
 
 
 
@@ -1330,7 +1280,6 @@ hits:
 
 #### 1）rewrite输出
 
-{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_validate/query?rewrite
 {
@@ -1343,9 +1292,7 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     }
 }
 ```
-{%endspoiler%}
 
-{%spoiler 示例代码%}
 ```json
 {
     "_shards": {
@@ -1363,7 +1310,6 @@ curl localhost:9200/test/t1/_validate/query?rewrite
     ]
 }
 ```
-{%endspoiler%}
 
 explations的输出，可以解释为：
 
@@ -1386,7 +1332,6 @@ explations的输出，可以解释为：
 
 详细输出如下：
 
-{%spoiler 示例代码%}
 ```yaml
 ---
 took: 21
@@ -1577,7 +1522,6 @@ hits:
                 details: []
 
 ```
-{%endspoiler%}
 
 
 

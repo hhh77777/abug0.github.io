@@ -1,15 +1,3 @@
----
-title: "Linux-进程内存空间模型"
-isCJKLanguage: true
-date: 2021-05-23 21:45:28
-updated: 2021-05-23 21:45:28
-categories: 
-- IT
-- 操作系统
-tags: 
-- 操作系统
----
-
 # Linux-进程内存空间模型
 
 ![image-20210523143121112](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210523143122.png)

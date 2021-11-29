@@ -1,15 +1,3 @@
----
-title: "Redis-内存淘汰"
-isCJKLanguage: true
-date: 2021-05-16 12:32:08
-updated: 2021-05-16 12:32:08
-categories: 
-- IT
-- Redis
-tags: 
-- Redis
----
-
 # Redis-内存淘汰
 
 Redis内存占用达到maxmemory之后，需要根据配置对内存数据进行淘汰。
@@ -27,7 +15,6 @@ Redis内存占用达到maxmemory之后，需要根据配置对内存数据进行
 
 ## 相关配置
 
-{%spoiler 示例代码%}
 ```
 maxmemory <bytes>
 maxmemory-policy noeviction
@@ -35,7 +22,6 @@ maxmemory-policy noeviction
 maxmemory-samples 5
 replica-ignore-maxmemory yes
 ```
-{%endspoiler%}
 
 ## 检查时机
 
@@ -49,4 +35,4 @@ replica-ignore-maxmemory yes
 
 **note: 主从复制缓冲区导致内存占用过多，进一步触发更多的数据淘汰，可能形成恶性循环。**
 
-​
+​	

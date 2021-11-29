@@ -1,15 +1,3 @@
----
-title: "Kafka-重平衡"
-isCJKLanguage: true
-date: 2021-05-16 13:58:09
-updated: 2021-05-16 13:58:09
-categories: 
-- IT
-- Kafka
-tags: 
-- Kafka
----
-
 # Kafka-重平衡
 
 ## 重平衡

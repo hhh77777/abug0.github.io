@@ -1,15 +1,3 @@
----
-title: "AOF重写"
-isCJKLanguage: true
-date: 2021-05-16 10:11:42
-updated: 2021-05-16 10:11:42
-categories: 
-- IT
-- Redis
-tags: 
-- Redis
----
-
 # AOF
 
 **note: 本文参考代码基于Redis 6.0**
@@ -41,11 +29,9 @@ tags:
 
 redisServer中定义了一个aof写入缓冲区：
 
-{%spoiler 示例代码%}
 ```c
 sds aof_buf;      /* AOF buffer, written before entering the event loop */
 ```
-{%endspoiler%}
 
 每次执行写命令时会将命令追加到这个缓冲区，调用链：
 
@@ -67,7 +53,6 @@ src/server.c line 1845, server_cron函数中，周期性检查是否满足AOF重
 
 代码片段一：
 
-{%spoiler 示例代码%}
 ```c
 /* Trigger an AOF rewrite if needed. */
         if (server.aof_state == AOF_ON &&
@@ -84,11 +69,9 @@ src/server.c line 1845, server_cron函数中，周期性检查是否满足AOF重
             }
         }
 ```
-{%endspoiler%}
 
 代码片段二:
 
-{%spoiler 示例代码%}
 ```c
 /* Start a scheduled AOF rewrite if this was requested by the user while
      * a BGSAVE was in progress. */
@@ -98,7 +81,6 @@ src/server.c line 1845, server_cron函数中，周期性检查是否满足AOF重
         rewriteAppendOnlyFileBackground();
     }
 ```
-{%endspoiler%}
 
 根据上面两个片段，总结重写条件为:
 
@@ -112,7 +94,6 @@ src/server.c line 1845, server_cron函数中，周期性检查是否满足AOF重
 
 #### AOF重写缓冲区相关的数据结构
 
-{%spoiler 示例代码%}
 ```c
 #define AOF_RW_BUF_BLOCK_SIZE (1024*1024*10)    /* 10 MB per block */
 
@@ -121,15 +102,12 @@ typedef struct aofrwblock {
     char buf[AOF_RW_BUF_BLOCK_SIZE];
 } aofrwblock;
 ```
-{%endspoiler%}
 
 server.h redisServer中定义了重写缓冲区：
 
-{%spoiler 示例代码%}
 ```c
 list *aof_rewrite_buf_blocks;   /* Hold changes during an AOF rewrite. */
 ```
-{%endspoiler%}
 
 #### 重写缓冲区大小限制
 
@@ -139,7 +117,6 @@ list *aof_rewrite_buf_blocks;   /* Hold changes during an AOF rewrite. */
 
 aof.c line 184, feedAppendOnlyFile:
 
-{%spoiler 示例代码%}
 ```c
 ...
 /* If a background append only file rewriting is in progress we want to
@@ -150,11 +127,9 @@ aof.c line 184, feedAppendOnlyFile:
         aofRewriteBufferAppend((unsigned char*)buf,sdslen(buf));
         ...
 ```
-{%endspoiler%}
 
 aof.c line 95, aofRewriteBufferAppend:
 
-{%spoiler 示例代码%}
 ```c
 /* Append data to the AOF rewrite buffer, allocating new blocks if needed. */
 void aofRewriteBufferAppend(unsigned char *s, unsigned long len) {
@@ -203,11 +178,9 @@ void aofRewriteBufferAppend(unsigned char *s, unsigned long len) {
     }
 }
 ```
-{%endspoiler%}
 
 aof.c line 95, aofChildWriteDiffDatah：
 
-{%spoiler 示例代码%}
 ```c
 /* Event handler used to send data to the child process doing the AOF
  * rewrite. We send pieces of our AOF differences buffer so that the final
@@ -241,7 +214,6 @@ void aofChildWriteDiffData(aeEventLoop *el, int fd, void *privdata, int mask) {
     }
 }
 ```
-{%endspoiler%}
 
 AOF重写期间，主进程会复制AOF重写缓冲区（aof_rewrite_buf_blocks）的内容到aof_pipe_write_data_to_child，aof_pipe_write_data_to_child实际是一个pipe，用于父子进程通信。子进程会从pipe取数据追加到新生成的AOF文件。
 

@@ -1,15 +1,3 @@
----
-title: "Linux中的虚拟网络一"
-isCJKLanguage: true
-date: 2020-08-23 23:05:22
-updated: 2020-08-23 23:05:22
-categories: 
-- 虚拟化
-- 网络
-tags: 
-- 网络
----
-
 # Linux中的虚拟网络一：tap/tun与veth
 
 ### 目录
@@ -32,7 +20,7 @@ tags:
 
 [参考七: netfilter框架（iptables、netfilter处理流程及连接跟踪表）](https://opengers.github.io/openstack/openstack-base-netfilter-framework-overview/)
 
-
+[Tun/Tap设备基本原理](https://github.com/ICKelin/article/issues/9)
 
 ![bridge](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084804.png)
 
@@ -85,3 +73,4 @@ tags:
 ![netfilter](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816175903.png)
 
 ![bridge](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084804.png)
+
