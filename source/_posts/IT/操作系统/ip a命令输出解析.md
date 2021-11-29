@@ -1,3 +1,15 @@
+---
+title: "ip a命令输出解析"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- IT
+- 操作系统
+tags: 
+- 操作系统
+---
+
 # ip a命令输出解析
 
 [引用自Docker深入浅出系列](https://www.cnblogs.com/evan-liang/p/12271468.html)
@@ -30,4 +42,3 @@
 > scope link 仅在此设备上有效
 > valid_lft forever IPv6 地址的有效使用期限
 > preferred_lft forever IPv6 地址的首选生存期
-

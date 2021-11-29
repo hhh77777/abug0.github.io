@@ -1,4 +1,16 @@
 ---
+title: "MySQL-Innodb加锁分析"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- MySQL
+tags: 
+- MySQL
+---
+
+---
 
 ---
 
@@ -27,7 +39,8 @@ Innodb锁机制是通过在索引加锁实现的。
   );
   
   insert into ttt(id, name, num) values(1, 'aa', 1), (5, 'dd', 5), (10, 'gg', 10), (15, 'll', 15);
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
@@ -65,8 +78,10 @@ Innodb加锁都是在索引上加的。
 
 举例：
 
-```mysql
+```
+{%endspoiler%}mysql
 select * from ttt where num>=5 and num<=10;
+{%spoiler 示例代码%}
 ```
 
 该语句的执行方式：首先用num=5在索引中进行定位，所以这是一个等值查询，而后向右遍历检查num是否满足num<=10的条件，这一步是范围查询。
@@ -77,7 +92,8 @@ select * from ttt where num>=5 and num<=10;
 
 ### 等值查询（命中记录）：行锁
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -126,6 +142,7 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
           LOCK_STATUS: GRANTED
             LOCK_DATA: 5
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ![image-20210808191902997](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210808191903.png)
@@ -134,7 +151,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
 
 ### 等值查询（未命中记录）：间隙锁
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -175,6 +193,7 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
           LOCK_STATUS: GRANTED
             LOCK_DATA: 5
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 依旧是两把锁，不过第二把锁由行锁变成了Gap Lock，锁住得得是（1， 5）这个间隙。
@@ -183,7 +202,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
 
 #### 命中记录
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -246,11 +266,13 @@ OBJECT_INSTANCE_BEGIN: 1665951758144
           LOCK_STATUS: GRANTED
             LOCK_DATA: 10
 3 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 #### 未命中记录
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -291,6 +313,7 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
           LOCK_STATUS: GRANTED
             LOCK_DATA: 10
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 #### 总结
@@ -309,7 +332,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
 
   * <
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -324,13 +348,15 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
   | INNODB | 1665988586848:324:4:5:1665951757800 |       283140965297504 |        53 |      207 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | S,GAP     | GRANTED     | 15        |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
   2 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
   * <=
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -353,7 +379,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
   | INNODB | 1665988586848:324:4:5:1665951757800 |       283140965297504 |        53 |      221 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | S         | GRANTED     | 15                     |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+------------------------+
   4 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
@@ -361,7 +388,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
 
   * <
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -375,13 +403,15 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
   | INNODB | 1665988586848:1381:1665951760584    |       283140965297504 |        53 |      212 | ttt           | ttt         | NULL           | NULL              | NULL       |         1665951760584 | TABLE     | IS        | GRANTED     | NULL      |
   | INNODB | 1665988586848:324:4:4:1665951757800 |       283140965297504 |        53 |      212 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | S,GAP     | GRANTED     | 10        |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
   * <=
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -401,7 +431,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
   | INNODB | 1665988586848:324:4:4:1665951757800 |       283140965297504 |        53 |      216 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | S         | GRANTED     | 10        |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
   2 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
 #### 总结
 
@@ -413,7 +444,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
 
 ### 等值查询(命中记录): 行锁
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -459,11 +491,13 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
           LOCK_STATUS: GRANTED
             LOCK_DATA: 5, 5
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ### 等值查询(未命中记录)：间隙锁
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -504,6 +538,7 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
           LOCK_STATUS: GRANTED
             LOCK_DATA: 10, 10
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
@@ -512,7 +547,8 @@ OBJECT_INSTANCE_BEGIN: 1665951757800
 
 #### 命中记录
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -535,13 +571,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:5:1665951757800 |       283140965297504 |        53 |      272 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 15, 15    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 4 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 #### 未命中记录
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -556,6 +594,7 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951757800 |       283140965297504 |        53 |      268 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
@@ -575,7 +614,8 @@ mysql> select * from performance_schema.data_locks;
 
   * <
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -596,13 +636,15 @@ mysql> select * from performance_schema.data_locks;
   | INNODB | 1665988586848:324:6:5:1665951757800 |       283140965297504 |        53 |      277 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 15, 15    |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
   3 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
   * <=
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -625,7 +667,8 @@ mysql> select * from performance_schema.data_locks;
   | INNODB | 1665988586848:324:6:5:1665951757800 |       283140965297504 |        53 |      281 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 15, 15                 |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+------------------------+
   4 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
@@ -633,7 +676,8 @@ mysql> select * from performance_schema.data_locks;
 
   * <
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -648,13 +692,15 @@ mysql> select * from performance_schema.data_locks;
   | INNODB | 1665988586848:324:6:4:1665951757800 |       283140965297504 |        53 |      287 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 10, 10    |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
   2 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
   * <=
 
-  ```mysql
+  ```
+{%endspoiler%}mysql
   mysql> begin;
   Query OK, 0 rows affected (0.00 sec)
   
@@ -675,7 +721,8 @@ mysql> select * from performance_schema.data_locks;
   | INNODB | 1665988586848:324:6:5:1665951757800 |       283140965297504 |        53 |      293 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 15, 15    |
   +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
   3 rows in set (0.00 sec)
-  ```
+  {%spoiler 示例代码%}
+```
 
   
 
@@ -688,17 +735,20 @@ mysql> select * from performance_schema.data_locks;
 
 修改表索引，将num上的索引改为非唯一索引：
 
-```mysql
+```
+{%endspoiler%}mysql
 alter table ttt drop index idx_t3;
 
 alter table ttt add index idx_t3(num);
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 等值查询(命中记录)：Next-Key Lock+Gap Lock
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -719,11 +769,13 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951758144 |       283140965297504 |        53 |      308 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951758144 | RECORD    | S,GAP     | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 3 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ### 等值查询（未命中记录）： 间隙锁
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -738,6 +790,7 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951757800 |       283140965297504 |        53 |      312 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S,GAP     | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
@@ -746,7 +799,8 @@ mysql> select * from performance_schema.data_locks;
 
 #### 命中记录
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -769,13 +823,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:5:1665951757800 |       283140965297504 |        53 |      320 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 15, 15    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 4 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 #### 未命中记录
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -790,6 +846,7 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951757800 |       283140965297504 |        53 |      316 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | S         | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
@@ -798,7 +855,8 @@ mysql> select * from performance_schema.data_locks;
 
 ### 等值查询(命中记录)
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -818,11 +876,13 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:3:1665951757800 |                118109 |        53 |      336 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | X,REC_NOT_GAP | GRANTED     | 5         |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ### 等值查询（未命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -837,13 +897,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:4:1665951757800 |                118110 |        53 |      340 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | X,GAP     | GRANTED     | 10        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 范围查询(命中记录)
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -858,13 +920,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:4:1665951757800 |                118111 |        53 |      344 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951757800 | RECORD    | X,GAP     | GRANTED     | 10        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 范围查询（未命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -886,6 +950,7 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:4:1665951758144 |                118112 |        53 |      348 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X             | GRANTED     | 10        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 3 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
@@ -894,7 +959,8 @@ mysql> select * from performance_schema.data_locks;
 
 ### 等值查询（命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -915,13 +981,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:3:1665951758144 |                118134 |        53 |      386 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 5         |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 3 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 等值查询（未命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -936,13 +1004,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951757800 |                118135 |        53 |      390 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | X,GAP     | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 范围查询（命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -968,13 +1038,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:5:1665951758144 |                118137 |        53 |      398 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 15        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 7 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 范围查询（未命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -997,6 +1069,7 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:5:1665951758144 |                118136 |        53 |      394 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 15        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 5 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
@@ -1005,7 +1078,8 @@ mysql> select * from performance_schema.data_locks;
 
 ### 等值查询（命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1027,11 +1101,13 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951758488 |                118113 |        53 |      352 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951758488 | RECORD    | X,GAP         | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 4 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ### 等值查询（未命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1046,11 +1122,13 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:6:4:1665951757800 |                118115 |        53 |      360 | ttt           | ttt         | NULL           | NULL              | idx_t3     |         1665951757800 | RECORD    | X,GAP     | GRANTED     | 10, 10    |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+-----------+-------------+-----------+
 2 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ### 范围查询（命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1076,13 +1154,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:5:1665951758144 |                118116 |        53 |      367 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 15        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 7 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 
 
 ### 范围查询（未命中记录）
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1105,13 +1185,15 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:5:1665951758144 |                118118 |        53 |      375 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 15        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 5 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 ***note: 此处主键上id=15这一行也被锁住了***
 
 ## 写锁-ICP
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1135,6 +1217,7 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:4:1665951758144 |                118146 |        53 |      444 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 10           |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+--------------+
 5 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 **索引下推时注意主键索引上的锁，通过索引已经过滤掉的记录并未在主键上加锁。**
@@ -1143,7 +1226,8 @@ mysql> select * from performance_schema.data_locks;
 
 补充一个测试：
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> begin;
 Query OK, 0 rows affected (0.00 sec)
 
@@ -1161,11 +1245,13 @@ mysql> select * from performance_schema.data_locks;
 | INNODB | 1665988586848:324:4:5:1665951758144 |                118140 |        53 |      416 | ttt           | ttt         | NULL           | NULL              | PRIMARY    |         1665951758144 | RECORD    | X,REC_NOT_GAP | GRANTED     | 15        |
 +--------+-------------------------------------+-----------------------+-----------+----------+---------------+-------------+----------------+-------------------+------------+-----------------------+-----------+---------------+-------------+-----------+
 5 rows in set (0.00 sec)
+{%spoiler 示例代码%}
 ```
 
 关于这句的执行计划：
 
-```mysql
+```
+{%endspoiler%}mysql
 mysql> explain  select num from ttt where num>5 and num<15 and id!=10 for update;
 +----+-------------+-------+------------+-------+-----------------------+--------+---------+------+------+----------+--------------------------+
 | id | select_type | table | partitions | type  | possible_keys         | key    | key_len | ref  | rows | filtered | Extra                    |
@@ -1188,4 +1274,3 @@ mysql> explain  select num from ttt where num>5 and num<15 and id!=10 for update
 [[4] MySQL 加锁处理分析（MVVC、快照读、当前读、GAP锁（间隙锁））](https://www.huaweicloud.com/articles/f571bafcbe55475cd94d1f2f65e729a9.html)
 
 [[5] MySQL官网: 15.7.3 Locks Set by Different SQL Statements in InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-locks-set.html)
-

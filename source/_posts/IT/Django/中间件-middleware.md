@@ -1,9 +1,22 @@
+---
+title: "中间件-middleware"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- Django
+tags: 
+- Django
+---
+
 # Django-middleware分析
 
 ## 一、middleware加载过程-源码分析
 
 django/core/handlers/wsgi.py， line 122:
 
+{%spoiler 示例代码%}
 ```python
 class WSGIHandler(base.BaseHandler):
     request_class = WSGIRequest
@@ -12,9 +25,11 @@ class WSGIHandler(base.BaseHandler):
         super().__init__(*args, **kwargs)
         self.load_middleware()
 ```
+{%endspoiler%}
 
 追蹤load_middleware, 在django/core/handlers/base.py, line 23, class BaseHandler:
 
+{%spoiler 示例代码%}
 ```python
 class BaseHandler:
     ...
@@ -68,9 +83,11 @@ class BaseHandler:
         # as a flag for initialization being complete.
         self._middleware_chain = handler
 ```
+{%endspoiler%}
 
 convert_exception_to_response的声明在django/core/handlers/exception.py, line 18, 可以看到该函数实际是封装了异常处理:
 
+{%spoiler 示例代码%}
 ```python
 def convert_exception_to_response(get_response):
     """
@@ -94,9 +111,11 @@ def convert_exception_to_response(get_response):
         return response
     return inner
 ```
+{%endspoiler%}
 
 django中的middleware会从一个MiddlewareMixin继承，关于MiddlewareMixin的定义在django/utils/deprecation.py, line 85:
 
+{%spoiler 示例代码%}
 ```python
 class MiddlewareMixin:
     def __init__(self, get_response=None):
@@ -112,11 +131,13 @@ class MiddlewareMixin:
             response = self.process_response(request, response)
         return response
 ```
+{%endspoiler%}
 
 ## 二、middleware加载过程-代码运行分析
 
 假设定义setting.MIDDLEWARE定义为[A, B, C]，那么上面过程可以描述为：
 
+{%spoiler 示例代码%}
 ```python
 handler = wrapped(self._get_response)  # BaseHandler._get_response
 for M in [C, B, A]:
@@ -126,6 +147,7 @@ for M in [C, B, A]:
     
 self._middleware_chain = handler # A.__call__
 ```
+{%endspoiler%}
 
 运行后的结果为：
 
@@ -133,12 +155,14 @@ self._middleware_chain = handler # A.__call__
 
 **实际需考虑convert_exception_to_response，完整的A.get_response应该为convert_exception_to_response(B.__call__)**
 
+{%spoiler 示例代码%}
 ```python
 C.get_response = BaseHandler._get_response
 B.get_response = C.__call__
 A.get_response = B.__call__
 self._middleware_chain = A.__call__
 ```
+{%endspoiler%}
 
 ## 三、request处理过程-源码分析
 
@@ -175,11 +199,13 @@ class WSGIHandler(base.BaseHandler):
             response.file_to_stream.close = response.close
             response = environ['wsgi.file_wrapper'](response.file_to_stream, response.block_size)
         return response
+{%spoiler 示例代码%}
 ```
 
 追蹤, 在django/core/handlers/base.py, line 71, class BaseHandler:
 
-```python
+```
+{%endspoiler%}python
 def get_response(self, request):
         """Return an HttpResponse object for the given HttpRequest."""
         # Setup default url resolver for this thread
@@ -195,11 +221,13 @@ def get_response(self, request):
                 request=request,
             )
         return response
+{%spoiler 示例代码%}
 ```
 
 参考上文【middleware加载过程-代码运行分析】的例子，middleware处理过程可看作：
 
-```python
+```
+{%endspoiler%}python
 A.__call__(request):
     response = None
     if hasattr(self, 'process_request'):
@@ -209,6 +237,7 @@ A.__call__(request):
     if hasattr(self, 'process_response'):
         response = self.process_response(request, response)
         return response
+{%spoiler 示例代码%}
 ```
 
 结合上文MiddlewareMixin.__call__的源码，此处实际是链式调用，依次调用
@@ -219,7 +248,8 @@ A.process_request --> B.process_request --> C.process_request --> BaseHandler._g
 
 贴一下BaseHandler._get_response的源码:
 
-```python
+```
+{%endspoiler%}python
 	def _get_response(self, request):
         """
         Resolve and call the view, then apply view, exception, and

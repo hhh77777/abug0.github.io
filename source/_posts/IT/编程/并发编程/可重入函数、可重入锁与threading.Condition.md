@@ -1,3 +1,15 @@
+---
+title: "可重入函数、可重入锁与threading.Condition"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 编程
+- 并发编程
+tags: 
+- 并发
+---
+
 # 可重入函数、可重入锁与threading.Condition
 
 ## 一、可重入函数与可重入锁
@@ -8,9 +20,11 @@
 
 官方定义:
 
+{%spoiler 示例代码%}
 ```
 A computer program or routine is described as reentrant if it can be safely called again before its previous invocation has been completed (i.e it can be safely executed concurrently)
 ```
+{%endspoiler%}
 
 **可重入函数的条件**:
 
@@ -37,9 +51,11 @@ A computer program or routine is described as reentrant if it can be safely call
 
 ## threading.Condition
 
+{%spoiler 示例代码%}
 ```
 pass
 ```
+{%endspoiler%}
 
 
 

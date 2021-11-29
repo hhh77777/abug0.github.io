@@ -1,3 +1,15 @@
+---
+title: "Using where与ICP"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- MySQL
+tags: 
+- MySQL
+---
+
 # MySQL-Using where与ICP
 
 ## 介绍
@@ -25,6 +37,7 @@ Using where用于限制需要发送的结果集。
 
 建表
 
+{%spoiler 示例代码%}
 ```mysql
 create table ttt(
 	id int auto_increment primary key,
@@ -33,6 +46,7 @@ create table ttt(
 	descript varchar(30)
 );
 ```
+{%endspoiler%}
 
 分别在name，num以及（name, num）列上创建索引，索引结构如图：
 
@@ -46,6 +60,7 @@ create table ttt(
 
 执行语句及输出：
 
+{%spoiler 示例代码%}
 ```mysql
 mysql> explain select num from ttt where num=12\G
 
@@ -64,9 +79,11 @@ possible_keys: idx_t1,idx_tx3
         Extra: Using index
 1 row in set, 1 warning (0.00 sec)
 ```
+{%endspoiler%}
 
 ### 测试二：范围查询
 
+{%spoiler 示例代码%}
 ```mysql
 mysql> explain select num from ttt where num>12\G
 *************************** 1. row ***************************
@@ -102,9 +119,11 @@ possible_keys: idx_t1,idx_tx3
         Extra: Using where; Using index
 1 row in set, 1 warning (0.00 sec)
 ```
+{%endspoiler%}
 
 ### 测试三：范围查询（满足ICP使用条件）
 
+{%spoiler 示例代码%}
 ```mysql
 mysql> explain select * from ttt force index(idx_tx3) where num>=12\G
 *************************** 1. row ***************************
@@ -122,9 +141,11 @@ possible_keys: idx_tx3
         Extra: Using index condition
 1 row in set, 1 warning (0.00 sec)
 ```
+{%endspoiler%}
 
 ### 测试四：范围查询（全表扫描）
 
+{%spoiler 示例代码%}
 ```mysql
 mysql> explain select * from ttt where num>=12\G
 *************************** 1. row ***************************
@@ -142,6 +163,7 @@ possible_keys: idx_tx3
         Extra: Using where
 1 row in set, 1 warning (0.00 sec)
 ```
+{%endspoiler%}
 
 ## 结论
 

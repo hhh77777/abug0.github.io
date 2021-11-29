@@ -1,3 +1,15 @@
+---
+title: "Linux中的虚拟网络三-OpenStack"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 虚拟化
+- 网络
+tags: 
+- 网络
+---
+
 ## Linux中的虚拟网络三-OpenStack
 
 [参考一: OpenStack Neutron网络分析](https://www.sdnlab.com/13000.html)

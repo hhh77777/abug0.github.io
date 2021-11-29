@@ -1,3 +1,15 @@
+---
+title: "MySQL-表删除"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- MySQL
+tags: 
+- MySQL
+---
+
 # MySQL-删除表
 
 MySQL删除表三种操作：

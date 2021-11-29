@@ -1,3 +1,15 @@
+---
+title: "Redis源码分析"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- Redis
+tags: 
+- Redis
+---
+
 # Redis源码分析
 
 [参考一: Redis源码分析](https://qiankunli.github.io/2019/04/20/redis_source.html)
@@ -14,6 +26,7 @@
 
 每个成功建立的连接生成一个connection数据，connection数据结构定义: 
 
+{%spoiler 示例代码%}
 ```
 struct connection {
     ConnectionType *type;
@@ -28,7 +41,9 @@ struct connection {
     int fd;
 };
 ```
+{%endspoiler%}
 
+{%spoiler 示例代码%}
 ```c
 typedef struct ConnectionType {
     void (*ae_handler)(struct aeEventLoop *el, int fd, void *clientData, int mask);
@@ -46,7 +61,9 @@ typedef struct ConnectionType {
     ssize_t (*sync_readline)(struct connection *conn, char *ptr, ssize_t size, long long timeout);
 } ConnectionType;
 ```
+{%endspoiler%}
 
+{%spoiler 示例代码%}
 ```
 typedef enum {
     CONN_STATE_NONE = 0,
@@ -57,9 +74,11 @@ typedef enum {
     CONN_STATE_ERROR
 } ConnectionState;
 ```
+{%endspoiler%}
 
 其中type字段的初始值被设置为
 
+{%spoiler 示例代码%}
 ```c
 ConnectionType CT_Socket = {
     .ae_handler = connSocketEventHandler,
@@ -77,5 +96,6 @@ ConnectionType CT_Socket = {
     .sync_readline = connSocketSyncReadLine
 };
 ```
+{%endspoiler%}
 
 ![Redis处理主流程及调用关系](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200920222038.png)

@@ -1,3 +1,15 @@
+---
+title: "MVCC与事务隔离"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- MySQL
+tags: 
+- MySQL
+---
+
 # MVCC与事务隔离
 
 ## 一、ACID
@@ -226,4 +238,3 @@ delete bit是删除标志位。（***只从网上查到，未能确认该字段�
 [参考九: 数据库内核月报: MySQL · 源码分析 · InnoDB Repeatable Read隔离级别之大不同](http://mysql.taobao.org/monthly/2017/06/07/)
 
 [参考十: MySQL RR下的幻读是不是Bug](https://bugs.mysql.com/bug.php?id=63870)
-

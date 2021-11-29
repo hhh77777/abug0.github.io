@@ -1,3 +1,15 @@
+---
+title: "best_fields,most_fields与cross_fields"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- ElasticSearch
+tags: 
+- ElasticSearch
+---
+
 # Best_fields, most_fields与cross_fields
 
 本文使用的ES版本为6.4.0。
@@ -8,6 +20,7 @@
 
 添加测试数据：
 
+{%spoiler 示例代码%}
 ```shell
 PUT /my_index/my_type/1
 {
@@ -21,6 +34,7 @@ PUT /my_index/my_type/2
     "body":  "My quick brown fox eats rabbits on a regular basis."
 }
 ```
+{%endspoiler%}
 
 
 
@@ -30,6 +44,7 @@ PUT /my_index/my_type/2
 
 bool查询，加入explain=true查看scoring细节：
 
+{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true
 
@@ -52,9 +67,11 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 结果：
 
+{%spoiler 示例代码%}
 ```json
 {
     "took": 35,
@@ -363,6 +380,7 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 
 
@@ -370,15 +388,18 @@ curl localhost:9200/test/t1/_search?explain=true
 
 * 1）计算match子句内部每个term的score，结果相加作为match子句（即每个field）的score；比如doc2对于match子句
 
-  ```shell
+  {%spoiler 示例代码%}
+```shell
   "match": {
   	"body": "brown fox"
   }
   ```
+{%endspoiler%}
 
   的score为
 
-  ```shell
+  {%spoiler 示例代码%}
+```shell
   "value": 0.77041245,
   "description": "sum of:",
   "details": [
@@ -399,10 +420,12 @@ curl localhost:9200/test/t1/_search?explain=true
   	}
    ]
   ```
+{%endspoiler%}
 
 * 2）每个match子句（即每个field）的score相加，作为doc对应于should的score，比如doc1最终的score计算为：
 
-  ```shell
+  {%spoiler 示例代码%}
+```shell
   "value": 0.90425634,
   "description": "sum of:",
   "details": [
@@ -431,6 +454,7 @@ curl localhost:9200/test/t1/_search?explain=true
       }
   ]
   ```
+{%endspoiler%}
 
 * 3）因为该查询只有一个should子句，所以should子句的socre作为最终score返回。
 
@@ -454,6 +478,7 @@ curl localhost:9200/test/t1/_search?explain=true
 
 构造查询：
 
+{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true
 
@@ -476,9 +501,11 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 返回结果：
 
+{%spoiler 示例代码%}
 ```yaml
 ---
 took: 17
@@ -669,6 +696,7 @@ hits:
                 details: []
 
 ```
+{%endspoiler%}
 
 分析_explantion，可以看出计算过程：
 
@@ -685,6 +713,7 @@ hits:
 * 1）计算每个term的score，相加作为field的score；
 * 2）选取前一步计算结果中最大的score，其他field的score的总和乘以tie_breaker，与max_score相加的和作为doc的score返回。即doc_score = max_score + tie_breaker * (score_field_1 + score_field_2 + ... + score_field_n)。
 
+{%spoiler 示例代码%}
 ```shell
 {
     "query": {
@@ -707,6 +736,7 @@ hits:
     }
 }
 ```
+{%endspoiler%}
 
 
 
@@ -716,6 +746,7 @@ hits:
 
 ### 1、best_fields
 
+{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true
 
@@ -728,9 +759,11 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 
 
+{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true
 
@@ -744,11 +777,13 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 
 
 ### 2、most_fields
 
+{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true
 
@@ -762,11 +797,13 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 
 
 ### 3、cross_fields
 
+{%spoiler 示例代码%}
 ```shell
 curl localhost:9200/test/t1/_search?explain=true
 
@@ -780,6 +817,7 @@ curl localhost:9200/test/t1/_search?explain=true
     }
 }
 ```
+{%endspoiler%}
 
 
 

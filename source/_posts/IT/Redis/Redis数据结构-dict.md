@@ -1,9 +1,22 @@
+---
+title: "Redis数据结构-dict"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- Redis
+tags: 
+- Redis
+---
+
 # Redis数据结构--dict
 
 关于dict的结构在src/dict.h，
 
 dict:
 
+{%spoiler 示例代码%}
 ```c
 typedef struct dict {
     dictType *type;
@@ -13,9 +26,11 @@ typedef struct dict {
     unsigned long iterators; /* number of iterators currently running */
 } dict;
 ```
+{%endspoiler%}
 
 dictht:
 
+{%spoiler 示例代码%}
 ```c
 /* This is our hash table structure. Every dictionary has two of this as we
  * implement incremental rehashing, for the old to the new table. */
@@ -26,9 +41,11 @@ typedef struct dictht {
     unsigned long used;
 } dictht;
 ```
+{%endspoiler%}
 
 dictEntry:
 
+{%spoiler 示例代码%}
 ```c
 typedef struct dictEntry {
     void *key;
@@ -41,9 +58,11 @@ typedef struct dictEntry {
     struct dictEntry *next;
 } dictEntry;
 ```
+{%endspoiler%}
 
 dictType:
 
+{%spoiler 示例代码%}
 ```c
 typedef struct dictType {
     uint64_t (*hashFunction)(const void *key);
@@ -54,4 +73,4 @@ typedef struct dictType {
     void (*valDestructor)(void *privdata, void *obj);
 } dictType;
 ```
-
+{%endspoiler%}

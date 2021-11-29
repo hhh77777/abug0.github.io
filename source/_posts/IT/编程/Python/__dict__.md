@@ -1,3 +1,15 @@
+---
+title: "__dict__"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 编程
+- Python
+tags: 
+- Python
+---
+
 # Python--\__dict__
 
 ## 总结
@@ -9,6 +21,7 @@
 
 ## 测试代码
 
+{%spoiler 示例代码%}
 ```python
 class A:
     aa = 3
@@ -45,9 +58,11 @@ if __name__ == '__main__':
     print(C.__dict__)
     print(c.__dict__)
 ```
+{%endspoiler%}
 
 运行结果：
 
+{%spoiler 示例代码%}
 ```bash
 {'__module__': '__main__', 'bb': 5, '__init__': <function B.__init__ at 0x000001D3086C8F70>, '__doc__': None}
 3
@@ -57,6 +72,7 @@ if __name__ == '__main__':
 {'__module__': '__main__', 'cc': 5, '__init__': <function C.__init__ at 0x000001D3086C8E50>, '__doc__': None}
 {'a': 1, 'c': 2}
 ```
+{%endspoiler%}
 
 
 

@@ -1,3 +1,15 @@
+---
+title: "magic method"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 编程
+- Python
+tags: 
+- Python
+---
+
 # Magic method
 
 ## \__del__
@@ -6,6 +18,7 @@
 
 ### e.g. 1:
 
+{%spoiler 示例代码%}
 ```python
 class A:
 	def __del__(self):
@@ -21,11 +34,13 @@ def f():
 f()
 # 也会打印出asd, 因为a作为局部变量, 函数结束时被销毁
 ```
+{%endspoiler%}
 
 note: \__del__被不是在调用del a时被调用，而是对象销毁时调用。
 
 ### e.g. 2
 
+{%spoiler 示例代码%}
 ```python
 class A:
 	def __del__(self):
@@ -37,6 +52,7 @@ b = a
 del a # 不打印asd, 因为b持有对该对象的引用, 该对象还没被销毁
 del b # 打印asd, 引用变为0, 销毁对象, __del__被调用
 ```
+{%endspoiler%}
 
 ## 属性访问相关
 
@@ -46,6 +62,7 @@ del b # 打印asd, 引用变为0, 销毁对象, __del__被调用
 
 \__delitem__
 
+{%spoiler 示例代码%}
 ```python
 class A:
     def __init__(self) -> None:
@@ -80,6 +97,7 @@ print(dir(a))
 del a.d
 print(dir(a))
 ```
+{%endspoiler%}
 
 
 
@@ -89,6 +107,7 @@ print(dir(a))
 
 \__next__: 进行迭代操作
 
+{%spoiler 示例代码%}
 ```python
 class A:
     def __init__(self, val=None) -> None:
@@ -127,6 +146,7 @@ for c in a:
     print(c)
 
 ```
+{%endspoiler%}
 
 
 
@@ -139,4 +159,3 @@ for c in a:
 ## 参考文章
 
 [Python学习【魔术方法】](https://cloud.tencent.com/developer/article/1570579)
-

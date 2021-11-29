@@ -1,3 +1,15 @@
+---
+title: "Linux中的虚拟网络一"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 虚拟化
+- 网络
+tags: 
+- 网络
+---
+
 # Linux中的虚拟网络一：tap/tun与veth
 
 ### 目录
@@ -73,4 +85,3 @@
 ![netfilter](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816175903.png)
 
 ![bridge](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20200816084804.png)
-

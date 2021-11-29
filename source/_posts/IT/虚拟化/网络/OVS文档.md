@@ -1,3 +1,15 @@
+---
+title: "OVS文档"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 虚拟化
+- 网络
+tags: 
+- 网络
+---
+
 # OVS相关文档
 
 收集OVS相关的资料。

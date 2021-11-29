@@ -1,3 +1,15 @@
+---
+title: "MySQL日志-Redo Log与Binlog"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- MySQL
+tags: 
+- MySQL
+---
+
 # MySQL日志系统-Redo Log与Binlog
 
 ## 一、Bin Log

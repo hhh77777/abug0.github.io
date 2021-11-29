@@ -1,3 +1,15 @@
+---
+title: "Python垃圾回收机制"
+isCJKLanguage: true
+date: 2021-11-28 20:35:42
+updated: 2021-11-28 20:35:42
+categories: 
+- 编程
+- Python
+tags: 
+- Python
+---
+
 # Python-垃圾回收机制
 
 Python 使用引用计数的方式管理内存，为了解决循环引用的问题又引入了标记-清除和分代回收机制。
@@ -8,6 +20,7 @@ Python 使用引用计数的方式管理内存，为了解决循环引用的问�
 
 Python为每个对象都维护了一个引用计数器：
 
+{%spoiler 示例代码%}
 ```c
 typedef struct _object {
     _PyObject_HEAD_EXTRA
@@ -15,9 +28,11 @@ typedef struct _object {
     PyTypeObject *ob_type;
 } PyObject;
 ```
+{%endspoiler%}
 
 程序运行过程中更新ob_refcnt的值，引用计数降为0的时候释放对象（如果还对象内部持有对其他对象的引用，则还需要递减这些对象的引用计数）(cpython/Include/object.h line 439)：
 
+{%spoiler 示例代码%}
 ```c
 static inline void _Py_DECREF(
 #ifdef Py_REF_DEBUG
@@ -40,6 +55,7 @@ static inline void _Py_DECREF(
     }
 }
 ```
+{%endspoiler%}
 
 ### 优缺点
 
@@ -59,6 +75,7 @@ static inline void _Py_DECREF(
 
 看一段示例代码：
 
+{%spoiler 示例代码%}
 ```python
 import sys
 
@@ -75,6 +92,7 @@ del l1
 sys.getrefcount(l2[0]) # 输出2
 sys.getrefcount(l2)    # 输出3
 ```
+{%endspoiler%}
 
 解释：为什么getrefcount显示的引用是3，而不是2：
 

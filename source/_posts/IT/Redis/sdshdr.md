@@ -1,3 +1,15 @@
+---
+title: "sdshdr"
+isCJKLanguage: true
+date: 2021-11-28 20:35:41
+updated: 2021-11-28 20:35:41
+categories: 
+- IT
+- Redis
+tags: 
+- Redis
+---
+
 # Redis底层数据类型1 -- sds
 
 [top]
@@ -48,7 +60,8 @@ sdshdr_8/32/64格式与此相似，只是数据长度由16位变为8/32/64位。
 
 《Redis设计与实现》一书中提到字符串长度不足39时使用embstr编码，大于39时使用sds编码，新版的redis将该该长度改为了44。（该值定义于object.c OBJ_ENCODING_EMBSTR_SIZE_LIMIT）
 
+{%spoiler 示例代码%}
 ```c
 #define OBJ_ENCODING_EMBSTR_SIZE_LIMIT 44
 ```
-
+{%endspoiler%}
