@@ -6,7 +6,7 @@ name: Hexo Auto-Deploy by GitHub Actions
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: test
+    branches: dev
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -48,24 +48,10 @@ jobs:
         CODING_REPO: e.coding.net/abug0/abug0/abug0.git
         # 将编译后的博客文件推送到指定仓库
       run: |
-        git remote -v
         cd ./public && git init && git add .
         git config user.name abug0
         git config user.email 1341785032@qq.com
-        git --version
-        echo 333
-        git config -l
-        git branch -v
-        echo 555
-        echo ${{ secrets.ACCESS_TOKEN }}
-        echo ${{ secrets.TOKEN }}
-        git status
-        echo 666
         git add .
-        echo 111
-        echo 222
         git commit -m "GitHub Actions Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
-        echo 777
         git push --force --quiet "https://${{ secrets.TOKEN }}@$GITHUB_REPO" master:hexo
-        echo 666
         git push --force --quiet "https://NoAPiWlhHC:${{ secrets.CODING }}@$CODING_REPO" master:hexo
