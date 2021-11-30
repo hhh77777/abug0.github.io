@@ -4,7 +4,7 @@ isCJKLanguage: true
 date: 2021-11-28 20:35:42
 updated: 2021-11-28 20:35:42
 categories: 
-- 编程
+- IT
 - Python
 tags: 
 - Python
