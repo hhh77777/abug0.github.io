@@ -26,6 +26,8 @@ tags:
 
 ​	三次握手可能会让客户端错误的处于ESTABLISHED状态，但考虑到客户端与服务端的角色，客户端的资源浪费处于可接受范围，基本不会出现大量连接都实际处于半连接状态进而导致服务不可用的情况。
 
+**总结: 三次握手是为了确认客户端-->服务端以及服务端-->客户端两个方向的网络连通性**
+
 ### 三次握手中的超时
 
 * 客户端发送SYN后，处于SYN_SENT状态，等待SYN+ACK超时；
@@ -103,7 +105,7 @@ cat /proc/sys/net/ipv4/tcp_syn_retries
   {%spoiler 示例代码%}
 ```bash
   cat /proc/sys/net/ipv4/tcp_fin_timeout
-  ```
+```
 {%endspoiler%}
 
 * TIME_WAIT状态超时
