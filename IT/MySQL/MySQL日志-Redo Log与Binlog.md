@@ -81,6 +81,8 @@ c.执行“commit”，发起提交，磁盘写redo log，然后生成bin log写
 
     
 
+![redo log与undo log](https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20211102101742.webp)
+
 ## 参考
 
 [参考一: 极客时间 MySQL45讲: 第一和十五讲](https://time.geekbang.org/column/intro/100020801)
@@ -95,3 +97,4 @@ c.执行“commit”，发起提交，磁盘写redo log，然后生成bin log写
 
 [参考六: Innodb引擎 · 基础模块篇(三) · 详解redo log存储结构](https://juejin.cn/post/6895265596985114638)
 
+[浅析MySQL事务中的redo与undo](https://segmentfault.com/a/1190000017888478)
