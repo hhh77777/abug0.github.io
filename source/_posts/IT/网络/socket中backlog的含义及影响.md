@@ -2,7 +2,7 @@
 title: "socket中backlog的含义及影响"
 isCJKLanguage: true
 date: 2021-12-31 21:58:48
-updated: 2021-12-31 21:58:48
+updated: "2022-01-02 17:53:33"
 categories: 
 - IT
 - 网络
@@ -16,6 +16,7 @@ tags:
 
 先执行man listen看一下listen的原型：
 
+{%spoiler 示例代码%}
 ```
 NAME
        listen - listen for connections on a socket
@@ -37,6 +38,7 @@ DESCRIPTION
 RETURN VALUE
        On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
 ```
+{%endspoiler%}
 
 根据描述，backlog指定了该套接字上最大等待队列的长度。如果队列长度已满的话，会返回一个错误，或者是忽略连接请求（当下层协议支持重传的时候）。本文仅讨论Linux系统下、下层协议为TCP时的backlog含义。
 
@@ -62,6 +64,7 @@ RETURN VALUE
 
 继续查看listen相关的手册，可以看到：
 
+{%spoiler 示例代码%}
 ```
 The  behavior of the backlog argument on TCP sockets changed with Linux 2.2.  Now it specifies the queue length for completely established sockets waiting to be accepted, instead of the number of incomplete connection requests.
        The maximum length of the queue for incomplete sockets can be set using /proc/sys/net/ipv4/tcp_max_syn_backlog.  When syncookies are enabled there is no logical maximum length and this setting is ignored.  See tcp(7)  for  more
@@ -70,6 +73,7 @@ The  behavior of the backlog argument on TCP sockets changed with Linux 2.2.  No
        If  the  backlog  argument  is  greater  than the value in /proc/sys/net/core/somaxconn, then it is silently truncated to that value; the default value in this file is 128.  In kernels before 2.4.25, this limit was a hard coded
        value, SOMAXCONN, with the value 128.
 ```
+{%endspoiler%}
 
 所以，对于以上三个问题的答案：
 
@@ -100,6 +104,7 @@ The  behavior of the backlog argument on TCP sockets changed with Linux 2.2.  No
 
 #### 二、在另一个session使用ab发请求，设置并发量为4：
 
+{%spoiler 示例代码%}
 ```shell
 [root@VM-24-8-centos ~]# ab -n 4 -c 4 localhost:8088/
 This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
@@ -146,6 +151,7 @@ Percentage of the requests served within a certain time (ms)
   99%  40001
  100%  40001 (longest request)
 ```
+{%endspoiler%}
 
 #### 三、查看套接字：
 
@@ -160,6 +166,7 @@ Percentage of the requests served within a certain time (ms)
 
 显然，这里可以看出全连接队列最大长度是2，即backlog+1。
 
+{%spoiler 示例代码%}
 ```shell
 [root@VM-24-8-centos ~]# netstat -ntp|grep 8088
 tcp        0      0 127.0.0.1:8088          127.0.0.1:59836         SYN_RECV    -                   
@@ -195,6 +202,7 @@ tcp        0      0 127.0.0.1:8088          127.0.0.1:59830         TIME_WAIT   
 tcp        0      0 127.0.0.1:8088          127.0.0.1:59834         TIME_WAIT   -                   
 tcp        0      0 127.0.0.1:8088          127.0.0.1:59832         TIME_WAIT   -
 ```
+{%endspoiler%}
 
 #### 四、看一下抓包结果，并分析：
 
@@ -202,6 +210,7 @@ tcp        0      0 127.0.0.1:8088          127.0.0.1:59832         TIME_WAIT   
 
 在第三步查看套接字情况的时候可以看出，ab本次测试用的端口分别是59830、59832、59834、59836，与抓包结果相符合。进一步分析报文内容可以发现，对于前三个端口（59830、59832、59834），三次握手正常建立，这也基本与前一步看到的连接状况相符。唯独对于端口59836，服务器一直在重发SYN+ACK报文，从下文看，显然59836已经回复ACK，但是服务器进程并未处理这个ACK报文，反而一直在重发SYN+ACK报文，直到某一刻（基本是59830这个连接结束的时候，从服务端源码看，也正是accept从全连接队列中取出一个套接字的时候）。
 
+{%spoiler 示例代码%}
 ```shell
 [root@VM-24-8-centos ~]# tcpdump -nni any port 8088
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -269,11 +278,13 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 20:51:31.728503 IP 127.0.0.1.59836 > 127.0.0.1.8088: Flags [F.], seq 83, ack 132, win 342, options [nop,nop,TS val 2630343459 ecr 2630343459], length 0
 20:51:31.728512 IP 127.0.0.1.8088 > 127.0.0.1.59836: Flags [.], ack 84, win 342, options [nop,nop,TS val 2630343459 ecr 2630343459], length 0
 ```
+{%endspoiler%}
 
 #### 五、/proc/sys/net/ipv4/tcp_abort_on_overflow设置为1，观察抓包结果：
 
 显然这次使用的是33536、33538、33540、33542四个端口，看一下抓包结果，明显对于端口33542，在三次握手的报文之后，服务器进程直接发送了一个RST报文。
 
+{%spoiler 示例代码%}
 ```
 [root@VM-24-8-centos ~]# ab -n 4 -c 4 localhost:8088/
 This is ApacheBench, Version 2.3 <$Revision: 1430300 $>
@@ -289,9 +300,11 @@ Licensed to The Apache Software Foundation, http://www.apache.org/
 
 Benchmarking localhost (be patient)...apr_socket_recv: Connection reset by peer (104)
 ```
+{%endspoiler%}
 
 
 
+{%spoiler 示例代码%}
 ```shell
 [root@VM-24-8-centos ~]# netstat -ntp|grep 8088
 tcp        0      0 127.0.0.1:33538         127.0.0.1:8088          FIN_WAIT2   -                   
@@ -301,9 +314,11 @@ tcp        0      0 127.0.0.1:33536         127.0.0.1:8088          FIN_WAIT2   
 tcp        1      0 127.0.0.1:8088          127.0.0.1:33536         CLOSE_WAIT  14918/./test        
 tcp       83      0 127.0.0.1:8088          127.0.0.1:33540         CLOSE_WAIT  -
 ```
+{%endspoiler%}
 
 
 
+{%spoiler 示例代码%}
 ```shell
 [root@VM-24-8-centos ~]# tcpdump -nni any port 8088
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
@@ -342,9 +357,11 @@ listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes
 21:24:51.282160 IP 127.0.0.1.8088 > 127.0.0.1.33538: Flags [.], ack 84, win 342, options [nop,nop,TS val 2632343013 ecr 2632342973], length 0
 21:24:51.282161 IP 127.0.0.1.8088 > 127.0.0.1.33540: Flags [.], ack 84, win 342, options [nop,nop,TS val 2632343013 ecr 2632342973], length 0
 ```
+{%endspoiler%}
 
 ## 测试服务器源码
 
+{%spoiler 示例代码%}
 ```c
 #include <sys/select.h>  
 #include <sys/time.h>
@@ -567,6 +584,7 @@ int main(int argc, char *argv[])
 	return 0;
 }
 ```
+{%endspoiler%}
 
 
 
