@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 import time
 import datetime
 # import enchant
@@ -124,18 +125,44 @@ class HugoMarkdown:
             fileInfoDict['keywords'] = self.__getKeywords(content, fileInfoDict['fileName'])
 
             #content = self.__getMmeta(fileInfoDict) + self.__insertMoreToContent(content)
-            content = self.__getMmeta(fileInfoDict) + self.__insertSpoilerToContent(content)
+            pattern = re.compile(r"---((?!---).*title.*date.*)---", re.I|re.M|re.S)
+            # 已经存在meta
+            if re.search(pattern, content):
+                print("存在meta")
+                content = self.updateMeta(content, fileInfoDict)
+                content = self.__insertSpoilerToContent(content)
+            else:
+                content = self.__getMmeta(fileInfoDict) + self.__insertSpoilerToContent(content)
 
             # 写入新文件
             self.__writeNewMarkdownFile(content, fileInfoDict)
 
+    def getCategories(self, fileInfoDict):
+        metaParentCategory = ""
+        metaGrandpaCategory = ""
+        if fileInfoDict['grandpaDir']!='':
+            metaGrandpaCategory = "- "+fileInfoDict['grandpaDir']+"\n"
+        
+        if fileInfoDict['parentDir']!='':
+            metaParentCategory = "- "+fileInfoDict['parentDir']+"\n"
+
+        return metaGrandpaCategory + metaParentCategory
+
+    def getTags(self, fileInfoDict):
+        metaParentCategory = ""
+        metaGrandpaCategory = ""
+        if fileInfoDict['parentDir']!='':
+            metaParentCategory = "- "+fileInfoDict['parentDir']+"\n"
+        
+        return metaParentCategory
+        
     # 获取meta
     def __getMmeta(self, fileInfoDict):
         print("准备文章meta信息：", "\n") 
         meta = ""
         metaTitle = "title: \""+fileInfoDict['fileName']+"\"\n"
         metaCJK = "isCJKLanguage: true\n"
-        metaDate = "date: "+fileInfoDict['fileMtime']+"\n"
+        metaDate = "date: "+fileInfoDict['fileCtime']+"\n"
         metaUpdateDate = "updated: "+fileInfoDict['fileMtime']+"\n"
         metaCategories = "categories: \n"
         metaParentCategory = ""
@@ -161,6 +188,21 @@ class HugoMarkdown:
         print(meta, "\n")
         return meta
 
+    def updateMeta(self, content, fileInfoDict):
+        """更新文章元信息，只对title/updated/categories/tags进行更新
+        """
+        meta = re.search(r"---.*title.*date.*?---", content, re.I|re.M|re.S)
+        if meta:
+            meta = meta.group()
+            meta = re.sub(r"title: .*?\n", "title: \""+fileInfoDict['fileName']+"\"\n", meta)
+            meta = re.sub(r"updated: .*?\n", "updated: \""+fileInfoDict['fileMtime']+"\"\n", meta)
+            print(meta)
+            meta = re.sub(r"categories: .*?\n([-].*?\n)*", "categories: \n"+self.getCategories(fileInfoDict), meta)
+            meta = re.sub(r"tags: .*?\n([-].*?\n)*", "tags: \n"+self.getTags(fileInfoDict), meta)
+            content = re.sub(r"---.*title.*date.*?---", meta, content, flags=re.I|re.M|re.S)
+
+        return content
+
     #插入<!--more-->到文章
     def __insertMoreToContent(self,content):        
         tocFlag = '<!--more-->'
@@ -181,13 +223,17 @@ class HugoMarkdown:
     def __insertSpoilerToContent(self, content):
         """插入{%spoiler%}{%endspoiler%},提供代码折叠选项
         """
-        import re
+        def repl(mo):
+            return r"{%spoiler 示例代码%}"+ "\n" + mo.string[mo.start(): mo.end()] + "\n" +r"{%endspoiler%}"
+
         flag = '```'
         # pattern = r"(```[^```]*```)"
-        pattern = r"```((?!```).)*```"
+        pattern = r"(?<!{%spoiler 示例代码%}\n)```((?!```).)*```"
+        # pattern = re.compile(r"```((?!```).)*```", re.I|re.M|re.S)
+        pattern = re.compile(pattern, re.I|re.M|re.S)
         if (re.search(pattern, content)):       
             print("发现代码", flag, "\n")
-            content = re.sub(pattern, r"{%spoiler 示例代码%}\n\1\n{%endspoiler%}", content)
+            content = re.sub(pattern, repl, content)
         else:
             print("没有发现代码", pattern, "\n")
 
