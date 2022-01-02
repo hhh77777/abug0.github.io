@@ -51,6 +51,21 @@ Innodb锁机制是通过在索引加锁实现的。
 
 * RR级别下，不满足where条件的记录不会提前释放锁：如果使用了二级索引，那么主键索引上只会对需要回表访问的记录加锁（考虑ICP）。
 
+
+
+## 总结与概括
+
+* 首先定位到扫描区间内的第一个记录，开始往下遍历，扫描到的数据加锁；
+* 如果是order by ... desc，则要对这条记录的后面一条记录加LOCK_GAP(需满足加GAP Lock的条件，比如隔离级别大于等于可重复读等);
+* 如果是精确匹配（where条件为=），且该记录不满足条件，则对记录加一条LOCK_GAP，然后结束加锁过程；
+* 到这一步需要对该记录进行判断：
+  * 唯一性搜索且记录没被删除，加LOCK_REC_NOT_GAP
+  * 聚簇索引上 的>=条件，且该记录刚好是开始条件，加LOCK_REC_NOT_GAP；
+  * 聚簇索引上的查询，而且是第一次定位记录或者是向后搜索（区别于order by desc的情况）且该记录不满足条件，加LOCK_GAP；
+  * 其他情况加Next-Key Lock。
+
+
+
 ### 说明
 
 #### 访问到的数据才会加锁
@@ -1188,4 +1203,6 @@ mysql> explain  select num from ttt where num>5 and num<15 and id!=10 for update
 [[4] MySQL 加锁处理分析（MVVC、快照读、当前读、GAP锁（间隙锁））](https://www.huaweicloud.com/articles/f571bafcbe55475cd94d1f2f65e729a9.html)
 
 [[5] MySQL官网: 15.7.3 Locks Set by Different SQL Statements in InnoDB](https://dev.mysql.com/doc/refman/8.0/en/innodb-locks-set.html)
+
+[[6] Innodb到底是怎么加锁的](https://juejin.cn/post/7028435335382040589#heading-9)
 
