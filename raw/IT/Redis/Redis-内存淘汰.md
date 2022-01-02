@@ -33,6 +33,6 @@ replica-ignore-maxmemory yes
 
 **note: 默认情况下从节点不会进行数据淘汰，取决于配置项replica-ignore-maxmemory。**
 
-**note: 主从复制缓冲区导致内存占用过多，进一步触发更多的数据淘汰，可能形成恶性循环。**
+**note: 主从复制缓冲区(backlog buffer)导致内存占用过多，进一步触发更多的数据淘汰，可能形成恶性循环。**
 
 ​	
