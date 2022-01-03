@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.abug0.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"text":"gitalk(github评论)","order":-2},"valine":{"text":"匿名评论(Anonymous)","order":-1}},"activeClass":"gitalk"},"algolia":{"appID":"V8S440A7R6","apiKey":"5f18489120f06717c74217be61ca3feb","indexName":"abug0","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HTTP和HTTPSHTTPHTTP：超文本传输协议。 HTTP使用明文传输，安全性低。 HTTP的问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP和HTTPS">
+<meta property="og:url" content="https://www.abug0.com/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html">
+<meta property="og:site_name" content="abug0的博客">
+<meta property="og:description" content="HTTP和HTTPSHTTPHTTP：超文本传输协议。 HTTP使用明文传输，安全性低。 HTTP的问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210726180127.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210726215140.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162324.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162239.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162702.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162803.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162840.png">
+<meta property="article:published_time" content="2021-11-28T20:35:42.000Z">
+<meta property="article:modified_time" content="2021-11-28T20:35:42.000Z">
+<meta property="article:author" content="abug0">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210726180127.png">
+
+<link rel="canonical" href="https://www.abug0.com/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HTTP和HTTPS | abug0的博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dfa0fbb598015665cff81cbb01b109d3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">abug0的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Simple is Beautiful.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">22</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.abug0.com/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="abug0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="abug0的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HTTP和HTTPS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-28 20:35:42" itemprop="dateCreated datePublished" datetime="2021-11-28T20:35:42+00:00">2021-11-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/" itemprop="url" rel="index"><span itemprop="name">IT</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">网络</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html" class="post-meta-item leancloud_visitors" data-flag-title="HTTP和HTTPS" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="HTTP和HTTPS"><a href="#HTTP和HTTPS" class="headerlink" title="HTTP和HTTPS"></a>HTTP和HTTPS</h1><h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><p>HTTP：超文本传输协议。</p>
+<p>HTTP使用明文传输，安全性低。</p>
+<h3 id="HTTP的问题"><a href="#HTTP的问题" class="headerlink" title="HTTP的问题"></a>HTTP的问题</h3><ul>
+<li>明文传输，容易被监听</li>
+<li>信息可以被篡改</li>
+<li>不验证对方身份，可能遇到伪装</li>
+</ul>
+<h2 id="对称与非对称加密"><a href="#对称与非对称加密" class="headerlink" title="对称与非对称加密"></a>对称与非对称加密</h2><p>对称加密/私钥加密：即加解密使用同一个密钥。</p>
+<p>非对称加密/公钥加密：需要一对密钥–私钥和公钥。私钥加密的内容只有公钥能解密，公钥加密的内容只有私钥能解密。私钥私有，公钥对外发布。</p>
+<p>一般来说，对称加解密速度更快，但安全性稍弱，而非对称加解密速度稍慢，但安全性更高。</p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><h3 id="概论"><a href="#概论" class="headerlink" title="概论"></a>概论</h3><p>HTTPS（Hypertext Transfer Protocol Secure，超文本传输安全协议），使用HTTP进行通信，SSL/TLS加密数据包。</p>
+<p>HTTPS混合使用非对称加密与对称加密：http内容通过对称加密算法进行加密，而对称密钥的协商过程则使用非对称加密算法进行加密。</p>
+<h3 id="中间人攻击"><a href="#中间人攻击" class="headerlink" title="中间人攻击"></a>中间人攻击</h3><p>加密问题解决了，但是通过中间人攻击仍旧可以对通信内容进行监听。</p>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210726180127.png" alt="image-20210726164436657"></p>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210726215140.png" alt="2116505485-5e8c93c2e0584"></p>
+<p>​                            （图片来自参考二）</p>
+<h3 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h3><h4 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h4><blockquote>
+<p>给定一条消息M作为输入，加密散列函数的输出H称为这条消息的摘要或指纹H(M)。</p>
+<p>摘要的特性：</p>
+<ul>
+<li>原像不可计算性：给定摘要H(M)而未知消息M的情况下，难以计算出消息M的值；</li>
+<li>原像不相同性：给定消息M1的摘要，找出一条消息M2（M2!=M1）使其摘要H(M2)等于M1的摘要（H(M1)==H(M2)）是十分困难的；</li>
+<li>抗碰撞性：找出一对摘要相同（H(M1)==H(M2)）而自身不同的消息（M2!=M1）是十分困难的。</li>
+</ul>
+</blockquote>
+<h4 id="摘要算法"><a href="#摘要算法" class="headerlink" title="摘要算法"></a>摘要算法</h4><p>常见摘要算法有MD5、SHA-1、SHA256、SHA-2等。</p>
+<p>目前，MD5已与2005年被宣告破解（两个不同的128字节的序列被证明具有相同的MD5值），而SHA-1、SHA-2也被认为具有潜在的脆弱性。<sup><a href='#ref1'>3</a></sup> </p>
+<p>2017年，CWI Amsterdam 与 Google 宣布了一个成功的 SHA-1 碰撞攻击。<sup><a href='#ref4'>4</a></sup></p>
+<h4 id="数字签名-1"><a href="#数字签名-1" class="headerlink" title="数字签名"></a>数字签名</h4><p>使用私钥对消息摘要进行加密后，得到的输出称为数字签名。</p>
+<ul>
+<li><p>签名：发送方使用私钥对消息摘要进行加密，得到签名。</p>
+</li>
+<li><p>验签：接收方使用公钥对签名进行解密，将得到的摘要与消息内容的摘要进行对比。</p>
+</li>
+<li><p>数字签名过程需要使用到私钥，所以除非私钥泄漏，其他人无法伪造。</p>
+</li>
+<li><p>数字签名的不可伪造性，使得它可以用来确认一个实体，类似于现实中的个人签名。</p>
+</li>
+</ul>
+<h3 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h3><p>数字签名依赖于公钥与私钥，但是客户端与服务端交换公钥的过程仍旧可能受到攻击，比如中间人攻击，客户端可能收到伪造的服务端公钥。</p>
+<p>为了解决这一问题，引入数字证书。</p>
+<p>数字证书由CA机构进行颁发，内容包括所有人信息、所有人公钥、有效期、以及认证机构信息、认证机构的数字签名等。数字证书的本质是数字签名+公钥+证书认证机构（Certificate Authority）。</p>
+<p>通过证书上的数字签名可以对证书内容的完整性进行验证，验证通过后，客户端可以信任证书中的公钥即为证书所有人的公钥。</p>
+<h4 id="数字证书的验证"><a href="#数字证书的验证" class="headerlink" title="数字证书的验证"></a>数字证书的验证</h4><p>数字证书由可信任的CA机构颁发，通常认为如果一个CA机构可信任，则由该机构颁发的证书为可信任证书。</p>
+<p>在对数字证书进行验证时，也需要对签发这个证书的CA证书进行验证，一直到根证书为止。</p>
+<h4 id="根证书"><a href="#根证书" class="headerlink" title="根证书"></a>根证书</h4><p>数字证书体系是一个分层级的、中心化的认证体系。</p>
+<p>根证书，又称自签名证书，是指CA机构给自己颁发的证书。根证书也是信任链的起点。</p>
+<p>根证书一般由操作系统/浏览器内置。</p>
+<h3 id="HTTPS解决的问题"><a href="#HTTPS解决的问题" class="headerlink" title="HTTPS解决的问题"></a>HTTPS解决的问题</h3><ul>
+<li>信息窃听问题：加密传输；</li>
+<li>信息完整性问题：SSL/TLS具备完整性验证能力-MAC(Message Authentication code)；</li>
+<li>遭遇伪装：数字证书，可以进行服务端和客户端的验证。</li>
+</ul>
+<h3 id="HTTPS握手过程"><a href="#HTTPS握手过程" class="headerlink" title="HTTPS握手过程"></a>HTTPS握手过程</h3><p>依赖于client与server商定的具体加密套件，HTTPS握手可以分为两类：基于RSA的握手和基于Deffie-Hellman的握手。</p>
+<p>两种握手方式主要是密钥交换和身份认证方式上的不同。</p>
+<h4 id="基于Deffie-Hellman方式的握手"><a href="#基于Deffie-Hellman方式的握手" class="headerlink" title="基于Deffie Hellman方式的握手"></a>基于Deffie Hellman方式的握手</h4><p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162324.png" alt="image-20210729162324573"></p>
+<h4 id="基于RSA方式的握手"><a href="#基于RSA方式的握手" class="headerlink" title="基于RSA方式的握手"></a>基于RSA方式的握手</h4><p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162239.png" alt="image-20210729162239422"></p>
+<h4 id="密码套件的格式说明"><a href="#密码套件的格式说明" class="headerlink" title="密码套件的格式说明"></a>密码套件的格式说明</h4><p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162702.png" alt="ssl-handshake-ciphers"></p>
+<h4 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h4><ul>
+<li>基于DH的握手</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162803.png" alt="image-20210729162803287"></p>
+<ul>
+<li><p>基于RSA的握手</p>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210729162840.png" alt="image-20210729162840465"></p>
+</li>
+</ul>
+<h2 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h2><p><a target="_blank" rel="noopener" href="https://github.com/Abug0/abug0.github.io/raw/master/IT/imgs/https-DH.cap.pcapng">https-DH.cap.pcapng</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Abug0/abug0.github.io/raw/master/IT/imgs/https-RSA.cap.pcapng">https-RSA.cap.pcapng</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xdyixia/p/11610102.html">[1] HTTPS中CA证书的签发及使用过程</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022294393">[2] Http和Https之间的区别，及原理分析</a></p>
+<p><a href="">[3] TCP/IP详解 卷1：协议 18.4.8(第2版)</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1584742">[4] 常用消息摘要算法简介</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1548350">[5] 使用openssl创建https证书</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.digac.cc/2020/06/use_openssl_to_create_root_certificate_intermediate_certificate_and_server_certificate.html">[6] 在Linux下使用openssl创建根证书，中间证书和服务端证书</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.51cto.com/wushank/1915795">[7] der pem cer crt key pfx等概念及区别</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/HANQIAN12345/article/details/101971671">[8] 利用OpenSSL创建证书链并应用于IIS7</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.opensvc.net/duo-yu-ming-zheng-shu-qian-fa/">[9] 多域名证书签发</a></p>
+<p><a target="_blank" rel="noopener" href="https://monkeywie.cn/2019/11/15/create-ssl-cert-with-san/">[10] OpenSSL创建带SAN扩展的证书并进行CA自签</a></p>
+<p><a target="_blank" rel="noopener" href="https://razeencheng.com/post/ssl-handshake-detail.html">[11] HTTPS篇之SSL握手过程详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6895624327896432654">[12] TLS详解握手流程</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904158319869960">[13] 消息认证码与数字签名的理解</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022012971">[15] HTTPS解决了什么问题</a></p>
+<p><a target="_blank" rel="noopener" href="http://wsfdl.com/algorithm/2016/02/04/%E7%90%86%E8%A7%A3Diffie-Hellman%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2%E7%AE%97%E6%B3%95.html">[16] 理解Deffie-Hellman密钥交换算法</a></p>
+<p><a target="_blank" rel="noopener" href="https://tls.ulfheim.net/">17 图解TLS–字节级分析</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/IT/%E7%BD%91%E7%BB%9C/TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E4%B8%8E%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B.html" rel="prev" title="TCP三次握手与四次挥手">
+      <i class="fa fa-chevron-left"></i> TCP三次握手与四次挥手
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html" rel="next" title="面试">
+      面试 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="comment-button-group">
+          <a class="btn comment-button gitalk">gitalk(github评论)</a>
+          <a class="btn comment-button valine">匿名评论(Anonymous)</a>
+      </div>
+        <div class="comment-position gitalk">
+          <div class="comments" id="gitalk-container"></div>
+        </div>
+        <div class="comment-position valine">
+          <div class="comments" id="valine-comments"></div>
+        </div>
+      <script>
+        (function() {
+          let commentButton = document.querySelectorAll('.comment-button');
+            commentButton.forEach(element => {
+            let commentClass = element.classList[2];
+            element.addEventListener('click', () => {
+              commentButton.forEach(rmActive => rmActive.classList.remove('active'));
+              element.classList.add('active');
+              document.querySelectorAll('.comment-position').forEach(rmActive => rmActive.classList.remove('active'));
+              document.querySelector(`.comment-position.${commentClass}`).classList.add('active');
+              if (CONFIG.comments.storage) {
+                localStorage.setItem('comments_active', commentClass);
+              }
+            });
+          });
+          let { activeClass } = CONFIG.comments;
+          if (CONFIG.comments.storage) {
+            activeClass = localStorage.getItem('comments_active') || activeClass;
+          }
+          if (activeClass) {
+            let activeButton = document.querySelector(`.comment-button.${activeClass}`);
+            if (activeButton) {
+              activeButton.click();
+            }
+          }
+        })();
+      </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP%E5%92%8CHTTPS"><span class="nav-number">1.</span> <span class="nav-text">HTTP和HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP"><span class="nav-number">1.1.</span> <span class="nav-text">HTTP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.1.</span> <span class="nav-text">HTTP的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E7%A7%B0%E4%B8%8E%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="nav-number">1.2.</span> <span class="nav-text">对称与非对称加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS"><span class="nav-number">1.3.</span> <span class="nav-text">HTTPS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%AE%BA"><span class="nav-number">1.3.1.</span> <span class="nav-text">概论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB"><span class="nav-number">1.3.2.</span> <span class="nav-text">中间人攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="nav-number">1.3.3.</span> <span class="nav-text">数字签名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%91%98%E8%A6%81%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">摘要算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D-1"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">数字签名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6"><span class="nav-number">1.3.4.</span> <span class="nav-text">数字证书</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E7%9A%84%E9%AA%8C%E8%AF%81"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">数字证书的验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B9%E8%AF%81%E4%B9%A6"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">根证书</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.5.</span> <span class="nav-text">HTTPS解决的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.6.</span> <span class="nav-text">HTTPS握手过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8EDeffie-Hellman%E6%96%B9%E5%BC%8F%E7%9A%84%E6%8F%A1%E6%89%8B"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">基于Deffie Hellman方式的握手</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8ERSA%E6%96%B9%E5%BC%8F%E7%9A%84%E6%8F%A1%E6%89%8B"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">基于RSA方式的握手</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E5%A5%97%E4%BB%B6%E7%9A%84%E6%A0%BC%E5%BC%8F%E8%AF%B4%E6%98%8E"><span class="nav-number">1.3.6.3.</span> <span class="nav-text">密码套件的格式说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%93%E5%8C%85"><span class="nav-number">1.3.6.4.</span> <span class="nav-text">抓包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">附件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">abug0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-book-open"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">abug0</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6105212924a623f6" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '40ec7d9233a147cef660',
+      clientSecret: '414cf059b7655d5e8a124b78961ca81378149a03',
+      repo        : 'gitalk-comments',
+      owner       : 'abug0',
+      admin       : ['abug0'],
+      id          : 'b49b3945b46cd6da7292b1a8dab48d39',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'DkAmD8PHRf2jESEBV3Ght5TX-gzGzoHsz',
+      appKey     : 'OTTHxhSv4aPOg8I21witBRTh',
+      placeholder: "请在此留言",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

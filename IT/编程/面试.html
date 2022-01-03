@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.abug0.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"text":"gitalk(github评论)","order":-2},"valine":{"text":"匿名评论(Anonymous)","order":-1}},"activeClass":"gitalk"},"algolia":{"appID":"V8S440A7R6","apiKey":"5f18489120f06717c74217be61ca3feb","indexName":"abug0","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Pythonis和&#x3D;&#x3D;区别 弱引用 await和async asyncio.sleep和sleep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试">
+<meta property="og:url" content="https://www.abug0.com/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html">
+<meta property="og:site_name" content="abug0的博客">
+<meta property="og:description" content="Pythonis和&#x3D;&#x3D;区别 弱引用 await和async asyncio.sleep和sleep">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-28T20:35:42.000Z">
+<meta property="article:modified_time" content="2021-11-28T20:35:42.000Z">
+<meta property="article:author" content="abug0">
+<meta property="article:tag" content="编程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.abug0.com/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>面试 | abug0的博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dfa0fbb598015665cff81cbb01b109d3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">abug0的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Simple is Beautiful.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">22</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.abug0.com/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="abug0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="abug0的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-28 20:35:42" itemprop="dateCreated datePublished" datetime="2021-11-28T20:35:42+00:00">2021-11-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/" itemprop="url" rel="index"><span itemprop="name">IT</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html" class="post-meta-item leancloud_visitors" data-flag-title="面试" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/IT/%E7%BC%96%E7%A8%8B/%E9%9D%A2%E8%AF%95.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h2><p>is和==区别</p>
+<p>弱引用</p>
+<p>await和async</p>
+<p>asyncio.sleep和sleep</p>
+<p> magic method</p>
+<p>dummy</p>
+<p>GIL:</p>
+<ul>
+<li>存在原因：内存管理的线程安全</li>
+</ul>
+<p>闭包</p>
+<p>super与MRO</p>
+<p>迭代器 可迭代对象  生成器</p>
+<p>深拷贝与浅拷贝</p>
+<p>垃圾回收</p>
+<p>int long 整数长度问题</p>
+<p>bytes unicode utf8</p>
+<p>import 原理</p>
+<p>新式类与旧式类</p>
+<p>列表推导式的好处</p>
+<p>内存泄漏</p>
+<ul>
+<li>全局的list、dict或其他容器对象，向里面插入对象没有删除</li>
+<li>引用循环，且循环引用的对象定义了__del__方法</li>
+</ul>
+<p>可变对象的内存泄露</p>
+<p>静态变量（类变量）与实例变量</p>
+<ul>
+<li></li>
+</ul>
+<p>staticmethod与classmethod</p>
+<ul>
+<li></li>
+</ul>
+<p>上下文管理器</p>
+<ul>
+<li>_<em>enter</em>_</li>
+<li>_<em>exit</em>_</li>
+</ul>
+<p>字典一样访问一个类</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">        self.a = <span class="number">123</span></span><br><span class="line">        self.b = <span class="number">56</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getattr</span>(self, item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span>(<span class="params">self, item, value</span>):</span></span><br><span class="line">        <span class="built_in">setattr</span>(self, item, value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        <span class="built_in">delattr</span>(self, item)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line"><span class="built_in">print</span>(a.a)</span><br><span class="line"><span class="built_in">print</span>(a[<span class="string">&#x27;a&#x27;</span>])</span><br><span class="line"></span><br><span class="line">a.c = <span class="number">78</span></span><br><span class="line"><span class="built_in">print</span>(a.__dict__)</span><br><span class="line"><span class="built_in">print</span>(a.c)</span><br><span class="line"><span class="built_in">print</span>(a[<span class="string">&#x27;c&#x27;</span>])</span><br><span class="line"></span><br><span class="line">a[<span class="string">&#x27;d&#x27;</span>] = <span class="number">100</span></span><br><span class="line"><span class="built_in">print</span>(a.__dict__)</span><br><span class="line"><span class="built_in">print</span>(a.d)</span><br><span class="line"><span class="built_in">print</span>(a[<span class="string">&#x27;d&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dir</span>(a))</span><br><span class="line"></span><br><span class="line"><span class="keyword">del</span> a.d</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dir</span>(a))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+
+
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><p>进程 线程 协程</p>
+<p>同步 异步 阻塞  非阻塞</p>
+<p>进程空间模型</p>
+<p>虚拟内存</p>
+<p>io多路复用</p>
+<ul>
+<li>select</li>
+<li>poll</li>
+<li>epoll</li>
+</ul>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>删除表</p>
+<p>事务、隔离级别</p>
+<p>默认级别</p>
+<p>B+树</p>
+<p>B树与B+树</p>
+<p>联合索引</p>
+<p>死锁</p>
+<p>主键索引与唯一索引</p>
+<p>覆盖索引 前缀索引</p>
+<p>自增ID与UUID区别</p>
+<p>索引失效</p>
+<ul>
+<li>不符合最左前缀原则：like或者复合索引</li>
+<li>等号右边使用了函数或者隐式类型转换</li>
+</ul>
+<p>MyISAM和InnoDB区别：</p>
+<ul>
+<li>InnoDB支持事务，MyISAM不支持</li>
+<li>InnoDB聚簇索引，MyISAM非聚簇</li>
+<li>InnoDB不保存表的行数，MyISAM保存</li>
+<li>InnoDB行锁，MyISAM表锁</li>
+<li>InnoDB支持外键，MyISAM不支持</li>
+</ul>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>GET与POST</p>
+<p>Http2.0:</p>
+<ul>
+<li>多路复用：多个请求并行发送</li>
+<li>二进制分帧</li>
+<li>支持头部压缩</li>
+</ul>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>大顶堆的插入删除</p>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><p>如何保证消费的幂等性</p>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><ul>
+<li>缓存击穿：某个热点key失效，大量请求到达数据库<ul>
+<li>过期时间：永不过期</li>
+<li>锁：拿到锁才可以访问数据库</li>
+</ul>
+</li>
+<li>缓存雪崩：大量key失效，大量请求到达数据库<ul>
+<li>过期时间加一个随机值，防止同一时刻过期</li>
+<li>防止redis宕机：主从</li>
+<li>熔断、限流</li>
+</ul>
+</li>
+<li>缓存穿透：查询一个不存在的数据，请求直接到达数据库<ul>
+<li>缓存null</li>
+<li>布隆过滤器</li>
+</ul>
+</li>
+</ul>
+<p>scan命令使用</p>
+<p>RDB与AOF</p>
+<p>大key问题以及value大小限制</p>
+<ul>
+<li>key对应的value过大</li>
+<li>redis限制string类型不超过512m，实践建议10KB一下</li>
+<li>hash、list、set、zset元素个数不要超过5000</li>
+</ul>
+<p>key过期发生什么</p>
+<p>key过长发生什么</p>
+<blockquote>
+<ul>
+<li>非常长的key是不推荐的。一个1024 bytes是一个非常坏的注意，不仅仅是因为内存浪费，更是因为在数据集中搜索对比的时候需要耗费更多的成本。当要处理的是匹配一个非常大的值，从内存和带宽的角度来看，使用这个值的hash值是更好的办法（比如使用SHA1）。</li>
+<li>特别短的key通常也是不推荐的。在写像u100flw这样的键的时候，有一个小小的要点，我们可以用user:1000:followers代替。可读性更好，对于key对象和value对象增加的空间占用与此相比来说倒是次要的。当短的key可以很明显减少空间占用的时候，你的工作就是找到正确的平衡。</li>
+<li>尝试去固定一个schema。比如object-type:id是一个好主意，-和.通常用于多个字符的域，就像comment:1234:reply.to，或者comment:1234:reply-to。</li>
+<li>最大的key允许512MB。</li>
+</ul>
+</blockquote>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>rpc与http的区别和联系</p>
+<p>rpc的使用场景</p>
+<p>restful的理解</p>
+<p>DNS和HTTPS过程</p>
+<p>幂等</p>
+<ul>
+<li>GET/PUT/DELETE 幂等</li>
+<li>POST/PATCH 非幂等</li>
+</ul>
+<p>正则表达式的实现</p>
+<p>访问微博背后的过程？</p>
+<p>微博赞/评论系统设计？</p>
+<p>性能排查和优化思路？</p>
+<p>七天阅读量排行榜设计？</p>
+<p>bug的排查思路？</p>
+<p>限流</p>
+<h2 id="底层原理"><a href="#底层原理" class="headerlink" title="底层原理"></a>底层原理</h2><p>float的实现</p>
+<h2 id="Docker与K8s"><a href="#Docker与K8s" class="headerlink" title="Docker与K8s"></a>Docker与K8s</h2><p>面向对象六原则</p>
+<ul>
+<li>单一职责<ul>
+<li>引起类变化的因素应当尽可能少</li>
+</ul>
+</li>
+<li>里氏替换<ul>
+<li>父类出现的地方可以用子类代替</li>
+<li>子类出现的地方不一定可以用父类代替</li>
+</ul>
+</li>
+<li>依赖倒转<ul>
+<li>高层模块不依赖底层模块，两者都依赖抽象（模块间的依赖通过抽象发生，实现类之间不发生直接的依赖关系）</li>
+<li>抽象（接口或者抽象类）不应该依赖细节（实现类）</li>
+<li>细节应该依赖于抽象</li>
+</ul>
+</li>
+<li>接口隔离<ul>
+<li>避免接口的过度臃肿</li>
+</ul>
+</li>
+<li>迪米特（最少知识原则）<ul>
+<li>一个对象对其他对象应该有最少的了解：调用者只需要知道被调用者的出参和入参定义，而无需对其内部实现做任何假设。</li>
+<li>只和朋友类交流：尽可能少的引用其他类，只和成员类或者出现在参数中的类交流。</li>
+</ul>
+</li>
+<li>开闭<ul>
+<li>对扩展开放，对修改关闭。</li>
+</ul>
+</li>
+</ul>
+<p>REST的认识：</p>
+<ul>
+<li>客户端-服务器：组件分离，可以相对各自独立的演化</li>
+<li>缓存：减少交互次数</li>
+<li>分层</li>
+<li>无状态：每个请求不依赖于其他请求，各请求间相互独立，每次请求由客户端将完成请求需要的全部信息传给服务端<ul>
+<li>登录：token或者cookie，基本都需要预先完成登录操作，无法做到完全的无状态</li>
+<li>非登录：例如，”下一页”请求，一种做法是服务端保存当前页码，请求到达的时候查看对应的下一页页码，另一种做法是客户端请求中将对应的页码带上，不需要服务端记住当前访问到了哪一页，也就是不需要服务端保存上下文。第二种做法即是无状态的。</li>
+</ul>
+</li>
+<li>接口统一，get/post/put/delete，uri标识资源</li>
+<li>超文本驱动（HATEOAS）</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://foofish.net/python-closure.html">[1] 一步一步教你认识Python闭包</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Abug0/abug0.github.io/blob/master/IT/books/REST_cn.pdf">REST论文中文版</a></p>
+<p><a target="_blank" rel="noopener" href="https://kricen.github.io/2018/03/05/perday/restful/">Restful架构的理解及使用场景分析</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/matthew_zhang/article/details/63410421">理论与实例，准确理解REST的无状态设计</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/28557115">怎样用通俗的语言解释REST，以及RESTful？</a></p>
+<p><a target="_blank" rel="noopener" href="http://icyfenix.cn/architecture/architect-history/">服务架构演进史</a></p>
+<p><a target="_blank" rel="noopener" href="http://icyfenix.cn/architect-perspective/general-architecture/api-style/rest.html">REST设计风格</a></p>
+<p><a target="_blank" rel="noopener" href="https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">REST APIs must be hypertext-driven</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/58092071">面向对象设计之魂的六大原则</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000020182270">面向对象之六大设计原则</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/36173202">Python中下划线的5种含义</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1704743">索引失效原理，终于有人讲明白了</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/fe5ccfc5d7bd">RPC与HTTP</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61423830">你猜一个 TCP 连接上面能发多少个 HTTP 请求</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/loveer/p/11479249.html">彻底理解同步 异步 阻塞 非阻塞</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19732473/answer/241673170">怎样理解阻塞非阻塞与同步异步的区别?</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15163980/2699646">深入理解一下“同步IO和异步 IO，阻塞 IO和非阻塞IO”</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/my_life/articles/10910375.html">socket的可读可写事件</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6882984260672847879">彻底理解 IO 多路复用实现机制</a></p>
+<p><a target="_blank" rel="noopener" href="https://python3-cookbook.readthedocs.io/zh_CN/latest/c09/p22_define_context_managers_the_easy_way.html">9.22 定义上下文管理器的简单方法</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903795403522056">深入理解 Python 中的上下文管理器</a></p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/oRoBxZ2-IyuPOf_MWyKZyw">学习Python，怎能不懂点PEP呢？</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/pythonista/p/15012794.html">Python 的上下文管理器是怎么设计的？</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/75588064">redis缓存穿透，缓存击穿，缓存雪崩原因+解决方案</a></p>
+<p><a target="_blank" rel="noopener" href="https://xie.infoq.cn/article/a035f12e5590385ac578778b0">缓存穿透、缓存击穿、缓存雪崩，看这篇就够了</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903877054038023">为什么要设计GIL？</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.diaosi.love/archives/%E9%81%87%E5%88%B0%E6%85%A2%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98%E5%8F%AF%E4%BB%A5%E8%BF%99%E6%A0%B7%E6%80%9D%E8%80%83%E4%B8%8E%E8%A7%A3%E5%86%B3">遇到慢查询问题，可以这样思考与解决</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.modb.pro/db/87705">Linux内核File cache机制（中篇）</a></p>
+<p><a href="jianshu.com/p/64c93065473e">Kafka事务特性详解</a></p>
+<p><a target="_blank" rel="noopener" href="http://dengchengchao.com/?p=1386">Kafka Exactly Once和事务</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/311885878">Kafka事务到底是什么意思？</a></p>
+<p><a target="_blank" rel="noopener" href="https://python.freelycode.com/contribution/detail/1174">Python元组是不可变的，除非包含可变对象</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zzbj/p/13532156.html">Python之内存泄漏和内存溢出</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/longzhiwen888/article/details/46604265">Python 被导入模块多次被加载的问题（基于python的import机制）</a></p>
+<p><a target="_blank" rel="noopener" href="https://re-ra.xyz/Python-%E7%9A%84-import-%E7%A9%B6%E7%AB%9F%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/#reference">Python 的 import 究竟做了什么</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/joenqc/article/details/104094042">MySQL联接查询算法（NLJ、BNL、BKA、HashJoin）</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903813799739399">为什么 HTTP PATCH 方法不是幂等的及其延伸</a></p>
+<p><a target="_blank" rel="noopener" href="https://greenbytes.de/tech/webdav/rfc7231.html#PUT">RFC7231: Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content </a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BC%96%E7%A8%8B/" rel="tag"># 编程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/IT/%E7%BD%91%E7%BB%9C/HTTP%E5%92%8CHTTPS.html" rel="prev" title="HTTP和HTTPS">
+      <i class="fa fa-chevron-left"></i> HTTP和HTTPS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/IT/%E7%BC%96%E7%A8%8B/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90.html" rel="next" title="内存对齐">
+      内存对齐 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="comment-button-group">
+          <a class="btn comment-button gitalk">gitalk(github评论)</a>
+          <a class="btn comment-button valine">匿名评论(Anonymous)</a>
+      </div>
+        <div class="comment-position gitalk">
+          <div class="comments" id="gitalk-container"></div>
+        </div>
+        <div class="comment-position valine">
+          <div class="comments" id="valine-comments"></div>
+        </div>
+      <script>
+        (function() {
+          let commentButton = document.querySelectorAll('.comment-button');
+            commentButton.forEach(element => {
+            let commentClass = element.classList[2];
+            element.addEventListener('click', () => {
+              commentButton.forEach(rmActive => rmActive.classList.remove('active'));
+              element.classList.add('active');
+              document.querySelectorAll('.comment-position').forEach(rmActive => rmActive.classList.remove('active'));
+              document.querySelector(`.comment-position.${commentClass}`).classList.add('active');
+              if (CONFIG.comments.storage) {
+                localStorage.setItem('comments_active', commentClass);
+              }
+            });
+          });
+          let { activeClass } = CONFIG.comments;
+          if (CONFIG.comments.storage) {
+            activeClass = localStorage.getItem('comments_active') || activeClass;
+          }
+          if (activeClass) {
+            let activeButton = document.querySelector(`.comment-button.${activeClass}`);
+            if (activeButton) {
+              activeButton.click();
+            }
+          }
+        })();
+      </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python"><span class="nav-number">1.</span> <span class="nav-text">Python</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">3.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C"><span class="nav-number">4.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka"><span class="nav-number">6.</span> <span class="nav-text">Kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis"><span class="nav-number">7.</span> <span class="nav-text">Redis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F"><span class="nav-number">8.</span> <span class="nav-text">系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">9.</span> <span class="nav-text">底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker%E4%B8%8EK8s"><span class="nav-number">10.</span> <span class="nav-text">Docker与K8s</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">11.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">abug0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-book-open"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">abug0</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6105212924a623f6" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '40ec7d9233a147cef660',
+      clientSecret: '414cf059b7655d5e8a124b78961ca81378149a03',
+      repo        : 'gitalk-comments',
+      owner       : 'abug0',
+      admin       : ['abug0'],
+      id          : 'ec10caa6c3dea45e74847785d842ba9e',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'DkAmD8PHRf2jESEBV3Ght5TX-gzGzoHsz',
+      appKey     : 'OTTHxhSv4aPOg8I21witBRTh',
+      placeholder: "请在此留言",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

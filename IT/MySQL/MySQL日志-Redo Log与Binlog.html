@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.abug0.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"text":"gitalk(github评论)","order":-2},"valine":{"text":"匿名评论(Anonymous)","order":-1}},"activeClass":"gitalk"},"algolia":{"appID":"V8S440A7R6","apiKey":"5f18489120f06717c74217be61ca3feb","indexName":"abug0","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MySQL日志系统-Redo Log与Binlog一、Bin LogBin Log是MySQl服务层的日志。 二、Redo Log1、为什么要有redo log？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL日志-Redo Log与Binlog">
+<meta property="og:url" content="https://www.abug0.com/IT/MySQL/MySQL%E6%97%A5%E5%BF%97-Redo%20Log%E4%B8%8EBinlog.html">
+<meta property="og:site_name" content="abug0的博客">
+<meta property="og:description" content="MySQL日志系统-Redo Log与Binlog一、Bin LogBin Log是MySQl服务层的日志。 二、Redo Log1、为什么要有redo log？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210319125039.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20211102101742.webp">
+<meta property="article:published_time" content="2021-11-28T20:35:41.000Z">
+<meta property="article:modified_time" content="2021-11-28T20:35:41.000Z">
+<meta property="article:author" content="abug0">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210319125039.png">
+
+<link rel="canonical" href="https://www.abug0.com/IT/MySQL/MySQL%E6%97%A5%E5%BF%97-Redo%20Log%E4%B8%8EBinlog.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MySQL日志-Redo Log与Binlog | abug0的博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dfa0fbb598015665cff81cbb01b109d3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">abug0的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Simple is Beautiful.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">22</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.abug0.com/IT/MySQL/MySQL%E6%97%A5%E5%BF%97-Redo%20Log%E4%B8%8EBinlog.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="abug0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="abug0的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL日志-Redo Log与Binlog
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-28 20:35:41" itemprop="dateCreated datePublished" datetime="2021-11-28T20:35:41+00:00">2021-11-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/" itemprop="url" rel="index"><span itemprop="name">IT</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/IT/MySQL/MySQL%E6%97%A5%E5%BF%97-Redo%20Log%E4%B8%8EBinlog.html" class="post-meta-item leancloud_visitors" data-flag-title="MySQL日志-Redo Log与Binlog" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/IT/MySQL/MySQL%E6%97%A5%E5%BF%97-Redo%20Log%E4%B8%8EBinlog.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/IT/MySQL/MySQL%E6%97%A5%E5%BF%97-Redo%20Log%E4%B8%8EBinlog.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="MySQL日志系统-Redo-Log与Binlog"><a href="#MySQL日志系统-Redo-Log与Binlog" class="headerlink" title="MySQL日志系统-Redo Log与Binlog"></a>MySQL日志系统-Redo Log与Binlog</h1><h2 id="一、Bin-Log"><a href="#一、Bin-Log" class="headerlink" title="一、Bin Log"></a>一、Bin Log</h2><p>Bin Log是MySQl服务层的日志。</p>
+<h2 id="二、Redo-Log"><a href="#二、Redo-Log" class="headerlink" title="二、Redo Log"></a>二、Redo Log</h2><h3 id="1、为什么要有redo-log？"><a href="#1、为什么要有redo-log？" class="headerlink" title="1、为什么要有redo log？"></a>1、为什么要有redo log？</h3><p>网上资料都会提到一点：redo log是追加写入。</p>
+<blockquote>
+<p>MySQL为了减少磁盘的随机IO，因此不会直接更新磁盘数据，而是先更新内存中的数据页，等到合适的时机再对数据页刷盘。而又为了防止MySQL或系统崩溃宕机等问题，又引入了redo log，为crash提供重做恢复机制。</p>
+</blockquote>
+<p>往往还会提到一点：</p>
+<blockquote>
+<p>redo log是追加写入，性能要高于数据页的随机写。</p>
+</blockquote>
+<p>但是产生了一个疑问是：<em>对于某个数据页（mysql数据页默认16K）而言，一般而言最多需要四寻址即可定位到磁盘位置（Linux逻辑块大小一般4K，即需要寻址四次），之后都是顺序写入。而反观redo log，写入的时候，必然也要定位到磁盘位置，然后进行写入，并不能看出明显的性能优势，那么，网上说的redo log追加写入性能高到底是为什么呢？</em></p>
+<p>解答：</p>
+<p><em>1）设想，一次update/delete/insert可能会影响很多个数据页，而对于每个数据页都需要写回磁盘，而每个数据页的写回，都需要至少一次（通常是16K/4K=4次）的寻道-旋转-传输，这必然大大损耗性能。再看redo log，它记录的是每个数据页的修改，而一页redo log上，可以记录多个数据页的修改，因此需要写回的redo log数据页远少于数据页，这也就大大减少了IO次数（猜想这也是追加写入由于随即写入的原因）。</em></p>
+<p><em>2）数据页可能只被修改了一小部分，但仍然需要写回整页，这增加了不必要的传输字节数。而redo log只记录了数据页的修改，写回的也只是记录下的修改部分，传输量少于数据页。</em></p>
+<h3 id="2、关于redo-log"><a href="#2、关于redo-log" class="headerlink" title="2、关于redo log"></a>2、关于redo log</h3><p>1）redo log记录了数据页的修改；它记录的是“数据页pageN上，偏移量offset处写入n个字节”，引用网络图片：</p>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20210319125039.png" alt="redo log通用日志类型"></p>
+<p>2）redo log是InnoDB特有的日志。</p>
+<h3 id="3、两阶段提交"><a href="#3、两阶段提交" class="headerlink" title="3、两阶段提交"></a>3、两阶段提交</h3><h4 id="更新语句执行流程"><a href="#更新语句执行流程" class="headerlink" title="更新语句执行流程"></a>更新语句执行流程</h4><p>a.查找对应的记录，找到对应的数据页，如果数据页在内存中，将更新写入内存中的数据页，否则先从磁盘读入数据页后再进行更新；</p>
+<p>b.更新内存中的数据页后暂不写回，而是等待合适的时机再进行刷盘。此时要记录redo log，redo log写入到内存中的缓冲区(log buffer);</p>
+<p>c.执行“commit”，发起提交，磁盘写redo log，然后生成bin log写入磁盘。</p>
+<p><em>note: 此时的磁盘写redo log不一定真的写回了磁盘，可能只是写入到了操作系统的页缓存中。</em></p>
+<h4 id="事务提交和日志刷盘"><a href="#事务提交和日志刷盘" class="headerlink" title="事务提交和日志刷盘"></a>事务提交和日志刷盘</h4><p>两阶段提交：事务提交时执行的动作：</p>
+<ul>
+<li><p>a. 将内存中的redo log写回磁盘，并标记为‘prepare’；</p>
+</li>
+<li><p>b. 生成binlog写入磁盘；</p>
+</li>
+<li><p>c. 更新对应的redo log为‘commit’。</p>
+<p><em>每条更新语句都会生成redo log记录，但是只有执行commit的时候才会主动进行redo log落盘。但是此处是有可能出现被动刷盘的（内存不足等情况）。</em></p>
+</li>
+</ul>
+<h5 id="innodb-flush-log-at-trx-commit"><a href="#innodb-flush-log-at-trx-commit" class="headerlink" title="innodb_flush_log_at_trx_commit"></a>innodb_flush_log_at_trx_commit</h5><ul>
+<li>取值为0：每秒写入到os cache并flush到磁盘，此时commit指令与redo log落盘无关；</li>
+<li>取值为1：每次commit写入os cache并flush到磁盘；</li>
+<li>取值为2：每次commit写入os cache，每秒进行一次flush disk动作。</li>
+</ul>
+<h5 id="sync-binlog"><a href="#sync-binlog" class="headerlink" title="sync_binlog"></a>sync_binlog</h5><ul>
+<li>取值为0：由OS控制flush到磁盘的时机；</li>
+<li>取值为N：每写入N条记录flush一次磁盘。</li>
+</ul>
+<h4 id="崩溃恢复"><a href="#崩溃恢复" class="headerlink" title="崩溃恢复"></a>崩溃恢复</h4><ul>
+<li><p>a. 读取redo log并应用，如果redo标识为’commit‘，进行提交；</p>
+</li>
+<li><p>b. 如果redo log标识为’prepare‘，需要读取binlog：</p>
+<ul>
+<li><p>aa. 如果binlog存在且完整，提交事务；</p>
+</li>
+<li><p>bb. 否则，回滚事务。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20211102101742.webp" alt="redo log与undo log"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100020801">参考一: 极客时间 MySQL45讲: 第一和十五讲</a></p>
+<p><a target="_blank" rel="noopener" href="http://mysql.taobao.org/monthly/2020/02/01/">参考二: 数据库内核月报: MySQL · 引擎特性 · 庖丁解InnoDB之REDO LOG</a></p>
+<p><a target="_blank" rel="noopener" href="http://mysql.taobao.org/monthly/2015/05/01/">参考三: 数据库内核月报: MySQL · 引擎特性 · InnoDB redo log漫游</a></p>
+<p><a target="_blank" rel="noopener" href="http://mysql.taobao.org/monthly/2015/06/01/">参考四: 数据库内核月报: MySQL · 引擎特性 · InnoDB 崩溃恢复过程</a></p>
+<p><a target="_blank" rel="noopener" href="https://gsmtoday.github.io/2019/02/08/how-update-executes-in-mysql/">参考五: 一条更新语句在MySQL是怎么执行的</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6895265596985114638">参考六: Innodb引擎 · 基础模块篇(三) · 详解redo log存储结构</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000017888478">浅析MySQL事务中的redo与undo</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/IT/MySQL/Using%20where%E4%B8%8EICP.html" rel="prev" title="Using where与ICP">
+      <i class="fa fa-chevron-left"></i> Using where与ICP
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/IT/MySQL/MySQL%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C.html" rel="next" title="MySQL常用操作">
+      MySQL常用操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="comment-button-group">
+          <a class="btn comment-button gitalk">gitalk(github评论)</a>
+          <a class="btn comment-button valine">匿名评论(Anonymous)</a>
+      </div>
+        <div class="comment-position gitalk">
+          <div class="comments" id="gitalk-container"></div>
+        </div>
+        <div class="comment-position valine">
+          <div class="comments" id="valine-comments"></div>
+        </div>
+      <script>
+        (function() {
+          let commentButton = document.querySelectorAll('.comment-button');
+            commentButton.forEach(element => {
+            let commentClass = element.classList[2];
+            element.addEventListener('click', () => {
+              commentButton.forEach(rmActive => rmActive.classList.remove('active'));
+              element.classList.add('active');
+              document.querySelectorAll('.comment-position').forEach(rmActive => rmActive.classList.remove('active'));
+              document.querySelector(`.comment-position.${commentClass}`).classList.add('active');
+              if (CONFIG.comments.storage) {
+                localStorage.setItem('comments_active', commentClass);
+              }
+            });
+          });
+          let { activeClass } = CONFIG.comments;
+          if (CONFIG.comments.storage) {
+            activeClass = localStorage.getItem('comments_active') || activeClass;
+          }
+          if (activeClass) {
+            let activeButton = document.querySelector(`.comment-button.${activeClass}`);
+            if (activeButton) {
+              activeButton.click();
+            }
+          }
+        })();
+      </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MySQL%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F-Redo-Log%E4%B8%8EBinlog"><span class="nav-number">1.</span> <span class="nav-text">MySQL日志系统-Redo Log与Binlog</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Bin-Log"><span class="nav-number">1.1.</span> <span class="nav-text">一、Bin Log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Redo-Log"><span class="nav-number">1.2.</span> <span class="nav-text">二、Redo Log</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89redo-log%EF%BC%9F"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、为什么要有redo log？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%85%B3%E4%BA%8Eredo-log"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、关于redo log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%B8%A4%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、两阶段提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E8%AF%AD%E5%8F%A5%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">更新语句执行流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%8F%90%E4%BA%A4%E5%92%8C%E6%97%A5%E5%BF%97%E5%88%B7%E7%9B%98"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">事务提交和日志刷盘</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#innodb-flush-log-at-trx-commit"><span class="nav-number">1.2.3.2.1.</span> <span class="nav-text">innodb_flush_log_at_trx_commit</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#sync-binlog"><span class="nav-number">1.2.3.2.2.</span> <span class="nav-text">sync_binlog</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B4%A9%E6%BA%83%E6%81%A2%E5%A4%8D"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">崩溃恢复</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">abug0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-book-open"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">abug0</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6105212924a623f6" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '40ec7d9233a147cef660',
+      clientSecret: '414cf059b7655d5e8a124b78961ca81378149a03',
+      repo        : 'gitalk-comments',
+      owner       : 'abug0',
+      admin       : ['abug0'],
+      id          : 'f8251875ef98252b7505b3686aa220ba',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'DkAmD8PHRf2jESEBV3Ght5TX-gzGzoHsz',
+      appKey     : 'OTTHxhSv4aPOg8I21witBRTh',
+      placeholder: "请在此留言",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

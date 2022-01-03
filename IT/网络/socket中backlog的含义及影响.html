@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.abug0.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"buttons","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"text":"gitalk(github评论)","order":-2},"valine":{"text":"匿名评论(Anonymous)","order":-1}},"activeClass":"gitalk"},"algolia":{"appID":"V8S440A7R6","apiKey":"5f18489120f06717c74217be61ca3feb","indexName":"abug0","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="socket中backlog的含义及影响描述先执行man listen看一下listen的原型：               示例代码                   12345678910111213141516171819NAME       listen - listen for connections on a socketSYNOPSIS       #include &lt;sys">
+<meta property="og:type" content="article">
+<meta property="og:title" content="socket中backlog的含义及影响">
+<meta property="og:url" content="https://www.abug0.com/IT/%E7%BD%91%E7%BB%9C/socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D.html">
+<meta property="og:site_name" content="abug0的博客">
+<meta property="og:description" content="socket中backlog的含义及影响描述先执行man listen看一下listen的原型：               示例代码                   12345678910111213141516171819NAME       listen - listen for connections on a socketSYNOPSIS       #include &lt;sys">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20211224153431.png">
+<meta property="article:published_time" content="2021-12-31T21:58:48.000Z">
+<meta property="article:modified_time" content="2022-01-02T17:53:33.000Z">
+<meta property="article:author" content="abug0">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20211224153431.png">
+
+<link rel="canonical" href="https://www.abug0.com/IT/%E7%BD%91%E7%BB%9C/socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>socket中backlog的含义及影响 | abug0的博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dfa0fbb598015665cff81cbb01b109d3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">abug0的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Simple is Beautiful.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">22</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">55</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.abug0.com/IT/%E7%BD%91%E7%BB%9C/socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="abug0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="abug0的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          socket中backlog的含义及影响
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-31 21:58:48" itemprop="dateCreated datePublished" datetime="2021-12-31T21:58:48+00:00">2021-12-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-02 17:53:33" itemprop="dateModified" datetime="2022-01-02T17:53:33+00:00">2022-01-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/" itemprop="url" rel="index"><span itemprop="name">IT</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IT/%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">网络</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/IT/%E7%BD%91%E7%BB%9C/socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D.html" class="post-meta-item leancloud_visitors" data-flag-title="socket中backlog的含义及影响" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/IT/%E7%BD%91%E7%BB%9C/socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/IT/%E7%BD%91%E7%BB%9C/socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>25k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>23 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="socket中backlog的含义及影响"><a href="#socket中backlog的含义及影响" class="headerlink" title="socket中backlog的含义及影响"></a>socket中backlog的含义及影响</h1><h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>先执行man listen看一下listen的原型：</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">NAME</span><br><span class="line">       listen - listen for connections on a socket</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">       #include &lt;sys/types.h&gt;          /* See NOTES */</span><br><span class="line">       #include &lt;sys/socket.h&gt;</span><br><span class="line"></span><br><span class="line">       int listen(int sockfd, int backlog);</span><br><span class="line"></span><br><span class="line">DESCRIPTION</span><br><span class="line">       listen() marks the socket referred to by sockfd as a passive socket, that is, as a socket that will be used to accept incoming connection requests using accept(2).</span><br><span class="line"></span><br><span class="line">       The sockfd argument is a file descriptor that refers to a socket of type SOCK_STREAM or SOCK_SEQPACKET.</span><br><span class="line"></span><br><span class="line">       The backlog argument defines the maximum length to which the queue of pending connections for sockfd may grow.  If a connection request arrives when the queue is full, the client may receive an error with an indication of ECON‐</span><br><span class="line">       NREFUSED or, if the underlying protocol supports retransmission, the request may be ignored so that a later reattempt at connection succeeds.</span><br><span class="line"></span><br><span class="line">RETURN VALUE</span><br><span class="line">       On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<p>根据描述，backlog指定了该套接字上最大等待队列的长度。如果队列长度已满的话，会返回一个错误，或者是忽略连接请求（当下层协议支持重传的时候）。本文仅讨论Linux系统下、下层协议为TCP时的backlog含义。</p>
+<p><strong>根据《Unix 网络编程：套接字联网API》（4.5 listen函数）（P84）章节的讨论，不同系统对于backlog有不同的解释。</strong></p>
+<h2 id="半连接队列和全连接队列"><a href="#半连接队列和全连接队列" class="headerlink" title="半连接队列和全连接队列"></a>半连接队列和全连接队列</h2><p>对应于TCP，Linux内核为每个监听套接字维护了两个队列：</p>
+<ul>
+<li>半连接队列（SYN队列）：等待三次握手完成，处于SYN_RCVD状态的套接字；</li>
+<li>全连接队列（Accept队列）：已完成三次握手，等待accept函数取出的套接字，处于Established状态。</li>
+</ul>
+<h2 id="backlog参数"><a href="#backlog参数" class="headerlink" title="backlog参数"></a>backlog参数</h2><p>对于backlog参数的疑问主要是：</p>
+<ul>
+<li><p>1、backlog指定的是哪个队列的长度，半连接队列？全连接队列？还是两个队列长度之和？</p>
+</li>
+<li><p>2、backlog与队列最大长度（假设为m）的关系？</p>
+</li>
+<li><p>3、队列长度达到backlog指定的最大长度时如何处理新请求？</p>
+</li>
+</ul>
+<p>继续查看listen相关的手册，可以看到：</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">The  behavior of the backlog argument on TCP sockets changed with Linux 2.2.  Now it specifies the queue length for completely established sockets waiting to be accepted, instead of the number of incomplete connection requests.</span><br><span class="line">       The maximum length of the queue for incomplete sockets can be set using /proc/sys/net/ipv4/tcp_max_syn_backlog.  When syncookies are enabled there is no logical maximum length and this setting is ignored.  See tcp(7)  for  more</span><br><span class="line">       information.</span><br><span class="line"></span><br><span class="line">       If  the  backlog  argument  is  greater  than the value in /proc/sys/net/core/somaxconn, then it is silently truncated to that value; the default value in this file is 128.  In kernels before 2.4.25, this limit was a hard coded</span><br><span class="line">       value, SOMAXCONN, with the value 128.</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<p>所以，对于以上三个问题的答案：</p>
+<ul>
+<li><p>1、Linux 2.2版本之后，backlog指的是全连接队列的长度；</p>
+</li>
+<li><p>2、全连接队列最大长度是min(backlog, /proc/sys/net/core/somaxconn)，默认值是128。半连接队列最大长度则受/proc/sys/net/ipv4/tcp_max_syn_backlog和syncookies的控制；</p>
+<p><strong>测试后发现实际全连接队列最大长度是backlog+1</strong></p>
+<p>关于为什么是backlog+1的分析：</p>
+<blockquote>
+<p>从代码看，在将套接字转移到全连接队列前判断队列是否已满，而判断方法是sk-&gt;sk_ack_backlog &gt; sk-&gt;sk_max_ack_backlog，所以队列长度达到backlog的时候判断会认为还没满，所以仍然可以添加新套接字到全连接队列里，直到队列长度达到backlog+1的时候才认为已满，不再建立新的连接。（需要进一步分析源码进行确认。参考[2]中也有人提出这个疑问。）</p>
+</blockquote>
+</li>
+<li><p>3、队列满的时候有两种处理方式：返回ECON‐</p>
+<pre><code>   NREFUSED，拒绝本次连接，或者忽略本次请求（需要下层协议支持重传）。所以对于TCP协议，处理方法应该是丢弃此次请求。另外会受到/proc/sys/net/ipv4/tcp_abort_on_overflow的控制：
+</code></pre>
+<blockquote>
+<p>如果值为<code>0</code>, 服务端丢掉握手第三个ack包, 等同于认为客户端并没有回复 ack, 服务端重传 syn+ack 包. 如果值为<code>1</code>, 服务端直接回复 rst 包, 关闭连接.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="实验验证"><a href="#实验验证" class="headerlink" title="实验验证"></a>实验验证</h2><h3 id="backlog与队列长度-队列满的时候丢弃请求"><a href="#backlog与队列长度-队列满的时候丢弃请求" class="headerlink" title="backlog与队列长度/队列满的时候丢弃请求"></a>backlog与队列长度/队列满的时候丢弃请求</h3><h4 id="一、启动服务器程序，如图（参数表示的是backlog），backlog设置为1："><a href="#一、启动服务器程序，如图（参数表示的是backlog），backlog设置为1：" class="headerlink" title="一、启动服务器程序，如图（参数表示的是backlog），backlog设置为1："></a>一、启动服务器程序，如图（参数表示的是backlog），backlog设置为1：</h4><p><img src="https://raw.githubusercontent.com/Abug0/Typora-Pics/master/pics/Typora20211224153431.png" alt="image-20211224153424545"></p>
+<p>根据前文的描述，全连接队列里应该最多只有一个套接字，多余的连接请求应该会一直停在半连接队列里（半连接队列未满的情况下），直到全连接队列长度小于backlog。</p>
+<h4 id="二、在另一个session使用ab发请求，设置并发量为4："><a href="#二、在另一个session使用ab发请求，设置并发量为4：" class="headerlink" title="二、在另一个session使用ab发请求，设置并发量为4："></a>二、在另一个session使用ab发请求，设置并发量为4：</h4><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-24-8-centos ~]# ab -n 4 -c 4 localhost:8088/</span><br><span class="line">This is ApacheBench, Version 2.3 &lt;$Revision: 1430300 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient).....done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Server Software:        NBS/1.0</span><br><span class="line">Server Hostname:        localhost</span><br><span class="line">Server Port:            8088</span><br><span class="line"></span><br><span class="line">Document Path:          /</span><br><span class="line">Document Length:        13 bytes</span><br><span class="line"></span><br><span class="line">Concurrency Level:      4</span><br><span class="line">Time taken for tests:   40.001 seconds</span><br><span class="line">Complete requests:      4</span><br><span class="line">Failed requests:        0</span><br><span class="line">Write errors:           0</span><br><span class="line">Total transferred:      520 bytes</span><br><span class="line">HTML transferred:       52 bytes</span><br><span class="line">Requests per second:    0.10 [#/sec] (mean)</span><br><span class="line">Time per request:       40000.901 [ms] (mean)</span><br><span class="line">Time per request:       10000.225 [ms] (mean, across all concurrent requests)</span><br><span class="line">Transfer rate:          0.01 [Kbytes/sec] received</span><br><span class="line"></span><br><span class="line">Connection Times (ms)</span><br><span class="line">              min  mean[+/-sd] median   max</span><br><span class="line">Connect:        0    0   0.0      0       0</span><br><span class="line">Processing: 10000 25000 12910.1  30000   40001</span><br><span class="line">Waiting:        0 15000 12910.1  20000   30000</span><br><span class="line">Total:      10000 25000 12910.1  30001   40001</span><br><span class="line"></span><br><span class="line">Percentage of the requests served within a certain time (ms)</span><br><span class="line"><span class="meta">  50%</span><span class="bash">  30001</span></span><br><span class="line"><span class="meta">  66%</span><span class="bash">  30001</span></span><br><span class="line"><span class="meta">  75%</span><span class="bash">  40001</span></span><br><span class="line"><span class="meta">  80%</span><span class="bash">  40001</span></span><br><span class="line"><span class="meta">  90%</span><span class="bash">  40001</span></span><br><span class="line"><span class="meta">  95%</span><span class="bash">  40001</span></span><br><span class="line"><span class="meta">  98%</span><span class="bash">  40001</span></span><br><span class="line"><span class="meta">  99%</span><span class="bash">  40001</span></span><br><span class="line"><span class="meta"> 100%</span><span class="bash">  40001 (longest request)</span></span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<h4 id="三、查看套接字："><a href="#三、查看套接字：" class="headerlink" title="三、查看套接字："></a>三、查看套接字：</h4><p>套接字情况如下（由于ab和服务器进程test在同一机器上，所以这里显示了两端的情况。分析时只需要关注第四列端口为8088的连接即可）。</p>
+<p>可以看到一开始有三个连接状态为ESTABLISHED，另一个为SYN_RECV状态，一段时间后，才变为ESTABLISHED（实际是全连接队列中的套接字被accept处理了，所以这个套接字三次握手才成功建立，具体可参考服务端代码进行分析）。</p>
+<p>这里可以看到，一开始ESTABLISHED状态的连接有三个，此时这三个连接中的情况为：</p>
+<ul>
+<li>1）被服务进程（test）调用accept后处理中（最后一列显示有test），该套接字已从全连接队列中移除；</li>
+<li>2）三次握手完成，在全连接队列中等待被accept取出处理（最后一列显示为-）；</li>
+</ul>
+<p>显然，这里可以看出全连接队列最大长度是2，即backlog+1。</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-24-8-centos ~]# netstat -ntp|grep 8088</span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59836         SYN_RECV    -                   </span><br><span class="line">tcp        0      0 127.0.0.1:59834         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0     82 127.0.0.1:59836         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59830         ESTABLISHED 5925/./test         </span><br><span class="line">tcp        0      0 127.0.0.1:59830         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:59832         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp       82      0 127.0.0.1:8088          127.0.0.1:59834         ESTABLISHED -                   </span><br><span class="line">tcp       82      0 127.0.0.1:8088          127.0.0.1:59832         ESTABLISHED -                   </span><br><span class="line">[root@VM-24-8-centos ~]# netstat -ntp|grep 8088</span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59836         SYN_RECV    -                   </span><br><span class="line">tcp        0      0 127.0.0.1:59834         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0     82 127.0.0.1:59836         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59830         ESTABLISHED 5925/./test         </span><br><span class="line">tcp        0      0 127.0.0.1:59830         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:59832         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp       82      0 127.0.0.1:8088          127.0.0.1:59834         ESTABLISHED -                   </span><br><span class="line">tcp       82      0 127.0.0.1:8088          127.0.0.1:59832         ESTABLISHED -                   </span><br><span class="line">[root@VM-24-8-centos ~]# netstat -ntp|grep 8088</span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59836         SYN_RECV    -                   </span><br><span class="line">tcp        0      0 127.0.0.1:59834         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0     82 127.0.0.1:59836         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59830         ESTABLISHED 5925/./test         </span><br><span class="line">tcp        0      0 127.0.0.1:59830         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:59832         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp       82      0 127.0.0.1:8088          127.0.0.1:59834         ESTABLISHED -                   </span><br><span class="line">tcp       82      0 127.0.0.1:8088          127.0.0.1:59832         ESTABLISHED -                   </span><br><span class="line">[root@VM-24-8-centos ~]# netstat -ntp|grep 8088</span><br><span class="line">tcp        0      0 127.0.0.1:59836         127.0.0.1:8088          ESTABLISHED 6806/ab             </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59836         ESTABLISHED 5925/./test         </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59830         TIME_WAIT   -                   </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59834         TIME_WAIT   -                   </span><br><span class="line">tcp        0      0 127.0.0.1:8088          127.0.0.1:59832         TIME_WAIT   -</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<h4 id="四、看一下抓包结果，并分析："><a href="#四、看一下抓包结果，并分析：" class="headerlink" title="四、看一下抓包结果，并分析："></a>四、看一下抓包结果，并分析：</h4><p>抓包结果如下。</p>
+<p>在第三步查看套接字情况的时候可以看出，ab本次测试用的端口分别是59830、59832、59834、59836，与抓包结果相符合。进一步分析报文内容可以发现，对于前三个端口（59830、59832、59834），三次握手正常建立，这也基本与前一步看到的连接状况相符。唯独对于端口59836，服务器一直在重发SYN+ACK报文，从下文看，显然59836已经回复ACK，但是服务器进程并未处理这个ACK报文，反而一直在重发SYN+ACK报文，直到某一刻（基本是59830这个连接结束的时候，从服务端源码看，也正是accept从全连接队列中取出一个套接字的时候）。</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-24-8-centos ~]# tcpdump -nni any port 8088</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes</span><br><span class="line"></span><br><span class="line">20:50:51.727618 IP6 ::1.47368 &gt; ::1.8088: Flags [S], seq 3876113499, win 43690, options [mss 65476,sackOK,TS val 2630303458 ecr 0,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727626 IP6 ::1.8088 &gt; ::1.47368: Flags [R.], seq 0, ack 3876113500, win 0, length 0</span><br><span class="line">20:50:51.727670 IP 127.0.0.1.59830 &gt; 127.0.0.1.8088: Flags [S], seq 3925820849, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 0,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727678 IP 127.0.0.1.8088 &gt; 127.0.0.1.59830: Flags [S.], seq 3911357083, ack 3925820850, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 2630303458,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727687 IP 127.0.0.1.59830 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727704 IP 127.0.0.1.59830 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 82</span><br><span class="line">20:50:51.727708 IP 127.0.0.1.8088 &gt; 127.0.0.1.59830: Flags [.], ack 83, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727785 IP 127.0.0.1.8088 &gt; 127.0.0.1.59830: Flags [P.], seq 1:118, ack 83, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 117</span><br><span class="line">20:50:51.727789 IP 127.0.0.1.59830 &gt; 127.0.0.1.8088: Flags [.], ack 118, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727795 IP 127.0.0.1.8088 &gt; 127.0.0.1.59830: Flags [P.], seq 118:131, ack 83, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 13</span><br><span class="line">20:50:51.727798 IP 127.0.0.1.59830 &gt; 127.0.0.1.8088: Flags [.], ack 131, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727842 IP 127.0.0.1.59832 &gt; 127.0.0.1.8088: Flags [S], seq 288093760, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 0,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727849 IP 127.0.0.1.8088 &gt; 127.0.0.1.59832: Flags [S.], seq 1293060381, ack 288093761, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 2630303458,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727855 IP 127.0.0.1.59832 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727876 IP 127.0.0.1.59834 &gt; 127.0.0.1.8088: Flags [S], seq 3380601055, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 0,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727881 IP 127.0.0.1.8088 &gt; 127.0.0.1.59834: Flags [S.], seq 1317065744, ack 3380601056, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 2630303458,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727885 IP 127.0.0.1.59834 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727900 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [S], seq 86886059, win 43690, options [mss 65495,sackOK,TS val 2630303458 ecr 0,nop,wscale 7], length 0</span><br><span class="line">20:50:51.727922 IP 127.0.0.1.8088 &gt; 127.0.0.1.59832: Flags [.], ack 83, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727939 IP 127.0.0.1.8088 &gt; 127.0.0.1.59834: Flags [.], ack 83, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 0</span><br><span class="line">20:50:51.727946 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 86886060:86886142, ack 2883444459, win 342, options [nop,nop,TS val 2630303458 ecr 2630303458], length 82</span><br><span class="line">20:50:51.927164 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 0:82, ack 1, win 342, options [nop,nop,TS val 2630303658 ecr 2630303458], length 82</span><br><span class="line">20:50:52.127164 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 0:82, ack 1, win 342, options [nop,nop,TS val 2630303858 ecr 2630303458], length 82</span><br><span class="line">20:50:52.528166 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 0:82, ack 1, win 342, options [nop,nop,TS val 2630304259 ecr 2630303458], length 82</span><br><span class="line">20:50:52.929164 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [S.], seq 2883444458, ack 86886060, win 43690, options [mss 65495,sackOK,TS val 2630304660 ecr 2630304259,nop,wscale 7], length 0</span><br><span class="line">20:50:52.929175 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2630304660 ecr 2630303458], length 0</span><br><span class="line">20:50:53.329163 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2630305060 ecr 2630303458], length 82</span><br><span class="line">20:50:54.933162 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2630306664 ecr 2630303458], length 82</span><br><span class="line">20:50:55.129167 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [S.], seq 2883444458, ack 86886060, win 43690, options [mss 65495,sackOK,TS val 2630306860 ecr 2630306664,nop,wscale 7], length 0</span><br><span class="line">20:50:55.129178 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2630306860 ecr 2630303458], length 0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">20:50:58.141161 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2630309872 ecr 2630303458], length 82</span><br><span class="line">20:50:59.329164 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [S.], seq 2883444458, ack 86886060, win 43690, options [mss 65495,sackOK,TS val 2630311060 ecr 2630309872,nop,wscale 7], length 0</span><br><span class="line">20:50:59.329176 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2630311060 ecr 2630303458], length 0</span><br><span class="line">20:51:01.727911 IP 127.0.0.1.8088 &gt; 127.0.0.1.59830: Flags [F.], seq 131, ack 83, win 342, options [nop,nop,TS val 2630313458 ecr 2630303458], length 0</span><br><span class="line">20:51:01.727973 IP 127.0.0.1.8088 &gt; 127.0.0.1.59832: Flags [P.], seq 1:118, ack 83, win 342, options [nop,nop,TS val 2630313458 ecr 2630303458], length 117</span><br><span class="line">20:51:01.727979 IP 127.0.0.1.59832 &gt; 127.0.0.1.8088: Flags [.], ack 118, win 342, options [nop,nop,TS val 2630313458 ecr 2630313458], length 0</span><br><span class="line">20:51:01.727986 IP 127.0.0.1.8088 &gt; 127.0.0.1.59832: Flags [P.], seq 118:131, ack 83, win 342, options [nop,nop,TS val 2630313458 ecr 2630313458], length 13</span><br><span class="line">20:51:01.727990 IP 127.0.0.1.59832 &gt; 127.0.0.1.8088: Flags [.], ack 131, win 342, options [nop,nop,TS val 2630313458 ecr 2630313458], length 0</span><br><span class="line">20:51:01.728022 IP 127.0.0.1.59830 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 132, win 342, options [nop,nop,TS val 2630313458 ecr 2630313458], length 0</span><br><span class="line">20:51:01.728029 IP 127.0.0.1.8088 &gt; 127.0.0.1.59830: Flags [.], ack 84, win 342, options [nop,nop,TS val 2630313458 ecr 2630313458], length 0</span><br><span class="line">20:51:04.557166 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2630316288 ecr 2630303458], length 82</span><br><span class="line">20:51:04.557185 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [.], ack 83, win 342, options [nop,nop,TS val 2630316288 ecr 2630316288], length 0</span><br><span class="line">20:51:11.728090 IP 127.0.0.1.8088 &gt; 127.0.0.1.59832: Flags [F.], seq 131, ack 83, win 342, options [nop,nop,TS val 2630323458 ecr 2630313458], length 0</span><br><span class="line">20:51:11.728172 IP 127.0.0.1.8088 &gt; 127.0.0.1.59834: Flags [P.], seq 1:118, ack 83, win 342, options [nop,nop,TS val 2630323459 ecr 2630303458], length 117</span><br><span class="line">20:51:11.728179 IP 127.0.0.1.59834 &gt; 127.0.0.1.8088: Flags [.], ack 118, win 342, options [nop,nop,TS val 2630323459 ecr 2630323459], length 0</span><br><span class="line">20:51:11.728186 IP 127.0.0.1.8088 &gt; 127.0.0.1.59834: Flags [P.], seq 118:131, ack 83, win 342, options [nop,nop,TS val 2630323459 ecr 2630323459], length 13</span><br><span class="line">20:51:11.728189 IP 127.0.0.1.59834 &gt; 127.0.0.1.8088: Flags [.], ack 131, win 342, options [nop,nop,TS val 2630323459 ecr 2630323459], length 0</span><br><span class="line">20:51:11.728218 IP 127.0.0.1.59832 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 132, win 342, options [nop,nop,TS val 2630323459 ecr 2630323458], length 0</span><br><span class="line">20:51:11.728225 IP 127.0.0.1.8088 &gt; 127.0.0.1.59832: Flags [.], ack 84, win 342, options [nop,nop,TS val 2630323459 ecr 2630323459], length 0</span><br><span class="line">20:51:21.728295 IP 127.0.0.1.8088 &gt; 127.0.0.1.59834: Flags [F.], seq 131, ack 83, win 342, options [nop,nop,TS val 2630333459 ecr 2630323459], length 0</span><br><span class="line">20:51:21.728360 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [P.], seq 1:118, ack 83, win 342, options [nop,nop,TS val 2630333459 ecr 2630316288], length 117</span><br><span class="line">20:51:21.728369 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [.], ack 118, win 342, options [nop,nop,TS val 2630333459 ecr 2630333459], length 0</span><br><span class="line">20:51:21.728377 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [P.], seq 118:131, ack 83, win 342, options [nop,nop,TS val 2630333459 ecr 2630333459], length 13</span><br><span class="line">20:51:21.728381 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [.], ack 131, win 342, options [nop,nop,TS val 2630333459 ecr 2630333459], length 0</span><br><span class="line">20:51:21.728407 IP 127.0.0.1.59834 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 132, win 342, options [nop,nop,TS val 2630333459 ecr 2630333459], length 0</span><br><span class="line">20:51:21.728413 IP 127.0.0.1.8088 &gt; 127.0.0.1.59834: Flags [.], ack 84, win 342, options [nop,nop,TS val 2630333459 ecr 2630333459], length 0</span><br><span class="line">20:51:31.728440 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [F.], seq 131, ack 83, win 342, options [nop,nop,TS val 2630343459 ecr 2630333459], length 0</span><br><span class="line">20:51:31.728503 IP 127.0.0.1.59836 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 132, win 342, options [nop,nop,TS val 2630343459 ecr 2630343459], length 0</span><br><span class="line">20:51:31.728512 IP 127.0.0.1.8088 &gt; 127.0.0.1.59836: Flags [.], ack 84, win 342, options [nop,nop,TS val 2630343459 ecr 2630343459], length 0</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<h4 id="五、-proc-sys-net-ipv4-tcp-abort-on-overflow设置为1，观察抓包结果："><a href="#五、-proc-sys-net-ipv4-tcp-abort-on-overflow设置为1，观察抓包结果：" class="headerlink" title="五、/proc/sys/net/ipv4/tcp_abort_on_overflow设置为1，观察抓包结果："></a>五、/proc/sys/net/ipv4/tcp_abort_on_overflow设置为1，观察抓包结果：</h4><p>显然这次使用的是33536、33538、33540、33542四个端口，看一下抓包结果，明显对于端口33542，在三次握手的报文之后，服务器进程直接发送了一个RST报文。</p>
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-24-8-centos ~]# ab -n 4 -c 4 localhost:8088/</span><br><span class="line">This is ApacheBench, Version 2.3 &lt;$Revision: 1430300 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)...apr_socket_recv: Connection reset by peer (104)</span><br><span class="line">[root@VM-24-8-centos ~]# ^C</span><br><span class="line">[root@VM-24-8-centos ~]# ab -n 4 -c 4 localhost:8088/</span><br><span class="line">This is ApacheBench, Version 2.3 &lt;$Revision: 1430300 $&gt;</span><br><span class="line">Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/</span><br><span class="line">Licensed to The Apache Software Foundation, http://www.apache.org/</span><br><span class="line"></span><br><span class="line">Benchmarking localhost (be patient)...apr_socket_recv: Connection reset by peer (104)</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-24-8-centos ~]# netstat -ntp|grep 8088</span><br><span class="line">tcp        0      0 127.0.0.1:33538         127.0.0.1:8088          FIN_WAIT2   -                   </span><br><span class="line">tcp        0      0 127.0.0.1:33540         127.0.0.1:8088          FIN_WAIT2   -                   </span><br><span class="line">tcp       83      0 127.0.0.1:8088          127.0.0.1:33538         CLOSE_WAIT  -                   </span><br><span class="line">tcp        0      0 127.0.0.1:33536         127.0.0.1:8088          FIN_WAIT2   -                   </span><br><span class="line">tcp        1      0 127.0.0.1:8088          127.0.0.1:33536         CLOSE_WAIT  14918/./test        </span><br><span class="line">tcp       83      0 127.0.0.1:8088          127.0.0.1:33540         CLOSE_WAIT  -</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+
+
+<div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-24-8-centos ~]# tcpdump -nni any port 8088</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">21:24:51.241971 IP6 ::1.49306 &gt; ::1.8088: Flags [S], seq 537212558, win 43690, options [mss 65476,sackOK,TS val 2632342972 ecr 0,nop,wscale 7], length 0</span><br><span class="line">21:24:51.241979 IP6 ::1.8088 &gt; ::1.49306: Flags [R.], seq 0, ack 537212559, win 0, length 0</span><br><span class="line">21:24:51.242023 IP 127.0.0.1.33536 &gt; 127.0.0.1.8088: Flags [S], seq 2771398844, win 43690, options [mss 65495,sackOK,TS val 2632342972 ecr 0,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242031 IP 127.0.0.1.8088 &gt; 127.0.0.1.33536: Flags [S.], seq 214599834, ack 2771398845, win 43690, options [mss 65495,sackOK,TS val 2632342972 ecr 2632342972,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242038 IP 127.0.0.1.33536 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2632342972 ecr 2632342972], length 0</span><br><span class="line">21:24:51.242054 IP 127.0.0.1.33536 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2632342972 ecr 2632342972], length 82</span><br><span class="line">21:24:51.242058 IP 127.0.0.1.8088 &gt; 127.0.0.1.33536: Flags [.], ack 83, win 342, options [nop,nop,TS val 2632342972 ecr 2632342972], length 0</span><br><span class="line">21:24:51.242169 IP 127.0.0.1.8088 &gt; 127.0.0.1.33536: Flags [P.], seq 1:118, ack 83, win 342, options [nop,nop,TS val 2632342973 ecr 2632342972], length 117</span><br><span class="line">21:24:51.242173 IP 127.0.0.1.33536 &gt; 127.0.0.1.8088: Flags [.], ack 118, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242179 IP 127.0.0.1.8088 &gt; 127.0.0.1.33536: Flags [P.], seq 118:131, ack 83, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 13</span><br><span class="line">21:24:51.242182 IP 127.0.0.1.33536 &gt; 127.0.0.1.8088: Flags [.], ack 131, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242214 IP 127.0.0.1.33538 &gt; 127.0.0.1.8088: Flags [S], seq 2527639607, win 43690, options [mss 65495,sackOK,TS val 2632342973 ecr 0,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242218 IP 127.0.0.1.8088 &gt; 127.0.0.1.33538: Flags [S.], seq 3509174586, ack 2527639608, win 43690, options [mss 65495,sackOK,TS val 2632342973 ecr 2632342973,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242224 IP 127.0.0.1.33538 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242247 IP 127.0.0.1.33540 &gt; 127.0.0.1.8088: Flags [S], seq 3237997584, win 43690, options [mss 65495,sackOK,TS val 2632342973 ecr 0,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242254 IP 127.0.0.1.8088 &gt; 127.0.0.1.33540: Flags [S.], seq 3084261840, ack 3237997585, win 43690, options [mss 65495,sackOK,TS val 2632342973 ecr 2632342973,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242261 IP 127.0.0.1.33540 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242281 IP 127.0.0.1.33542 &gt; 127.0.0.1.8088: Flags [S], seq 3051525301, win 43690, options [mss 65495,sackOK,TS val 2632342973 ecr 0,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242286 IP 127.0.0.1.8088 &gt; 127.0.0.1.33542: Flags [S.], seq 2696146235, ack 3051525302, win 43690, options [mss 65495,sackOK,TS val 2632342973 ecr 2632342973,nop,wscale 7], length 0</span><br><span class="line">21:24:51.242290 IP 127.0.0.1.33542 &gt; 127.0.0.1.8088: Flags [.], ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242295 IP 127.0.0.1.8088 &gt; 127.0.0.1.33542: Flags [R], seq 2696146236, win 0, length 0</span><br><span class="line">21:24:51.242309 IP 127.0.0.1.33538 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 82</span><br><span class="line">21:24:51.242311 IP 127.0.0.1.8088 &gt; 127.0.0.1.33538: Flags [.], ack 83, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242318 IP 127.0.0.1.33540 &gt; 127.0.0.1.8088: Flags [P.], seq 1:83, ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 82</span><br><span class="line">21:24:51.242321 IP 127.0.0.1.8088 &gt; 127.0.0.1.33540: Flags [.], ack 83, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242346 IP 127.0.0.1.33540 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242352 IP 127.0.0.1.33538 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 1, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.242357 IP 127.0.0.1.33536 &gt; 127.0.0.1.8088: Flags [F.], seq 83, ack 131, win 342, options [nop,nop,TS val 2632342973 ecr 2632342973], length 0</span><br><span class="line">21:24:51.282157 IP 127.0.0.1.8088 &gt; 127.0.0.1.33536: Flags [.], ack 84, win 342, options [nop,nop,TS val 2632343013 ecr 2632342973], length 0</span><br><span class="line">21:24:51.282160 IP 127.0.0.1.8088 &gt; 127.0.0.1.33538: Flags [.], ack 84, win 342, options [nop,nop,TS val 2632343013 ecr 2632342973], length 0</span><br><span class="line">21:24:51.282161 IP 127.0.0.1.8088 &gt; 127.0.0.1.33540: Flags [.], ack 84, win 342, options [nop,nop,TS val 2632343013 ecr 2632342973], length 0</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+<h2 id="测试服务器源码"><a href="#测试服务器源码" class="headerlink" title="测试服务器源码"></a>测试服务器源码</h2><div class='spoiler collapsed'>
+    <div class='spoiler-title'>
+        示例代码
+    </div>
+    <div class='spoiler-content'>
+        <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/select.h&gt;</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 请求头信息 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">	<span class="keyword">char</span> uri[<span class="number">256</span>];			<span class="comment">//uri</span></span><br><span class="line">	<span class="keyword">char</span> method[<span class="number">16</span>];		<span class="comment">//请求方法</span></span><br><span class="line">	<span class="keyword">char</span> version[<span class="number">16</span>];		<span class="comment">//版本</span></span><br><span class="line">	<span class="keyword">char</span> filename[<span class="number">256</span>];		<span class="comment">//文件名(包含完整路径)</span></span><br><span class="line">	<span class="keyword">char</span> name[<span class="number">256</span>];			<span class="comment">//文件名(不包含完整路径)</span></span><br><span class="line">	<span class="keyword">char</span> queryArgs[<span class="number">256</span>];	<span class="comment">//查询参数</span></span><br><span class="line">	<span class="keyword">char</span> contentType[<span class="number">256</span>];		<span class="comment">//请求体类型</span></span><br><span class="line">	<span class="keyword">char</span> contentLen[<span class="number">16</span>];	<span class="comment">//请求体长度</span></span><br><span class="line">&#125;<span class="keyword">http_header_t</span>, <span class="keyword">hhr_t</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 响应头信息 */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">	<span class="keyword">char</span> version[<span class="number">16</span>];</span><br><span class="line">	<span class="keyword">int</span> statusCode;</span><br><span class="line">	<span class="keyword">char</span> msg[<span class="number">16</span>];</span><br><span class="line">	<span class="keyword">char</span> server[<span class="number">32</span>];</span><br><span class="line">	<span class="keyword">char</span> acceptRange[<span class="number">16</span>];</span><br><span class="line">	<span class="keyword">char</span> connection[<span class="number">16</span>];</span><br><span class="line">	<span class="keyword">char</span> contentType[<span class="number">32</span>];</span><br><span class="line">	<span class="keyword">int</span> contentLen;</span><br><span class="line">&#125;<span class="keyword">response_header_t</span>, <span class="keyword">rhr_t</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 创建SOCKET</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">create_socket</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_addr</span>;</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> socket_server = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (socket_server &lt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Socket Create Error!&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> socket_server;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 绑定地址和端口</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bind_address</span><span class="params">(<span class="keyword">int</span> sockfd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> server_port = <span class="number">8088</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_addr</span>;</span></span><br><span class="line">	server_addr.sin_family = AF_INET;</span><br><span class="line">	server_addr.sin_port = htons(server_port);</span><br><span class="line">	server_addr.sin_addr.s_addr = INADDR_ANY;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span>( bind(sockfd, &amp;server_addr, <span class="keyword">sizeof</span>(server_addr)) == <span class="number">-1</span> )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Bind Error!&quot;</span>);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 启动服务器，绑定监听地址和端口，开始监听</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">start_server</span><span class="params">(<span class="keyword">int</span> backlog)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> socket_server = create_socket();</span><br><span class="line">	bind_address(socket_server);</span><br><span class="line">	listen(socket_server, backlog);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> socket_server;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 等待客户请求</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">wait_request</span><span class="params">(<span class="keyword">int</span> sockfd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Waitting connect...\n&quot;</span>);</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">client_addr</span>;</span></span><br><span class="line">	<span class="keyword">int</span> addr_len = <span class="keyword">sizeof</span>(client_addr);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">int</span> socket_client = accept(sockfd, &amp;client_addr, &amp;addr_len);</span><br><span class="line">	<span class="keyword">if</span>(socket_client == <span class="number">-1</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Client address:%s, port: %d.\n&quot;</span>, inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));</span><br><span class="line">	<span class="keyword">return</span> socket_client;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * 读取一行</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param const SOCKET socketClient </span></span><br><span class="line"><span class="comment"> * @param char *buf </span></span><br><span class="line"><span class="comment"> * @param int maxLine 每行的最大字符数</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @return int 读取进buf中的字符数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read_line</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> socketClient, <span class="keyword">char</span> *buf, <span class="keyword">int</span> maxLine)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> ((recv(socketClient, buf+i, <span class="number">1</span>, <span class="number">0</span>) &gt; <span class="number">0</span>) &amp;&amp; (i &lt; maxLine))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (*(buf+i) == <span class="number">10</span> )</span><br><span class="line">		&#123;</span><br><span class="line">			*(buf+i<span class="number">-1</span>) = <span class="number">0</span>; <span class="comment">//清除读到的&#x27;\r\n&#x27;字符</span></span><br><span class="line">			i = i - <span class="number">2</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		i++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//printf(&quot;%s\n&quot;, requestLine);</span></span><br><span class="line">	<span class="keyword">return</span> i; <span class="comment">//读取到的&#x27;\r\n&#x27;被丢弃,所以-2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">server</span><span class="params">(<span class="keyword">int</span> sockfd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* 读取请求行 */</span></span><br><span class="line">    <span class="keyword">char</span> *requestLine = (<span class="keyword">char</span>*)<span class="built_in">calloc</span>(<span class="number">300</span>, <span class="keyword">sizeof</span>(<span class="keyword">char</span>));</span><br><span class="line">    read_line(sockfd, requestLine, <span class="number">300</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, requestLine);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(requestLine);</span><br><span class="line">    requestLine = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 读取出全部数据 */</span></span><br><span class="line">    <span class="keyword">char</span> *requestHead = (<span class="keyword">char</span>*)<span class="built_in">calloc</span>(<span class="number">300</span>, <span class="keyword">sizeof</span>(<span class="keyword">char</span>));</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ( (n=recv(sockfd, requestHead, <span class="number">300</span>, MSG_DONTWAIT)) &gt; <span class="number">0</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, requestHead);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(requestHead);</span><br><span class="line">    requestHead = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *buf = <span class="string">&quot;Hello World!\n&quot;</span>;</span><br><span class="line">    <span class="keyword">rhr_t</span> *rhr = (<span class="keyword">rhr_t</span>*)<span class="built_in">calloc</span>(<span class="number">1</span>, <span class="keyword">sizeof</span>(<span class="keyword">rhr_t</span>));</span><br><span class="line">    <span class="comment">/* 响应头信息 */</span></span><br><span class="line">	<span class="built_in">strcpy</span>(rhr-&gt;version, <span class="string">&quot;HTTP/1.1&quot;</span>);</span><br><span class="line">	rhr-&gt;statusCode = <span class="number">200</span>;</span><br><span class="line">	<span class="built_in">strcpy</span>(rhr-&gt;msg, <span class="string">&quot;success&quot;</span>);</span><br><span class="line">	<span class="built_in">strcpy</span>(rhr-&gt;server, <span class="string">&quot;TBS/1.0&quot;</span>);</span><br><span class="line">	<span class="built_in">strcpy</span>(rhr-&gt;acceptRange, <span class="string">&quot;bytes&quot;</span>);</span><br><span class="line">	<span class="built_in">strcpy</span>(rhr-&gt;connection, <span class="string">&quot;close&quot;</span>);</span><br><span class="line">    rhr-&gt;contentLen = <span class="built_in">strlen</span>(buf);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *responseHead = (<span class="keyword">char</span>*)<span class="built_in">calloc</span>(<span class="number">1024</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%s %d %s\r\n&quot;</span>, rhr-&gt;version, rhr-&gt;statusCode, rhr-&gt;msg); <span class="comment">//&quot;HTTP/1.0 200 OK\r\n&quot;);</span></span><br><span class="line">    <span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%sServer: %s\r\n&quot;</span>, responseHead, rhr-&gt;server);</span><br><span class="line">	<span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%sAccept-range: %s\r\n&quot;</span>, responseHead, rhr-&gt;acceptRange);</span><br><span class="line">    <span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%sConnection: %s\r\n&quot;</span>, responseHead, rhr-&gt;connection);</span><br><span class="line">	<span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%sContent-type: %s\r\n&quot;</span>, responseHead, rhr-&gt;contentType);</span><br><span class="line">	<span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%sContent-length: %d\r\n&quot;</span>, responseHead, rhr-&gt;contentLen);	</span><br><span class="line">	<span class="built_in">sprintf</span>(responseHead, <span class="string">&quot;%s\r\n&quot;</span>, responseHead);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">strlen</span>(responseHead));</span><br><span class="line">    write(sockfd, responseHead, <span class="built_in">strlen</span>(responseHead));</span><br><span class="line">    write(sockfd, buf, <span class="built_in">strlen</span>(buf));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">free</span>(rhr);</span><br><span class="line">    <span class="built_in">free</span>(responseHead);</span><br><span class="line">    rhr = <span class="literal">NULL</span>;</span><br><span class="line">    responseHead = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">/* 启动服务器，绑定监听地址和端口 */</span></span><br><span class="line">    <span class="keyword">int</span> backlog = atoi(argv[<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">int</span> socket_server = start_server(backlog);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;START SERVER AT 127.0.0.1:%d, backlog: %d.\n&quot;</span>, <span class="number">8088</span>, backlog);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//struct linger so_linger;</span></span><br><span class="line">    <span class="comment">//so_linger.l_onoff = 1;</span></span><br><span class="line">    <span class="comment">//so_linger.l_linger = 0;</span></span><br><span class="line">    <span class="comment">//setsockopt(socket_server, SOL_SOCKET, SO_LINGER, &amp;so_linger, sizeof so_linger);</span></span><br><span class="line">        </span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//printf(&quot;---------------------------------------------\n&quot;);</span></span><br><span class="line">		<span class="keyword">int</span> socket_client = wait_request(socket_server);</span><br><span class="line">		<span class="keyword">if</span>(socket_client == <span class="number">-1</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//printf(&quot;Connect Error!&quot;);</span></span><br><span class="line">			<span class="keyword">continue</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">/* 处理客户端请求 */</span></span><br><span class="line">		server(socket_client);</span><br><span class="line">        sleep(<span class="number">10</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;关闭本连接...\n&quot;</span>);</span><br><span class="line">        close(socket_client);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 关闭服务器 */</span></span><br><span class="line">	close(socket_server);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+</div>
+
+
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://blog.isayme.org/posts/issues-47/">[1] TCP 半连接队列和全连接队列</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010039418/article/details/78369343">[2] TCP 的backlog详解及半连接队列和全连接队列</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010039418/article/details/78369343">[3] Unix 网络编程 卷1：套接字联网API</a></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/IT/MySQL/MySQL%E5%AE%89%E8%A3%85.html" rel="prev" title="MySQL安装">
+      <i class="fa fa-chevron-left"></i> MySQL安装
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="comment-button-group">
+          <a class="btn comment-button gitalk">gitalk(github评论)</a>
+          <a class="btn comment-button valine">匿名评论(Anonymous)</a>
+      </div>
+        <div class="comment-position gitalk">
+          <div class="comments" id="gitalk-container"></div>
+        </div>
+        <div class="comment-position valine">
+          <div class="comments" id="valine-comments"></div>
+        </div>
+      <script>
+        (function() {
+          let commentButton = document.querySelectorAll('.comment-button');
+            commentButton.forEach(element => {
+            let commentClass = element.classList[2];
+            element.addEventListener('click', () => {
+              commentButton.forEach(rmActive => rmActive.classList.remove('active'));
+              element.classList.add('active');
+              document.querySelectorAll('.comment-position').forEach(rmActive => rmActive.classList.remove('active'));
+              document.querySelector(`.comment-position.${commentClass}`).classList.add('active');
+              if (CONFIG.comments.storage) {
+                localStorage.setItem('comments_active', commentClass);
+              }
+            });
+          });
+          let { activeClass } = CONFIG.comments;
+          if (CONFIG.comments.storage) {
+            activeClass = localStorage.getItem('comments_active') || activeClass;
+          }
+          if (activeClass) {
+            let activeButton = document.querySelector(`.comment-button.${activeClass}`);
+            if (activeButton) {
+              activeButton.click();
+            }
+          }
+        })();
+      </script>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#socket%E4%B8%ADbacklog%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%BD%B1%E5%93%8D"><span class="nav-number">1.</span> <span class="nav-text">socket中backlog的含义及影响</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8A%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97%E5%92%8C%E5%85%A8%E8%BF%9E%E6%8E%A5%E9%98%9F%E5%88%97"><span class="nav-number">1.2.</span> <span class="nav-text">半连接队列和全连接队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backlog%E5%8F%82%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">backlog参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E9%AA%8C%E8%AF%81"><span class="nav-number">1.4.</span> <span class="nav-text">实验验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#backlog%E4%B8%8E%E9%98%9F%E5%88%97%E9%95%BF%E5%BA%A6-%E9%98%9F%E5%88%97%E6%BB%A1%E7%9A%84%E6%97%B6%E5%80%99%E4%B8%A2%E5%BC%83%E8%AF%B7%E6%B1%82"><span class="nav-number">1.4.1.</span> <span class="nav-text">backlog与队列长度&#x2F;队列满的时候丢弃请求</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A8%8B%E5%BA%8F%EF%BC%8C%E5%A6%82%E5%9B%BE%EF%BC%88%E5%8F%82%E6%95%B0%E8%A1%A8%E7%A4%BA%E7%9A%84%E6%98%AFbacklog%EF%BC%89%EF%BC%8Cbacklog%E8%AE%BE%E7%BD%AE%E4%B8%BA1%EF%BC%9A"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">一、启动服务器程序，如图（参数表示的是backlog），backlog设置为1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9C%A8%E5%8F%A6%E4%B8%80%E4%B8%AAsession%E4%BD%BF%E7%94%A8ab%E5%8F%91%E8%AF%B7%E6%B1%82%EF%BC%8C%E8%AE%BE%E7%BD%AE%E5%B9%B6%E5%8F%91%E9%87%8F%E4%B8%BA4%EF%BC%9A"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">二、在另一个session使用ab发请求，设置并发量为4：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%9F%A5%E7%9C%8B%E5%A5%97%E6%8E%A5%E5%AD%97%EF%BC%9A"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">三、查看套接字：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%9C%8B%E4%B8%80%E4%B8%8B%E6%8A%93%E5%8C%85%E7%BB%93%E6%9E%9C%EF%BC%8C%E5%B9%B6%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">四、看一下抓包结果，并分析：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%94%E3%80%81-proc-sys-net-ipv4-tcp-abort-on-overflow%E8%AE%BE%E7%BD%AE%E4%B8%BA1%EF%BC%8C%E8%A7%82%E5%AF%9F%E6%8A%93%E5%8C%85%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="nav-number">1.4.1.5.</span> <span class="nav-text">五、&#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;tcp_abort_on_overflow设置为1，观察抓包结果：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%BA%90%E7%A0%81"><span class="nav-number">1.5.</span> <span class="nav-text">测试服务器源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">abug0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-book-open"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">abug0</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6105212924a623f6" async="async"></script>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '40ec7d9233a147cef660',
+      clientSecret: '414cf059b7655d5e8a124b78961ca81378149a03',
+      repo        : 'gitalk-comments',
+      owner       : 'abug0',
+      admin       : ['abug0'],
+      id          : 'c5e689feceb67e456c77428b69c33a26',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'DkAmD8PHRf2jESEBV3Ght5TX-gzGzoHsz',
+      appKey     : 'OTTHxhSv4aPOg8I21witBRTh',
+      placeholder: "请在此留言",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
